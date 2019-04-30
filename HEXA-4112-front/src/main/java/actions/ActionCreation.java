@@ -10,6 +10,8 @@ import Model.Demand;
 import Model.Offer;
 import Model.Person;
 import Services.Services;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ActionCreation extends Action {
     
@@ -27,8 +29,14 @@ public class ActionCreation extends Action {
         String description = request.getParameter("description");
         // Pour date voir si on met une date ou un string
         // Pareil pour la durée
-        String availabilityDate = request.getParameter("date");
-        String availabilityTime = request.getParameter("time");
+        String date = request.getParameter("date");
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");  
+        Date availabilityDate = formatDate.parse(date);
+        
+        String time = request.getParameter("time");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");  
+        Date availabilityTime = formatDate.parse(time);
+        
         String localisation = request.getParameter("localisation");
         // type indique si c'est un prêt, une donation, un service rendu ...
         //String type = request.getParameter("type");

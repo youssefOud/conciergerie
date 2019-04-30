@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.Date;
 import javax.persistence.Entity;
 
 @Entity
@@ -12,7 +13,7 @@ public class Demand extends Service {
         
     }
     
-    public Demand(Person personDemanding, String category, String nameObject, String availabilityDate, String availabilityTime,
+    public Demand(Person personDemanding, String category, String nameObject, Date availabilityDate, Date availabilityTime,
             String localisation, String type,int nbPointMax, String description, String unit, int duration) {
         // TODO A implementer
         super(null, personDemanding, category, nameObject, availabilityDate,
