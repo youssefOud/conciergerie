@@ -15,9 +15,9 @@ public class Service{
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
     
-    protected User userOffering;
+    protected Person personOffering;
     
-    protected User userDemanding;
+    protected Person personDemanding;
     
     protected String category;
     
@@ -30,37 +30,46 @@ public class Service{
     protected String localisation;
     
     protected String type;
+
+    protected String description;
+    
+    protected int duration;
+    
+    protected String unit;
     
     public Service() {
         
     }
-    
-    public Service(User userOffering, User userDemanding, String category, String nameObject, String availabilityDate,
-            String availabilityTime, String localisation, String type) {
-        this.userOffering = userOffering;
-        this.userDemanding = userDemanding;
+   
+    public Service(Person personOffering, Person personDemanding, String category, String nameObject, String availabilityDate,
+            String availabilityTime, String localisation, String type,String description, String unit, int duration) {
+        this.personOffering = personOffering;
+        this.personDemanding = personDemanding;
         this.category = category;
         this.nameObject = nameObject;
         this.availabilityDate = availabilityDate;
         this.availabilityTime = availabilityTime;
         this.localisation = localisation;
         this.type = type;
+        this.description = description;
+        this.unit = unit;
+        this.duration = duration;
     }
     
-    public User getUserOffering() {
-        return userOffering;
+    public Person getPersonOffering() {
+        return personOffering;
     }
     
-    public void setUserOffering(User userOffering) {
-        this.userOffering = userOffering;
+    public void setPersonOffering(Person personOffering) {
+        this.personOffering = personOffering;
     }
     
-    public User getUserDemanding() {
-        return userDemanding;
+    public Person getPersonDemanding() {
+        return personDemanding;
     }
     
-    public void setUserDemanding(User userDemanding) {
-        this.userDemanding = userDemanding;
+    public void setPersonDemanding(Person personDemanding) {
+        this.personDemanding = personDemanding;
     }
     
     public String getCategory() {
@@ -114,7 +123,7 @@ public class Service{
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        String serviceString = "Service : " + userOffering + " propose un " + nameObject;
+        String serviceString = "Service : " + personOffering + " propose un " + nameObject;
         return serviceString;
     }
     

@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class User{
+public class Person{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,7 +16,7 @@ public class User{
     
     private String password;
     
-    private String cellNumber;
+    private String numeroTel;
     
     private String mail;
     
@@ -30,15 +30,15 @@ public class User{
     
     private String location;
     
-    public User() {
+    public Person() {
         
     }
     
-    public User(String login, String password, String numeroTel, String mail, String pointBalance, String pseudo,
+    public Person(String login, String password, String numeroTel, String mail, String pointBalance, String pseudo,
             double rating, String picture, String location) {
         this.login = login;
         this.password = password;
-        this.cellNumber = cellNumber;
+        this.numeroTel = numeroTel;
         this.mail = mail;
         this.pointBalance = pointBalance;
         this.pseudo = pseudo;
@@ -63,12 +63,12 @@ public class User{
         this.password = password;
     }
     
-    public String getCellNumber() {
-        return cellNumber;
+    public String getNumeroTel() {
+        return numeroTel;
     }
     
     public void setNumeroTel(String numeroTel) {
-        this.cellNumber = cellNumber;
+        this.numeroTel = numeroTel;
     }
     
     public String getMail() {

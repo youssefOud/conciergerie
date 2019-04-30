@@ -5,8 +5,8 @@ import javax.persistence.EntityManager;
 import Model.Demand;
 
 public class DemandDAO {
-	
-	public Demand findById(Long id){
+    
+    public Demand findById(Long id){
         EntityManager em = JpaUtil.getEntityManager();
         return em.find(Demand.class, id);
     }
@@ -22,5 +22,5 @@ public class DemandDAO {
         EntityManager em = JpaUtil.getEntityManager();
         em.remove(demand);
     }
-		
+    
 }
