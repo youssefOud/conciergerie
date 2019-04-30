@@ -6,10 +6,6 @@ import Model.Market;
 
 public class MarketDAO {
     
-    public MarketDAO() {
-        
-    }
-    
     public Market findById(Long id){
         EntityManager em = JpaUtil.getEntityManager();
         return em.find(Market.class, id);
