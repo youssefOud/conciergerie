@@ -34,7 +34,7 @@ public class Service{
     protected String localisation;
     
     protected String type;
-    
+
     protected String description;
     
     protected int duration;
@@ -44,9 +44,11 @@ public class Service{
     public Service() {
         
     }
+
     
     public Service(Person personOffering, Person personDemanding, String category, String nameObject, Date availabilityDate,
             Date availabilityTime, String localisation, String type,String description, String unit, int duration) {
+
         this.personOffering = personOffering;
         this.personDemanding = personDemanding;
         this.category = category;
