@@ -25,12 +25,16 @@
 			crossorigin="anonymous"></script>
 		<script src="js/bootstrap-datepicker.js"></script>
 		<script src="js/clockpicker.js"></script>
+                
+                <link rel="shortcut icon" type="images/png" href="images/favicon.png"/>
 
 		<title>D&eacute;pose ton annonce !</title>
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href="#">HEXA4112</a>
+			<a class="navbar-brand" href="#">
+                            <img src="images/logo.png" alt="Campus Exchange">
+                        </a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarColor02" aria-controls="navbarColor02"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -116,8 +120,8 @@
 				<div class="form-group">
 					<label class="control-label" for="date">Date de
 						disponibilité</label> <input class="form-control" id="date" 
-						placeholder="DD/MM/AAAA" type="text" /> <input type="text"
-						class="form-control" id="time" placeholder="HH:mm">
+                                                       placeholder="le DD/MM/AAAA" type="text" /><br> <input type="text"
+						class="form-control" id="time" placeholder="à HH:mm">
 				</div>
 
 
@@ -128,11 +132,16 @@
 						placeholder="Renseignez la dur&eacute;e de disponibilit&eacute; de l'objet">
 				</div>
 
-			<!-- En heures ou en jours-->
+			<!-- En minutes, en heures ou en jours-->
 				<div class="form-group ">
+                                        <div class="custom-control custom-radio custom-control-inline">
+						<input type="radio" class="custom-control-input"
+							id="minutes" name="unite" checked="">
+						<label class="custom-control-label" for="minutes">Minutes</label>
+					</div>
 					<div class="custom-control custom-radio custom-control-inline">
 						<input type="radio" class="custom-control-input"
-							id="heures" name="unite" checked="">
+							id="heures" name="unite">
 						<label class="custom-control-label" for="heures">Heures</label>
 					</div>
 					<div class="custom-control custom-radio custom-control-inline">
@@ -162,9 +171,9 @@
 
 				<!-- Nombre de points-->
 				<div class="form-group">
-					<label for="nbPts">Nombre de points</label> <input type="number"
+					<label for="nbPts">Nombre de points par unité</label> <input type="number"
 						class="form-control" id="nbPts"
-						placeholder="Renseignez le nombre de points associ&eacute; à l'annonce">
+						placeholder="Renseignez le nombre de points par unité associ&eacute;e à l'annonce">
 				</div>
 
 				<!-- Validation -->
@@ -222,106 +231,108 @@
 		</div>
 
 		<script>
-		
-			$(document).ready(function() {
-				
-				<!-- Mise en place des dates-->
-				$('#date').datepicker({
-					format : "dd/mm/yyyy",
-					locale : "fr",
-					autoclose : true,
-					todayHighlight : true,
-					pick12HourFormat : true
-				});
-				
-				<!-- Mise en place des heures -->
-				$('#time').clockpicker({
-					autoclose : true,
-					donetext : 'Done'
-				});
-				
-				document.getElementById("valider").addEventListener("click", function(){
-					var send=true;
-  					var answers = new Object();
-  					//Type
-  					answers.type="demande";
-  					if($('#offre').is(':checked')){
-  						answers.type="offre";
-  					}
-  					//Catégorie
-  					answers.categorie=document.getElementById('categories').value;
-  					//Nom objet
-  					if(document.getElementById("objet").value != ""){
-  						answers.objet=document.getElementById("objet").value;
-  						document.getElementById("objet").classList.remove("is-invalid");
-  					}
-  					else{
-  						send=false;
-  						document.getElementById("objet").classList.add("is-invalid");
-  					}
-  					//Description
-  					answers.description=document.getElementById("description").value;
-  					//Date
-  					if(document.getElementById("date").value != ""){
-  						answers.date=document.getElementById("date").value;
-  						document.getElementById("date").classList.remove("is-invalid");
-  					}
-  					else{
-  						send=false;
-  						document.getElementById("date").classList.add("is-invalid");
-  					}
-  					if(document.getElementById("time").value != ""){
-  						answers.time=document.getElementById("time").value;
-  						document.getElementById("time").classList.remove("is-invalid");
-  					}
-  					else{
-  						send=false;
-  						document.getElementById("time").classList.add("is-invalid");
-  					}
-  					//Durée
-  					if(document.getElementById("duree").value != ""){
-  						answers.duree=document.getElementById("duree").value;
-  						document.getElementById("duree").classList.remove("is-invalid");
-  					}
-  					else{
-  						send=false;
-  						document.getElementById("duree").classList.add("is-invalid");
-  					}
-  					//Unité
-  					answers.unite="heures";
-  					if($('#jours').is(':checked')){
-  						answers.unite="jours";
-  					}
-  					//Localisation
-  					answers.localisation=document.getElementById('localisations').value;
-  					if(document.getElementById("nbPts").value != ""){
-  						answers.nbPts=document.getElementById("nbPts").value;
-  						document.getElementById("nbPts").classList.remove("is-invalid");
-  					}
-  					else{
-  						send=false;
-  						document.getElementById("nbPts").classList.add("is-invalid");
-  					}
 
-					if(send){
-						//Validation
-						$("#validation").modal();
-						
-					}
-				});
-				
-				
-				document.getElementById("deposer").addEventListener("click", function(){
-					console.log("glou");
-					$.ajax({
-			            type: 'POST',
-			            url: 'url',
-			            data: answers,
+                    $(document).ready(function() {
+
+                <!-- Mise en place des dates-->
+                        $('#date').datepicker({
+                            format : "dd/mm/yyyy",
+                            locale : "fr",
+                            autoclose : true,
+                            todayHighlight : true,
+                        pick12HourFormat : true
+                    });
+
+                        <!-- Mise en place des heures -->
+                $('#time').clockpicker({
+                            autoclose : true,
+                            donetext : 'Done'
+                });
+
+                document.getElementById("valider").addEventListener("click", function(){
+                            var send = true;
+                    var answers = new Object();
+                    //Type
+                    answers.type = "demande";
+                    if ($('#offre').is(':checked')){
+                    answers.type = "offre";
+                                }
+                                //Catégorie
+                                answers.categorie=document.getElementById('categories').value;
+                        //Nom objet
+                        if(document.getElementById("objet").value != ""){
+                            answers.objet = document.getElementById("objet").value;
+                    document.getElementById("objet").classList.remove("is-invalid");
+                                        }
+                                        else{
+                            send = false;
+                    document.getElementById("objet").classList.add("is-invalid");
+                                        }
+                                        //Description
+                                                answers.description=document.getElementById("description").value;
+                                                //Date
+                                                if(document.getElementById("date").value != ""){
+                            answers.date = document.getElementById("date").value;
+                    document.getElementById("date").classList.remove("is-invalid");
+                                                                }
+                                                                else{
+                            send = false;
+                    document.getElementById("date").classList.add("is-invalid");
+                                        }
+                                        if(document.getElementById("time").value != ""){
+                            answers.time = document.getElementById("time").value;
+                    document.getElementById("time").classList.remove("is-invalid");
+                                        }
+                                        else{
+                            send = false;
+                    document.getElementById("time").classList.add("is-invalid");
+                                }
+                                //Durée
+                                        if(document.getElementById("duree").value != ""){
+                            answers.duree = document.getElementById("duree").value;
+                    document.getElementById("duree").classList.remove("is-invalid");
+                                                }
+                                                else{
+                            send = false;
+                    document.getElementById("duree").classList.add("is-invalid");
+                                }
+                                //Unité
+                                        answers.unite="heures";
+                                                if($('#jours').is(':checked')){
+                            answers.unite = "jours";
+                                }
+                                                if($('#minutes').is(':checked')){
+                            answers.unite = "minutes";
+                                }
+                                        //Localisation
+                                                answers.localisation=document.getElementById('localisations').value;
+                                if(document.getElementById("nbPts").value != ""){
+                            answers.nbPts = document.getElementById("nbPts").value;
+                    document.getElementById("nbPts").classList.remove("is-invalid");
+                                                }
+else{
+                            send = false;
+                    document.getElementById("nbPts").classList.add("is-invalid");
+                                                }
+
+            if(send){
+                            //Validation
+                            $("#validation").modal();
+            }
+            });
+
+
+            document.getElementById("deposer").addEventListener("click", function(){
+                            console.log("glou");
+                    $.ajax({
+                    type: 'POST',
+                            url: 'url',
+       data: answers,
 			            timeout: 3000,
 			            success: function(data){
 			              $('#zone').html(data);
-			            },
-			            error: function(){
+            },
+            error: function(){
 			            	$("#erreur").modal();
 			            }
 			          });
