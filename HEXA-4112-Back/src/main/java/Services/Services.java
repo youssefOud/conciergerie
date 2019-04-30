@@ -35,8 +35,6 @@ public class Services {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
-        // Traitement sur demand ? Date de début ?
-        
         DemandDAO demandDAO = new DemandDAO();
         demandDAO.persist(demand);
         
@@ -44,6 +42,7 @@ public class Services {
             JpaUtil.validateTransaction();
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
+            return false;
         }
         
         JpaUtil.closeEntityManager();
