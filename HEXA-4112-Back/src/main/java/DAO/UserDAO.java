@@ -4,12 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import Model.User;
+import java.util.List;
 
 public class UserDAO {
-
-	public UserDAO() {
-		
-	}
 	
 	public User findById(Long id){
         EntityManager em = JpaUtil.getEntityManager();
@@ -35,11 +32,10 @@ public class UserDAO {
     	query.setParameter("loginToVerify", login);
     	query.setParameter("passwordToVerify", password);
 		
-    	
-    	// TODO : change when javax.persistence marche
-    	// User user = query.getResult();
-    	// return user;
-    	return null;
+        if(((List<User>) query.getResultList()).isEmpty()){
+            return null;
+        }
+        return ((List<User>) query.getResultList()).get(0); 	
     }
 	
 }

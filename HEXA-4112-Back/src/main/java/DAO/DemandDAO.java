@@ -5,10 +5,6 @@ import javax.persistence.EntityManager;
 import Model.Demand;
 
 public class DemandDAO {
-
-	public DemandDAO() {
-		
-	}
 	
 	public Demand findById(Long id){
         EntityManager em = JpaUtil.getEntityManager();

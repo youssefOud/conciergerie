@@ -5,10 +5,6 @@ import javax.persistence.EntityManager;
 import Model.Offer;
 
 public class OfferDAO {
-
-	public OfferDAO() {
-		
-	}
 	
 	public Offer findById(Long id){
         EntityManager em = JpaUtil.getEntityManager();

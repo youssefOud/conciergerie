@@ -5,10 +5,6 @@ import javax.persistence.EntityManager;
 import Model.Market;
 
 public class MarketDAO {
-
-	public MarketDAO() {
-		
-	}
 	
 	public Market findById(Long id){
         EntityManager em = JpaUtil.getEntityManager();
