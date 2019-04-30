@@ -1,0 +1,149 @@
+30-Apr-2019 09:04:04.517 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Server version:        Apache Tomcat/8.5.40
+30-Apr-2019 09:04:04.521 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Apr 10 2019 14:31:19 UTC
+30-Apr-2019 09:04:04.522 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Server number:         8.5.40.0
+30-Apr-2019 09:04:04.522 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Windows 10
+30-Apr-2019 09:04:04.522 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            10.0
+30-Apr-2019 09:04:04.522 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+30-Apr-2019 09:04:04.522 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             C:\Program Files\Java\jdk1.8.0_144\jre
+30-Apr-2019 09:04:04.522 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           1.8.0_144-b01
+30-Apr-2019 09:04:04.522 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+30-Apr-2019 09:04:04.523 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40
+30-Apr-2019 09:04:04.523 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40
+30-Apr-2019 09:04:04.523 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\conf\logging.properties
+30-Apr-2019 09:04:04.524 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+30-Apr-2019 09:04:04.524 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dhttp.nonProxyHosts=localhost|127.0.0.1|DESKTOP-JFOOFOS
+30-Apr-2019 09:04:04.524 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+30-Apr-2019 09:04:04.524 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+30-Apr-2019 09:04:04.525 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+30-Apr-2019 09:04:04.529 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40
+30-Apr-2019 09:04:04.529 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40
+30-Apr-2019 09:04:04.529 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\temp
+30-Apr-2019 09:04:04.529 INFOS [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded APR based Apache Tomcat Native library [1.2.21] using APR version [1.6.5].
+30-Apr-2019 09:04:04.529 INFOS [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+30-Apr-2019 09:04:04.530 INFOS [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+30-Apr-2019 09:04:04.540 INFOS [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1a  20 Nov 2018]
+30-Apr-2019 09:04:05.017 INFOS [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+30-Apr-2019 09:04:05.416 INFOS [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+30-Apr-2019 09:04:05.431 INFOS [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-8009"]
+30-Apr-2019 09:04:05.438 INFOS [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+30-Apr-2019 09:04:05.438 INFOS [main] org.apache.catalina.startup.Catalina.load Initialization processed in 2024 ms
+30-Apr-2019 09:04:05.525 INFOS [main] org.apache.catalina.core.StandardService.startInternal Démarrage du service [Catalina]
+30-Apr-2019 09:04:05.525 INFOS [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.5.40
+30-Apr-2019 09:04:05.542 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\docs] de l'application web
+30-Apr-2019 09:04:06.640 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\docs] has finished in [1 095] ms
+30-Apr-2019 09:04:06.640 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\examples] de l'application web
+30-Apr-2019 09:04:07.739 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\examples] has finished in [1 099] ms
+30-Apr-2019 09:04:07.740 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\host-manager] de l'application web
+30-Apr-2019 09:04:07.927 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\host-manager] has finished in [186] ms
+30-Apr-2019 09:04:07.927 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\manager] de l'application web
+30-Apr-2019 09:04:08.192 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\manager] has finished in [265] ms
+30-Apr-2019 09:04:08.192 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\ROOT] de l'application web
+30-Apr-2019 09:04:08.242 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\webapps\ROOT] has finished in [50] ms
+30-Apr-2019 09:04:08.248 INFOS [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+30-Apr-2019 09:04:08.263 INFOS [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["ajp-nio-8009"]
+30-Apr-2019 09:04:08.267 INFOS [main] org.apache.catalina.startup.Catalina.start Server startup in 2828 ms
+30-Apr-2019 09:04:29.339 INFOS [http-nio-8080-exec-2] org.apache.catalina.startup.HostConfig.undeploy Repli (undeploy) de l'application web ayant pour chemin de contexte []
+30-Apr-2019 09:04:29.377 INFOS [http-nio-8080-exec-6] org.apache.catalina.startup.HostConfig.deployDescriptor Déploiement du descripteur de configuration [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\conf\Catalina\localhost\ROOT.xml]
+30-Apr-2019 09:04:29.543 INFOS [http-nio-8080-exec-6] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of configuration descriptor [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\apache-tomcat-8.5.40\conf\Catalina\localhost\ROOT.xml] has finished in [167] ms
+30-Apr-2019 09:04:29.570 INFOS [http-nio-8080-exec-6] org.apache.catalina.util.LifecycleBase.start The start() method was called on component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[]] after start() had already been called. The second call will be ignored.
+30-Apr-2019 09:13:10.611 INFOS [main] org.apache.catalina.core.StandardServer.await A valid shutdown command was received via the shutdown port. Stopping the Server instance.
+30-Apr-2019 09:13:10.611 INFOS [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+30-Apr-2019 09:13:10.748 INFOS [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["ajp-nio-8009"]
+30-Apr-2019 09:13:10.964 INFOS [main] org.apache.catalina.core.StandardService.stopInternal Arrêt du service [Catalina]
+30-Apr-2019 09:13:11.020 INFOS [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+30-Apr-2019 09:13:11.025 INFOS [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["ajp-nio-8009"]
+30-Apr-2019 09:13:11.027 INFOS [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
+30-Apr-2019 09:13:11.029 INFOS [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["ajp-nio-8009"]
+30-Apr-2019 10:08:31.099 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Server version:        Apache Tomcat/8.5.40
+30-Apr-2019 10:08:31.102 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Apr 10 2019 14:31:19 UTC
+30-Apr-2019 10:08:31.102 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Server number:         8.5.40.0
+30-Apr-2019 10:08:31.103 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Windows 10
+30-Apr-2019 10:08:31.103 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            10.0
+30-Apr-2019 10:08:31.103 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+30-Apr-2019 10:08:31.103 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             C:\Program Files\Java\jdk1.8.0_144\jre
+30-Apr-2019 10:08:31.103 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           1.8.0_144-b01
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\conf\logging.properties
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dhttp.nonProxyHosts=localhost|127.0.0.1|DESKTOP-JFOOFOS
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat
+30-Apr-2019 10:08:31.104 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat
+30-Apr-2019 10:08:31.108 INFOS [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\temp
+30-Apr-2019 10:08:31.108 INFOS [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded APR based Apache Tomcat Native library [1.2.21] using APR version [1.6.5].
+30-Apr-2019 10:08:31.108 INFOS [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+30-Apr-2019 10:08:31.108 INFOS [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+30-Apr-2019 10:08:31.114 INFOS [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1a  20 Nov 2018]
+30-Apr-2019 10:08:31.285 INFOS [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+30-Apr-2019 10:08:31.512 INFOS [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+30-Apr-2019 10:08:31.524 INFOS [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-8009"]
+30-Apr-2019 10:08:31.527 INFOS [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+30-Apr-2019 10:08:31.527 INFOS [main] org.apache.catalina.startup.Catalina.load Initialization processed in 1394 ms
+30-Apr-2019 10:08:31.563 INFOS [main] org.apache.catalina.core.StandardService.startInternal Démarrage du service [Catalina]
+30-Apr-2019 10:08:31.564 INFOS [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.5.40
+30-Apr-2019 10:08:31.580 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDescriptor Déploiement du descripteur de configuration [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\conf\Catalina\localhost\ROOT.xml]
+30-Apr-2019 10:08:31.658 GRAVE [localhost-startStop-1] org.apache.catalina.core.ContainerBase.addChildInternal ContainerBase.addChild: start: 
+ org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[]]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:167)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:754)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:730)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:734)
+	at org.apache.catalina.startup.HostConfig.deployDescriptor(HostConfig.java:624)
+	at org.apache.catalina.startup.HostConfig$DeployDescriptor.run(HostConfig.java:1833)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: org.apache.catalina.LifecycleException: Failed to start component [org.apache.catalina.webresources.StandardRoot@b844da6]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:167)
+	at org.apache.catalina.core.StandardContext.resourcesStart(StandardContext.java:4885)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5020)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	... 10 more
+Caused by: java.lang.IllegalArgumentException: The main resource set specified [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\HEXA4112\nbbuild\web] is not valid
+	at org.apache.catalina.webresources.StandardRoot.createMainResourceSet(StandardRoot.java:748)
+	at org.apache.catalina.webresources.StandardRoot.startInternal(StandardRoot.java:706)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	... 13 more
+
+30-Apr-2019 10:08:31.659 GRAVE [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDescriptor Erreur lors du déploiement du descripteur de configuration [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\conf\Catalina\localhost\ROOT.xml]
+ java.lang.IllegalStateException: ContainerBase.addChild: start: org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[]]
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:758)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:730)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:734)
+	at org.apache.catalina.startup.HostConfig.deployDescriptor(HostConfig.java:624)
+	at org.apache.catalina.startup.HostConfig$DeployDescriptor.run(HostConfig.java:1833)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+30-Apr-2019 10:08:31.663 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of configuration descriptor [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\conf\Catalina\localhost\ROOT.xml] has finished in [81] ms
+30-Apr-2019 10:08:31.664 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\webapps\docs] de l'application web
+30-Apr-2019 10:08:32.229 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\webapps\docs] has finished in [565] ms
+30-Apr-2019 10:08:32.230 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\webapps\examples] de l'application web
+30-Apr-2019 10:08:32.953 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\webapps\examples] has finished in [724] ms
+30-Apr-2019 10:08:32.953 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\webapps\host-manager] de l'application web
+30-Apr-2019 10:08:33.005 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\webapps\host-manager] has finished in [52] ms
+30-Apr-2019 10:08:33.006 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Déploiement du répertoire [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\webapps\manager] de l'application web
+30-Apr-2019 10:08:33.066 INFOS [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\webapps\manager] has finished in [60] ms
+30-Apr-2019 10:08:33.069 INFOS [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+30-Apr-2019 10:08:33.081 INFOS [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["ajp-nio-8009"]
+30-Apr-2019 10:08:33.085 INFOS [main] org.apache.catalina.startup.Catalina.start Server startup in 1557 ms
+30-Apr-2019 10:09:25.923 INFOS [http-nio-8080-exec-10] org.apache.catalina.startup.HostConfig.deployDescriptor Déploiement du descripteur de configuration [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\conf\Catalina\localhost\HEXA-4112-front.xml]
+30-Apr-2019 10:09:25.988 INFOS [http-nio-8080-exec-10] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of configuration descriptor [C:\Users\youss\Desktop\Youssef\4IF\SMART\PLD_SMART\TOMCAT\HEXA-4112-tomcat\conf\Catalina\localhost\HEXA-4112-front.xml] has finished in [65] ms
+30-Apr-2019 10:09:25.994 INFOS [http-nio-8080-exec-10] org.apache.catalina.util.LifecycleBase.start The start() method was called on component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[/HEXA-4112-front]] after start() had already been called. The second call will be ignored.
+30-Apr-2019 11:32:30.807 INFOS [http-nio-8080-exec-8] org.apache.catalina.core.StandardContext.reload Le rechargement du contexte [/HEXA-4112-front] a démarré
+30-Apr-2019 11:32:30.967 INFOS [http-nio-8080-exec-8] org.apache.catalina.core.StandardContext.reload Le rechargement de ce contexte est terminé
+30-Apr-2019 11:32:51.886 INFOS [http-nio-8080-exec-3] org.apache.catalina.core.StandardContext.reload Le rechargement du contexte [/HEXA-4112-front] a démarré
+30-Apr-2019 11:32:51.975 INFOS [http-nio-8080-exec-3] org.apache.catalina.core.StandardContext.reload Le rechargement de ce contexte est terminé
+30-Apr-2019 11:33:35.208 INFOS [http-nio-8080-exec-13] org.apache.catalina.core.StandardContext.reload Le rechargement du contexte [/HEXA-4112-front] a démarré
+30-Apr-2019 11:33:35.336 INFOS [http-nio-8080-exec-13] org.apache.catalina.core.StandardContext.reload Le rechargement de ce contexte est terminé
+30-Apr-2019 11:33:36.498 INFOS [http-nio-8080-exec-6] org.apache.catalina.core.StandardContext.reload Le rechargement du contexte [/HEXA-4112-front] a démarré
+30-Apr-2019 11:33:36.600 INFOS [http-nio-8080-exec-6] org.apache.catalina.core.StandardContext.reload Le rechargement de ce contexte est terminé
