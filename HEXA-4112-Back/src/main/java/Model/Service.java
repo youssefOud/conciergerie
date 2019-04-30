@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Inheritance (strategy = InheritanceType.JOINED)
@@ -25,9 +28,10 @@ public abstract class Service implements Serializable{
     
     protected String nameObject;
     
-    protected String availabilityDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date availabilityDate;
     
-    protected String availabilityTime;
+    protected Date availabilityTime;
     
     protected String localisation;
     
@@ -42,9 +46,11 @@ public abstract class Service implements Serializable{
     public Service() {
         
     }
-   
-    public Service(Person personOffering, Person personDemanding, String category, String nameObject, String availabilityDate,
-            String availabilityTime, String localisation, String type,String description, String unit, int duration) {
+
+    
+    public Service(Person personOffering, Person personDemanding, String category, String nameObject, Date availabilityDate,
+            Date availabilityTime, String localisation, String type,String description, String unit, int duration) {
+
         this.personOffering = personOffering;
         this.personDemanding = personDemanding;
         this.category = category;
@@ -90,19 +96,19 @@ public abstract class Service implements Serializable{
         this.nameObject = nameObject;
     }
     
-    public String getAvailabilityDate() {
+    public Date getAvailabilityDate() {
         return availabilityDate;
     }
     
-    public void setAvailabilityDate(String availabilityDate) {
+    public void setAvailabilityDate(Date availabilityDate) {
         this.availabilityDate = availabilityDate;
     }
     
-    public String getAvailabilityTime() {
+    public Date getAvailabilityTime() {
         return availabilityTime;
     }
     
-    public void setAvailabilityTime(String availabilityTime) {
+    public void setAvailabilityTime(Date availabilityTime) {
         this.availabilityTime = availabilityTime;
     }
     

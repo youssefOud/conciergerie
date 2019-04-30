@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.Date;
 import javax.persistence.Entity;
 
 @Entity
@@ -12,7 +13,7 @@ public class Offer extends Service{
     }
     
     
-    public Offer(Person personOffering, String category, String nameObject, String availabilityDate, String availabilityTime,
+    public Offer(Person personOffering, String category, String nameObject, Date availabilityDate, Date availabilityTime,
             String localisation, String type, int nbPointMin, String description, String unit, int duration) {
         super(personOffering, null, category, nameObject, availabilityDate,
                 availabilityTime, localisation, type, description, unit, duration);
