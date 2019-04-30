@@ -34,11 +34,11 @@ public class User{
         
     }
     
-    public User(String login, String password, String numeroTel, String mail, String pointBalance, String pseudo,
+    public User(String login, String password, String cellNumber, String mail, String pointBalance, String pseudo,
             double rating, String picture, String location) {
         this.login = login;
         this.password = password;
-        this.numeroTel = numeroTel;
+        this.cellNumber = cellNumber;
         this.mail = mail;
         this.pointBalance = pointBalance;
         this.pseudo = pseudo;
