@@ -5,12 +5,12 @@ import javax.persistence.EntityManager;
 import Model.Service;
 
 public class ServiceDAO {
-
-	public ServiceDAO() {
-		
-	}
-	
-	public Service findById(Long id){
+    
+    public ServiceDAO() {
+        
+    }
+    
+    public Service findById(Long id){
         EntityManager em = JpaUtil.getEntityManager();
         return em.find(Service.class, id);
     }
@@ -26,6 +26,6 @@ public class ServiceDAO {
         EntityManager em = JpaUtil.getEntityManager();
         em.remove(service);
     }
-	
-	
+    
+    
 }

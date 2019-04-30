@@ -5,12 +5,12 @@ import javax.persistence.EntityManager;
 import Model.Offer;
 
 public class OfferDAO {
-
-	public OfferDAO() {
-		
-	}
-	
-	public Offer findById(Long id){
+    
+    public OfferDAO() {
+        
+    }
+    
+    public Offer findById(Long id){
         EntityManager em = JpaUtil.getEntityManager();
         return em.find(Offer.class, id);
     }
@@ -26,5 +26,5 @@ public class OfferDAO {
         EntityManager em = JpaUtil.getEntityManager();
         em.remove(offer);
     }
-	
+    
 }
