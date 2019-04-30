@@ -1,9 +1,12 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Person{
@@ -36,6 +39,8 @@ public class Person{
     
     public Person(String login, String password, String numeroTel, String mail, String pointBalance, String pseudo,
             double rating, String picture, String location) {
+        //this.servicesOffered = new ArrayList<>();
+        //this.servicesDemanded = new ArrayList<>();
         this.login = login;
         this.password = password;
         this.numeroTel = numeroTel;

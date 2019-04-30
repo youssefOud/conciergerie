@@ -49,6 +49,8 @@ public class Services {
         return true;
     }
     
+    
+    
     // TODO : A completer
     public boolean createOffer (Person person, Offer offer) {
         JpaUtil.createEntityManager();
@@ -63,6 +65,24 @@ public class Services {
             JpaUtil.validateTransaction();
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
+        }
+        
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
+    public boolean createPerson (Person person) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        PersonDAO personDAO = new PersonDAO();
+        personDAO.persist(person);
+        
+        try {
+            JpaUtil.validateTransaction();
+        } catch (RollbackException e) {
+            JpaUtil.cancelTransaction();
+            return false;
         }
         
         JpaUtil.closeEntityManager();
