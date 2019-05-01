@@ -19,7 +19,7 @@ public class Person{
     
     private String password;
     
-    private String numeroTel;
+    private String cellNumber;
     
     private String mail;
     
@@ -37,13 +37,13 @@ public class Person{
         
     }
     
-    public Person(String login, String password, String numeroTel, String mail, double pointBalance, String pseudo,
+    public Person(String login, String password, String cellNumber, String mail, double pointBalance, String pseudo,
             double rating, String picture, String location) {
         //this.servicesOffered = new ArrayList<>();
         //this.servicesDemanded = new ArrayList<>();
         this.login = login;
         this.password = password;
-        this.numeroTel = numeroTel;
+        this.cellNumber = cellNumber;
         this.mail = mail;
         this.pointBalance = pointBalance;
         this.pseudo = pseudo;
@@ -68,12 +68,12 @@ public class Person{
         this.password = password;
     }
     
-    public String getNumeroTel() {
-        return numeroTel;
+    public String getCellNumber() {
+        return cellNumber;
     }
     
-    public void setNumeroTel(String numeroTel) {
-        this.numeroTel = numeroTel;
+    public void setCellNumber(String cellNumber) {
+        this.cellNumber = cellNumber;
     }
     
     public String getMail() {
