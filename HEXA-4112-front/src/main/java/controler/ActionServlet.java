@@ -28,7 +28,7 @@ public class ActionServlet extends HttpServlet {
             throws ServletException, IOException {
         
         String todo = request.getParameter("todo");
-        
+        System.out.println(todo);
         SerialisationJSON serialisationJSON = new SerialisationJSON();
         
         if ("deposerAnnonce".equals(todo)) {
@@ -39,7 +39,7 @@ public class ActionServlet extends HttpServlet {
             } catch (ParseException ex) {
                 Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+            System.out.println("request set Attribute ");
             boolean created = (boolean) request.getAttribute("created");
             
             serialisationJSON.executeDeposerAnnonce(request, response);
