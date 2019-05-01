@@ -43,7 +43,7 @@ public class PersonTest {
     @org.junit.Test
     public void testCreatePerson() {
         System.out.println("Test : Create Person");
-        Person instance = new Person("fifi","12345","+12345","fifi@gmail.com","5","fifi",4.5,"/url/img.png","Residence A");
+        Person instance = new Person("fifi","12345","+12345","fifi@gmail.com",5,"fifi",4.5,"/url/img.png","Residence A");
         String expLogin = "fifi";
         String resultLogin = instance.getLogin();
         assertEquals(expLogin, resultLogin);
@@ -60,9 +60,9 @@ public class PersonTest {
         String resultMail = instance.getMail();
         assertEquals(expMail, resultMail);
         
-        String expBalance = "5";
-        String resultBalance = instance.getPointBalance();
-        assertEquals(expBalance, resultBalance);
+        double expBalance = 5;
+        double resultBalance = instance.getPointBalance();
+        assertEquals(expBalance, resultBalance, 0.0001);
         
         String expPseudo = "fifi";
         String resultPseudo = instance.getPseudo();

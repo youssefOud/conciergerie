@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class Offer extends Service{
     
-    private int nbPointMin;
+    private double nbPointMin;
     
     public Offer() {
         
@@ -14,17 +14,17 @@ public class Offer extends Service{
     
     
     public Offer(Person personOffering, String category, String nameObject, Date availabilityDate, Date availabilityTime,
-            String localisation, String type, int nbPointMin, String description, String unit, int duration) {
+            String localisation, String type, double nbPointMin, String description, String unit, int duration) {
         super(personOffering, null, category, nameObject, availabilityDate,
                 availabilityTime, localisation, type, description, unit, duration);
         this.nbPointMin = nbPointMin;
     }
     
-    public int getNbPointMin() {
+    public double getNbPointMin() {
         return nbPointMin;
     }
     
-    public void setNbPointMin(int nbPointMin) {
+    public void setNbPointMin(double nbPointMin) {
         this.nbPointMin = nbPointMin;
     }
     

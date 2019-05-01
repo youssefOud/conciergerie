@@ -59,11 +59,11 @@ public class ActionCreation extends Action {
             
             Demand demand = new Demand(person, category, nameObject, availabilityDate,
                     availabilityTime, localisation, ""/*, type*/, nbPts, description, unit, duration);
-            created = services.createDemand(person, demand);
+            created = services.createDemand(demand);
         } else if (typeService == "offre") {
             Offer offer = new Offer(person, category, nameObject, availabilityDate,
                     availabilityTime, localisation, ""/*, type*/, nbPts, description, unit, duration);
-            created = services.createOffer(person, offer);
+            created = services.createOffer(offer);
         }
         
         request.setAttribute("created", created);

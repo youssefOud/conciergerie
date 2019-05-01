@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,19 +8,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Inheritance (strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
-public class Service{
-       
+@Inheritance (strategy = InheritanceType.JOINED)
+public abstract class Service implements Serializable{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
-    
+
     protected Person personOffering;
-    
+
     protected Person personDemanding;
     
     protected String category;
@@ -29,6 +31,7 @@ public class Service{
     @Temporal(TemporalType.TIMESTAMP)
     protected Date availabilityDate;
     
+    @Temporal(TemporalType.TIMESTAMP)
     protected Date availabilityTime;
     
     protected String localisation;
