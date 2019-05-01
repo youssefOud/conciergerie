@@ -27,14 +27,14 @@
         <script src="js/bootstrap-datepicker.js"></script>
         <script src="js/clockpicker.js"></script>
 
-        <link rel="shortcut icon" type="images/png" href="images/favicon.png"/>
+        <link rel="shortcut icon" type="images/png" href="img/favicon.png"/>
 
         <title>D&eacute;pose ton annonce !</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">
-                <img src="images/logo.png" alt="Campus Exchange">
+                <img src="img/logo.png" alt="Campus Exchange">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarColor02" aria-controls="navbarColor02"
@@ -179,24 +179,23 @@
 
                 <br>
                 <!-- Import de photos -->
-                <label for="nbPts">Photos</label>
+                <label for="nbPts">Photos (limité à 5 images)</label>
                 <div class="container">
                         <div class="row">
-                                <div class="col-sm-2 imgUp">
+                            <div class="col-sm-2 imgUp">
                                 <div class="imagePreview"></div>
                                         <label class="btn btn-primary">
-                                                Upload<input type="file" class="uploadFile img" value="Upload Photo" 
+                                                Charger<input type="file" class="uploadFile img" value="Upload Photo" 
                                                                         style="width: 0px;height: 0px;overflow: hidden;">
                                         </label>
-                                </div>
+                            </div>
                             <i class="fa fa-plus imgAdd" id="ajouterBox"></i>
                         </div>
                 </div>
 
                 <!-- Validation -->
                 <div class="center">
-                        <button type="button" class="btn btn-primary" id="valider"
-                        >Valider</button>
+                        <button type="button" class="btn btn-primary" id="valider">Valider</button>
                 </div>
 
                 <!-- Pop Up de validation -->
@@ -264,13 +263,35 @@
                         autoclose : true,
                         donetext : 'Done'
             });
-
+            
+            var nbPictures =1;
+            
             document.getElementById("ajouterBox").addEventListener("click", function(){
-                $(this).closest(".row").find('.imgAdd').before('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary">Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                if(nbPictures < 4){
+                    $(this).closest(".row").find('.imgAdd').before('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                    nbPictures++;
+                }else if(nbPictures ==4){
+                    $(this).closest(".row").find('.imgAdd').replaceWith('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                    nbPictures++;
+                }
+                console.log(nbPictures);
             });
 
             $(document).on("click", "i.del" , function() {
+                if(nbPictures == 5){
+                    $(this).parent().siblings().last().after('<i class="fa fa-plus imgAdd" id="ajouterBox"></i>');
+                    document.getElementById("ajouterBox").addEventListener("click", function(){
+                        if(nbPictures < 4){
+                            $(this).closest(".row").find('.imgAdd').before('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                            nbPictures++;
+                        }else if(nbPictures ==4){
+                            $(this).closest(".row").find('.imgAdd').replaceWith('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                            nbPictures++;
+                        }
+                    });
+                }
                 $(this).parent().remove();
+                nbPictures--;
             });
             $(function() {
                 $(document).on("change",".uploadFile", function(){
@@ -359,6 +380,7 @@
                     send = false;
                     document.getElementById("nbPts").classList.add("is-invalid");
                 }
+                
                 myArrayFile = $('.uploadFile');
                 var objMap= new Map()
                 for (i = 0; i < myArrayFile.length; i++){
@@ -366,33 +388,32 @@
                     var files = !!myArrayFile[i].files ? myArrayFile[i].files : [];
                     if (!files.length || !window.FileReader){
                         send=false;
-                        console.log("Pb in files")
                         return; // no file selected, or no FileReader support
                     }
-
-                    if (/^image/.test( files[0].type) && !send){ // only image file
+                    if (/^image/.test( files[0].type)){ // only image file
                         var reader = new FileReader(); // instance of the FileReader
-
                         reader.onload = function(event) {
                             // I usually remove the prefix to only keep data, but it depends on your server
                             var data = event.target.result.replace("data:"+ files[0].type +";base64,", '');
-                            objMap.set("image_"+i, data);
+                            objMap.set("image_"+objMap.size, data);
                         };
                         reader.readAsDataURL(files[0]);
                     }
                 }
                 answers.pictures=objMap;
+                console.log(answers);
 
                 if(send){
                     //Validation
                     $("#validation").modal();
                 }
+                
             });
 
 
             document.getElementById("deposer").addEventListener("click", function(){
-                console.log("glou");
-                $.ajax({
+                console.log(answers);
+                /*$.ajax({
                     type: 'POST',
                     url: 'url',
                     data: answers,
@@ -403,7 +424,7 @@
                     error: function(){
                         $("#erreur").modal();
                     }
-                });
+                });*/
             });
         });	
         </script>
