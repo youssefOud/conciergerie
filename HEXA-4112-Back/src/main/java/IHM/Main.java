@@ -29,13 +29,12 @@ public class Main {
   
         Person person = new Person("fifi","12345","+12345","fifi@gmail.com",5,"fifi",4.5,"/url/img.png","Residence A");
                 
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Offer offer = new Offer(person, "Bricolage", "marteau",  formatDate.parse("10/05/2019"), formatTime.parse("19:00")
-                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", 2);
-        Demand demand = new Demand(person, "Electromenager", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
-                ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", 2);
+        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("10/05/2019 19:00")
+                ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
+        Demand demand = new Demand(person, "Bricolage", "010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
+                ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         
         System.out.println(s.createPerson(person));
         System.out.println(s.createDemand(demand));

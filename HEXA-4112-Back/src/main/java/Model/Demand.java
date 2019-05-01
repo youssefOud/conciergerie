@@ -13,11 +13,10 @@ public class Demand extends Service {
         
     }
     
-    public Demand(Person personDemanding, String category, String nameObject, Date availabilityDate, Date availabilityTime,
-            String localisation, String type, double nbPointMax, String description, String unit, int duration) {
+    public Demand(Person personDemanding, String category, String picture, String nameObject, Date availabilityDate,
+            String localisation, String type, double nbPointMax, String description, String priceUnit, String durationUnit, int duration) {
         // TODO A implementer
-        super(null, personDemanding, category, nameObject, availabilityDate,
-                availabilityTime, localisation, type, description, unit, duration);
+        super(null, personDemanding, category, picture, nameObject, availabilityDate, localisation, type, description, priceUnit, durationUnit, duration);
         this.nbPointMax = nbPointMax;
     }
     

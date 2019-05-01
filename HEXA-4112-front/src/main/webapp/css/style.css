@@ -1,0 +1,17 @@
+.container{
+	margin-top : 2%;
+	margin-bottom : 2%;
+}
+
+.center{
+	text-align:center;
+	margin:auto;
+}
+
+.select{
+	box-sizing: content-box;
+    height: 1.25rem;
+    width : auto;
+}
+
+

@@ -28,7 +28,7 @@ public class ServiceDAO {
         em.remove(service);
     }
     
-    public List<Service> findAllServicesWithFilter(String category, String location, Date date, Long duration, String nbPts, String type) {
+    public List<Service> findAllServicesWithFilter(String category, String location, Date startingDate, Date endingDate, String nbPts, String type) {
         EntityManager em = JpaUtil.getEntityManager();
         String request = "select s from Service s where ";
         boolean isFirstCriteria = true;
