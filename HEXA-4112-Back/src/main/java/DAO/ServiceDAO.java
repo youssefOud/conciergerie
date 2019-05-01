@@ -1,5 +1,7 @@
 package DAO;
 
+import Model.Demand;
+import Model.Offer;
 import javax.persistence.EntityManager;
 
 import Model.Service;
@@ -25,40 +27,52 @@ public class ServiceDAO {
         EntityManager em = JpaUtil.getEntityManager();
         em.remove(service);
     }
-    /*
-    public void findAllServicesWithFilter(String category, String localisation, Date date, String duration, String units, String nbPts, String type) {
+    
+    public List<Service> findAllServicesWithFilter(String category, String location, Date date, Long duration, String nbPts, String type) {
         EntityManager em = JpaUtil.getEntityManager();
         String request = "select s from Service s where ";
         boolean isFirstCriteria = true;
         if (!category.isEmpty()) {
             request += "s.category = :category ";
             isFirstCriteria = false;
-        } 
-        if (!localisation.isEmpty()) {
-            if (!isFirstCriteria) request += "and "; 
-            request += "s.localisation = :localisation ";
+        }
+        if (!location.isEmpty()) {
+            if (!isFirstCriteria) request += "and ";
+            request += "s.location = :location ";
             isFirstCriteria = false;
         }
-        if (!duration.isEmpty()) {
-            if (!isFirstCriteria) request += "and ";
-            request += "s.duration <= :duration ";
-            isFirstCriteria = false;
-        } 
-        if (!units.isEmpty()) {
-            if (!isFirstCriteria) request += "and ";
-            request += "s.units = :units ";
-            isFirstCriteria = false;
-        } 
-        
-        Query query = em.createQuery("select v from Voyance v where v.employe = :employe");
-        query.setParameter("employe", employe);
-        try {
-            return (List<Voyance>) query.getResultList();
-         }catch(Exception e){
-             System.out.println("Aucune voyance touvée pour ce client");
-            return null;
-        }
+//        if () {
+//            if (!isFirstCriteria) request += "and ";
+//            request += "s.location = :location ";
+//            isFirstCriteria = false;
+//        }
+//        if (!duration.isEmpty()) {
+//            if (!isFirstCriteria) request += "and ";
+//            request += "s.duration <= :duration ";
+//            isFirstCriteria = false;
+//        }
+if (!type.isEmpty()) {
+    if (!isFirstCriteria) request += "and ";
+    request += "type(s) = :class";
+    isFirstCriteria = false;
+}
+
+Query query = em.createQuery(request);
+if (!category.isEmpty()) {
+    query.setParameter("category", category);
+}
+if (!location.isEmpty()) {
+    query.setParameter("location", location);
+}
+
+if (!type.isEmpty()) {
+    if (type.equals("Demand")) query.setParameter("class", Demand.class);
+    else if (type.equals("Offer")) query.setParameter("class", Offer.class);
+}
+List<Service> filteredServices = (List<Service>)query.getResultList();
+
+return filteredServices;
     }
-    */
+    
     
 }

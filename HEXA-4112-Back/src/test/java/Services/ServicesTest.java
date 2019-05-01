@@ -10,6 +10,7 @@ import DAO.PersonDAO;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -184,19 +185,33 @@ public class ServicesTest {
      * Test of findAllDemandsWithFilter method, of class Services.
      */
     
-    /*
+   
     @org.junit.Test
-    public void testFindAllDemandsWithFilter() {
-        System.out.println("findAllDemandsWithFilter");
+    public void testFindAllServicesWithFilterOK() {
+        System.out.println("findAllServicesWithFilter");
         Services instance = new Services();
-        List<Demand> expResult = new ArrayList<Demand>();
-        List<Demand> result = instance.findAllServicesWithFilter();
-        assertEquals(expResult, result);
+        List<Service> expResult = new ArrayList<Service>();
+        Service s = instance.getServiceById(1L);
+                
+        //List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence A", "", "", "", "2", "Offer");
+      
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to //fail.
-        //fail("The test case is a prototype.");
     }
-    */
     
+     @org.junit.Test
+    public void testFindAllServicesWithFilterFail() {
+        System.out.println("findAllServicesWithFilter");
+        Services instance = new Services();
+        List<Service> expResult = new ArrayList<Service>();
+        Service s = instance.getServiceById(1L);
+                
+       // List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "", "2", "Offer");
+       // assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to //fail.
+
+    }
+      
     
     /**
      * Test of findAllOffers method, of class Services.

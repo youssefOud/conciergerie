@@ -9,9 +9,11 @@ import DAO.JpaUtil;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Service;
 import Services.Services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  *
@@ -31,14 +33,24 @@ public class Main {
         SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
         
         Offer offer = new Offer(person, "Bricolage", "marteau",  formatDate.parse("10/05/2019"), formatTime.parse("19:00")
-                ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures", 2);
-        Demand demand = new Demand(person, "Bricolage", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
-                ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", 2);
+                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", 2);
+        Demand demand = new Demand(person, "Electromenager", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
+                ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", 2);
         
         System.out.println(s.createPerson(person));
         System.out.println(s.createDemand(demand));
         System.out.println(s.createOffer(offer));
     
+        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence A", "", "", "", "2", "Offer");
+        
+        
+        //for (Service s : filteredServices) {
+        //    System.out.println("serv: " + s.toString());
+        //}
+        System.out.println();
+        
+        
+        
         JpaUtil.destroy();
         
         
