@@ -10,6 +10,9 @@ import Model.Demand;
 import Model.Offer;
 import Model.Person;
 import Services.Services;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,6 +21,16 @@ public class ActionCreation extends Action {
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
         
+        /*Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject(request.getParameter("pictures"));
+        Iterator it = jo.keys(); //gets all the keys
+
+        while(it.hasNext())
+        {
+            String key = it.next(); // get key
+            Object o = jObj.get(key); // get value
+            System.out.println(key + " : " +  o); // print the key and value
+        }*/
         // On recupere le parametre du bouton radio pour savoir
         // si c'est une demande ou une offre
         String typeService = request.getParameter("type");
@@ -25,6 +38,7 @@ public class ActionCreation extends Action {
         String category = request.getParameter("category");
         String nameObject = request.getParameter("objet");
         String description = request.getParameter("description");
+        String picture = request.getParameter("pictures");
         
         String date = request.getParameter("date");
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");  
@@ -57,10 +71,10 @@ public class ActionCreation extends Action {
         // TODO : A modifier quand on connait la valeur du type (demander au front)
         boolean created = false;
         if (typeService == "demande") {
-            Demand demand = new Demand(person, category, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+            Demand demand = new Demand(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
         } else if (typeService == "offre") {
-            Offer offer = new Offer(person, category, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+            Offer offer = new Offer(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createOffer(offer);
         }
         
