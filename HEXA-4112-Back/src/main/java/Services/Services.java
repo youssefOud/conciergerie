@@ -134,8 +134,10 @@ public class Services {
         }  else if (units.equals("minutes")) {
             durationInMillis *= 60*1000;
         }
+        
+        Date endingDate = formatTime.parse( formatTime.format(startingDate.getTime() + durationInMillis) );
                       
-        List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, durationInMillis, nbPts, type);
+        List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, endingDate, nbPts, type);
         
         JpaUtil.closeEntityManager();
         return listServices;
