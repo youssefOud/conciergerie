@@ -10,6 +10,9 @@ import DAO.PersonDAO;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.RollbackException;
 import org.junit.After;
@@ -83,12 +86,14 @@ public class ServicesTest {
      * Test of createDemand method, of class Services.
      */
     @org.junit.Test
-    public void testCreateDemandOK() {
+    public void testCreateDemandOK() throws ParseException {
         System.out.println("createDemandOK");
         Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com", "5",
         "fifi", 4.5, "img.png", "Lyon");
+          SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy"); 
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");  
         
-        Demand demand = new Demand(person, "Bricolage", "marteau", "12/05/2019", "19:00"
+        Demand demand = new Demand(person, "Bricolage", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
                 ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", 2);
         Services instance = new Services();
         boolean expResult = true;
@@ -102,14 +107,18 @@ public class ServicesTest {
      * Test of createDemand method, of class Services.
      */
     @org.junit.Test
-    public void testCreateDemandFail() {
+    public void testCreateDemandFail() throws ParseException {
         System.out.println("createDemandFail");
         
         Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com", "5",
         "fifi", 4.5, "img.png", "Lyon");
         
-        Demand demand = new Demand(person, "Bricolage", "marteau", "", "19:00"
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy"); 
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");  
+         
+        Demand demand = new Demand(person, "Bricolage", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
                 ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", 2);
+                
         Services instance = new Services();
         boolean expResult = false;
         boolean result = instance.createDemand(person, demand);
@@ -120,12 +129,15 @@ public class ServicesTest {
      * Test of createOffer method, of class Services.
      */
     @org.junit.Test
-    public void testCreateOfferOK() {
+    public void testCreateOfferOK() throws ParseException {
         System.out.println("createOfferOK");
         Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com", "5",
         "fifi", 4.5, "img.png", "Lyon");
         
-        Offer offer = new Offer(person, "Bricolage", "marteau", "12/05/2019", "19:00"
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy"); 
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm"); 
+        
+        Offer offer = new Offer(person, "Bricolage", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
                 ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures", 2);
         Services instance = new Services();
         boolean expResult = true;
@@ -137,11 +149,15 @@ public class ServicesTest {
      * Test of createOffer method, of class Services.
      */
     @org.junit.Test
-    public void testCreateOfferFail() {
+    public void testCreateOfferFail() throws ParseException {
         System.out.println("createOfferFail");
         Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com", "5",
         "fifi", 4.5, "img.png", "Lyon");
-        Offer offer = new Offer(person, "Bricolage", "marteau", "", "19:00"
+        
+          SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy"); 
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");  
+        
+        Offer offer = new Offer(person, "Bricolage", "marteau",  formatDate.parse(""), formatTime.parse("19:00")
                 ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures", 2);
         
         Services instance = new Services();

@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 @Inheritance (strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 public class Service{
-    
+       
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
