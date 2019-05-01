@@ -1,30 +1,30 @@
 package Model;
 
+import java.util.Date;
 import javax.persistence.Entity;
 
 @Entity
 public class Demand extends Service {
-
-	// TODO : Verifier float ou pas
-	private int nbPointMax;
-	
-	public Demand() {
-		
-	}
-	
-	public Demand(User userOffering, User userDemanding, String category, String nameObject, String availabilityDate, String availabilityTime,
-			String localisation, String type) {
-		// TODO A implementer
-		super(userOffering, userDemanding, category, nameObject, availabilityDate, 
-				availabilityTime, localisation, type);
-		nbPointMax = nbPointMax;
-	}
-
-	public int getNbPointMax() {
-		return nbPointMax;
-	}
-
-	public void setNbPointMax(int nbPointMax) {
-		this.nbPointMax = nbPointMax;
-	}
+    
+    // TODO : Verifier float ou pas
+    private double nbPointMax;
+    
+    public Demand() {
+        
+    }
+    
+    public Demand(Person personDemanding, String category, String picture, String nameObject, Date availabilityDate,
+            String localisation, String type, double nbPointMax, String description, String priceUnit, String durationUnit, int duration) {
+        // TODO A implementer
+        super(null, personDemanding, category, picture, nameObject, availabilityDate, localisation, type, description, priceUnit, durationUnit, duration);
+        this.nbPointMax = nbPointMax;
+    }
+    
+    public double getNbPointMax() {
+        return nbPointMax;
+    }
+    
+    public void setNbPointMax(double nbPointMax) {
+        this.nbPointMax = nbPointMax;
+    }
 }
