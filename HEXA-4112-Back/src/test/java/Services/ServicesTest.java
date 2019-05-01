@@ -116,7 +116,7 @@ public class ServicesTest {
         
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Demand demand = new Demand(person, "Bricolage","010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
+        Demand demand = new Demand(person, "Bricolage","010010100110", "marteau", formatDate.parse("09/05/2019 20:00")
                 ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         
         Services instance = new Services();
@@ -143,7 +143,7 @@ public class ServicesTest {
 //        
 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
+        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau", formatDate.parse("09/05/2019 20:00")
                 ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures","heures", 2);
         
 
@@ -163,7 +163,7 @@ public class ServicesTest {
         
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("12/05/2013 19:00")
+        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau", formatDate.parse("09/05/2019 20:00")
                 ,"Résidence M", "prêt", 2, "Propose un marteau classique","heures", "heures", 2);
         
         boolean expResult = true;
@@ -194,12 +194,21 @@ public class ServicesTest {
     public void testFindAllServicesWithFilterOK() throws ParseException {
         System.out.println("findAllServicesWithFilter");
         Services instance = new Services();
+        
+//        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//        Person person = instance.getPersonById(1L);
+//        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("10/04/2019 19:00")
+//                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
+//        Offer offer2 = new Offer(person, "Bricolage", "010010100110", "four",  formatDate.parse("10/04/2019 19:00")
+//                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
+        
         List<Service> expResult = new ArrayList<Service>();
-        Service s = instance.getServiceById(3L);
-                
-        List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "","","" ,"Offer");;
+        Service s = instance.getServiceById(2L);
+        expResult.add(s);
+         
+        List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "","","" ,"Offer");
         System.out.println("list : " + result.size());
-        assertEquals(expResult, result.get(0));
+        assertEquals(s, result.get(0));
         // TODO review the generated test code and remove the default call to //fail.
     }
     

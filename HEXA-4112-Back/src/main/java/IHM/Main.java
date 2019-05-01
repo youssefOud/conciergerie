@@ -31,21 +31,23 @@ public class Main {
                 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("10/05/2019 19:00")
+        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("10/04/2019 19:00")
                 ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
         Demand demand = new Demand(person, "Bricolage", "010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
+        Offer offer2 = new Offer(person, "Bricolage", "010010100110", "four",  formatDate.parse("10/04/2019 19:00")
+                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
         
         System.out.println(s.createPerson(person));
         System.out.println(s.createDemand(demand));
+        System.out.println(s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
     
-        List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+        List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "","","" ,"Offer");
         
         System.out.println();
-        
-        
-        
+
         JpaUtil.destroy();
         
         

@@ -144,7 +144,7 @@ public class Services {
         
         
         Date endingDate = formatTime.parse( formatTime.format(startingDate.getTime() + durationInMillis) );
-                      
+              
         List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, endingDate, nbPts, serviceType);
         
         JpaUtil.closeEntityManager();

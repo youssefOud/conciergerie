@@ -34,6 +34,73 @@ public abstract class Service implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     protected Date endOfAvailabilityDate;
     
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date publicationDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getEndOfAvailabilityDate() {
+        return endOfAvailabilityDate;
+    }
+
+    public void setEndOfAvailabilityDate(Date endOfAvailabilityDate) {
+        this.endOfAvailabilityDate = endOfAvailabilityDate;
+    }
+
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getPriceUnit() {
+        return priceUnit;
+    }
+
+    public void setPriceUnit(String priceUnit) {
+        this.priceUnit = priceUnit;
+    }
+
+    public String getDurationUnit() {
+        return durationUnit;
+    }
+
+    public void setDurationUnit(String durationUnit) {
+        this.durationUnit = durationUnit;
+    }
+    
     protected String location;
     
     protected String type;
@@ -53,7 +120,7 @@ public abstract class Service implements Serializable{
     }
 
     public Service(Person personOffering, Person personDemanding, String category, String picture, String nameObject, Date availabilityDate,
-            String localisation, String type,String description, String priceUnit, String durationUnit, int duration) {
+            String localisation, String type, String description, String priceUnit, String durationUnit, int duration) {
 
         this.personOffering = personOffering;
         this.personDemanding = personDemanding;
@@ -67,6 +134,7 @@ public abstract class Service implements Serializable{
         this.priceUnit = priceUnit;
         this.durationUnit = durationUnit;
         this.duration = duration;
+        this.publicationDate = new Date();
         
         Long durationInMillis = Long.valueOf(duration);
         if (durationUnit.equals("jours")) {
