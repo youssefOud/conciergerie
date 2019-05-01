@@ -20,7 +20,7 @@ public class Demand extends Service {
         this.nbPointMax = nbPointMax;
     }
     
-    public double getNbPointMax() {
+    public double getNbPoint() {
         return nbPointMax;
     }
     

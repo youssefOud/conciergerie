@@ -31,6 +31,9 @@ public abstract class Service implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     protected Date availabilityDate;
     
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date endOfAvailabilityDate;
+    
     protected String location;
     
     protected String type;
@@ -64,6 +67,17 @@ public abstract class Service implements Serializable{
         this.priceUnit = priceUnit;
         this.durationUnit = durationUnit;
         this.duration = duration;
+        
+        Long durationInMillis = Long.valueOf(duration);
+        if (durationUnit.equals("jours")) {
+            durationInMillis *= 24*60*60*1000;
+        } else if (durationUnit.equals("heures")) {
+            durationInMillis *= 60*60*1000;
+        }  else if (durationUnit.equals("minutes")) {
+            durationInMillis *= 60*1000;
+        }
+        
+        endOfAvailabilityDate = new Date(availabilityDate.getTime() + durationInMillis);
     }
     
     public Person getPersonOffering() {
@@ -129,4 +143,5 @@ public abstract class Service implements Serializable{
         return serviceString;
     }
     
+    public abstract double getNbPoint();
 }

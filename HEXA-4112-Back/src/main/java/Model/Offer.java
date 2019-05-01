@@ -19,7 +19,7 @@ public class Offer extends Service{
         this.nbPointMin = nbPointMin;
     }
     
-    public double getNbPointMin() {
+    public double getNbPoint() {
         return nbPointMin;
     }
     
