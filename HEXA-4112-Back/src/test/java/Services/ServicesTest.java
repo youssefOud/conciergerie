@@ -133,15 +133,15 @@ public class ServicesTest {
     @org.junit.Test
     public void testCreateOfferOK() throws ParseException {
         System.out.println("createOfferOK");
-        Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com", 5,
-                "fifi", 4.5, "img.png", "Residence A");
+        Services instance = new Services();
+        Person person  = instance.getPersonById(1L);
         
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
         
         Offer offer = new Offer(person, "Bricolage", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
                 ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures", 2);
-        Services instance = new Services();
+        
         boolean expResult = true;
         boolean result = instance.createOffer(offer);
         assertEquals(expResult, result);
@@ -187,27 +187,32 @@ public class ServicesTest {
     
    
     @org.junit.Test
-    public void testFindAllServicesWithFilterOK() {
+    public void testFindAllServicesWithFilterOK() throws ParseException {
         System.out.println("findAllServicesWithFilter");
         Services instance = new Services();
         List<Service> expResult = new ArrayList<Service>();
-        Service s = instance.getServiceById(1L);
+        Service s = instance.getServiceById(3L);
                 
-        //List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence A", "", "", "", "2", "Offer");
-      
-        //assertEquals(expResult, result);
+        List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "","","" ,"Offer");;
+        System.out.println("list : " + result.size());
+        assertEquals(expResult, result.get(0));
         // TODO review the generated test code and remove the default call to //fail.
     }
     
      @org.junit.Test
-    public void testFindAllServicesWithFilterFail() {
+    public void testFindAllServicesWithFilterFail() throws ParseException {
         System.out.println("findAllServicesWithFilter");
         Services instance = new Services();
         List<Service> expResult = new ArrayList<Service>();
-        Service s = instance.getServiceById(1L);
+        Service s = instance.getServiceById(3L);
+        System.out.println("serv" + s.toString());
                 
-       // List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "", "2", "Offer");
-       // assertEquals(expResult, result);
+        List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "5","minutes","2" ,"Offer");
+       
+         System.out.println("list : " + result.size());
+        System.out.println("serv" + result.get(0).toString());
+        assertEquals(expResult, result.get(0));
+        
         // TODO review the generated test code and remove the default call to //fail.
 
     }

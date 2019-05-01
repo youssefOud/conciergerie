@@ -126,13 +126,16 @@ public class Services {
             startingDate = formatTime.parse(formatDate.format(today) + " " + time) ;
         } 
         
-        Long durationInMillis = Long.valueOf(duration);
-        if (units.equals("jours")) {
-            durationInMillis *= 24*60*60*1000;
-        } else if (units.equals("heures")) {
-            durationInMillis *= 60*60*1000;
-        }  else if (units.equals("minutes")) {
-            durationInMillis *= 60*1000;
+        Long durationInMillis = 0L;
+        if (!duration.isEmpty()) {
+            durationInMillis = Long.valueOf(duration);
+            if (units.equals("jours")) {
+                durationInMillis *= 24*60*60*1000;
+            } else if (units.equals("heures")) {
+                durationInMillis *= 60*60*1000;
+            }  else if (units.equals("minutes")) {
+                durationInMillis *= 60*1000;
+            }
         }
                       
         List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, durationInMillis, nbPts, type);
@@ -192,4 +195,5 @@ public class Services {
         JpaUtil.closeEntityManager();
         return service;
     }
+
 }
