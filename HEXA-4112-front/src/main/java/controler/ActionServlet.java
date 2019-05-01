@@ -5,19 +5,18 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import DAO.JpaUtil;
+import actions.ActionCreation;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import DAO.JpaUtil;
-import actions.ActionCreation;
+import vue.SerialisationJSON;
 
 /**
  * Servlet implementation class ActionServlet
  */
-
 
 @WebServlet(name="ActionServlet", urlPatterns = {"/ActionServlet"})
 public class ActionServlet extends HttpServlet {
@@ -27,11 +26,12 @@ public class ActionServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Récupérer le paramètre si besoin
-        // qui nous dira quoi faire
-        String todo = request.getParameter("aModifierNomDuParametre");
         
-        if (todo == "creerService") {
+        String todo = request.getParameter("todo");
+        
+        SerialisationJSON serialisationJSON = new SerialisationJSON();
+        
+        if ("deposerAnnonce".equals(todo)) {
             ActionCreation ac = new ActionCreation();
             
             try {
@@ -39,6 +39,10 @@ public class ActionServlet extends HttpServlet {
             } catch (ParseException ex) {
                 Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            boolean created = (boolean) request.getAttribute("created");
+            
+            serialisationJSON.executeDeposerAnnonce(request, response);
         }
     }
     
@@ -67,7 +71,6 @@ public class ActionServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         doGet(request, response);
     }
     
