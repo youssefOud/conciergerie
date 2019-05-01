@@ -32,7 +32,7 @@
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href="#">
+			<a class="navbar-brand" href="filActu.html">
                             <img src="images/logo.png" alt="Campus Exchange">
                         </a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -43,12 +43,11 @@
 
 			<div class="collapse navbar-collapse" id="navbarColor02">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link" href="#">D&eacute;poser
+					<li class="nav-item active"><a class="nav-link" href="deposerAnnonce.html">D&eacute;poser
 							une annonce <span class="sr-only">(current)</span>
 					</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Offres</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Demandes</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Recherche</a></li>
+					<li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
+					<li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav ml-auto">
@@ -58,8 +57,8 @@
 							Agathe</a>
 						<div class="dropdown-menu" x-placement="bottom-start"
 							style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
-							<a class="dropdown-item" href="#">Pr&eacute;f&eacute;rences</a> <a
-								class="dropdown-item" href="#">Contact support</a> <a
+							<a class="dropdown-item" href="parametres.html">Paramètres</a> <a
+								class="dropdown-item" href="contact.html">Contact support</a> <a
 								class="dropdown-item" href="#">Déconnexion</a>
 						</div></li>
 				</ul>
@@ -128,7 +127,7 @@
 				<!-- Durée de dispo-->
 				<div class="form-group">
 					<label for="objet">Dur&eacute;e de disponibilit&eacute;</label> <input
-						type="number" class="form-control" id="duree"
+						type="number" min="0" class="form-control" id="duree"
 						placeholder="Renseignez la dur&eacute;e de disponibilit&eacute; de l'objet">
 				</div>
 
@@ -165,15 +164,34 @@
 						<option>R&eacute;sidence H</option>
 						<option>R&eacute;sidence I</option>
 						<option>R&eacute;sidence J</option>
+                                                <option>R&eacute;sidence M</option>
 						<option>Autre</option>
 					</select>
 				</div>
 
 				<!-- Nombre de points-->
 				<div class="form-group">
-					<label for="nbPts">Nombre de points par unité</label> <input type="number"
-						class="form-control" id="nbPts"
-						placeholder="Renseignez le nombre de points par unité associ&eacute;e à l'annonce">
+					<label for="nbPts">Nombre de points </label> <input type="number"
+						class="form-control" id="nbPts" min="0"
+						placeholder="Renseignez le nombre de points par">
+                                        
+                                </div>
+                                <div class="form-group ">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" class="custom-control-input"
+                                                            id="minutesPrix" name="unitePrix" checked="">
+                                                    <label class="custom-control-label" for="minutesPrix">Minutes</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" class="custom-control-input"
+                                                            id="heuresPrix" name="unitePrix">
+                                                    <label class="custom-control-label" for="heuresPrix">Heures</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" class="custom-control-input"
+                                                            id="joursPrix" name="unitePrix"> <label
+                                                            class="custom-control-label" for="joursPrix">Jours</label>
+                                            </div>
 				</div>
 
 				<!-- Validation -->
@@ -226,118 +244,130 @@
 				  </div>
 				</div>
 
-			</form>
+                            </form>
 
 		</div>
 
 		<script>
 
-                    $(document).ready(function() {
+                        $(document).ready(function() {
 
-                <!-- Mise en place des dates-->
-                        $('#date').datepicker({
-                            format : "dd/mm/yyyy",
+                        
+                            $('#date').datepicker({
+                    format : "dd/mm/yyyy",
                             locale : "fr",
                             autoclose : true,
                             todayHighlight : true,
-                        pick12HourFormat : true
-                    });
-
-                        <!-- Mise en place des heures -->
+                            pick12HourFormat : true
+                        });
+                        
+                        
                 $('#time').clockpicker({
                             autoclose : true,
                             donetext : 'Done'
                 });
-
+                
+                
                 document.getElementById("valider").addEventListener("click", function(){
-                            var send = true;
-                    var answers = new Object();
-                    //Type
-                    answers.type = "demande";
-                    if ($('#offre').is(':checked')){
-                    answers.type = "offre";
-                                }
-                                //Catégorie
+
+                    
+                                        var send = true;
+                                var answers = new Object();
+                                        answers.todo = "deposerAnnonce";
+                                                //Type
+                                                        answers.type = "demande";
+                                                if ($('#offre').is(':checked')) {
+                                                                                                answers.type = "offre";
+                                                        }
+                                        //Catégorie
                                 answers.categorie=document.getElementById('categories').value;
-                        //Nom objet
-                        if(document.getElementById("objet").value != ""){
-                            answers.objet = document.getElementById("objet").value;
-                    document.getElementById("objet").classList.remove("is-invalid");
+                                                //Nom objet
+                                                if(document.getElementById("objet").value != ""){
+                                                                                                answers.objet = document.getElementById("objet").value;
+                                                                                                document.getElementById("objet").classList.remove("is-invalid");
                                         }
                                         else{
-                            send = false;
-                    document.getElementById("objet").classList.add("is-invalid");
-                                        }
-                                        //Description
-                                                answers.description=document.getElementById("description").value;
+                                                                                                        send = false;
+                                                                                                document.getElementById("objet").classList.add("is-invalid");
+                                                }
+                                //Description
+                                answers.description=document.getElementById("description").value;
                                                 //Date
-                                                if(document.getElementById("date").value != ""){
-                            answers.date = document.getElementById("date").value;
-                    document.getElementById("date").classList.remove("is-invalid");
-                                                                }
-                                                                else{
-                            send = false;
-                    document.getElementById("date").classList.add("is-invalid");
-                                        }
+                                                       if(document.getElementById("date").value != ""){
+                                                                                                answers.date = document.getElementById("date").value;
+                                                                                                document.getElementById("date").classList.remove("is-invalid");
+                                                }
+                        else{
+                                                                                                        send = false;
+                                                                                                document.getElementById("date").classList.add("is-invalid");
+                                                }
                                         if(document.getElementById("time").value != ""){
-                            answers.time = document.getElementById("time").value;
-                    document.getElementById("time").classList.remove("is-invalid");
-                                        }
+                                                                                                answers.time = document.getElementById("time").value;
+                                                                                                document.getElementById("time").classList.remove("is-invalid");
+                                                        }
                                         else{
-                            send = false;
-                    document.getElementById("time").classList.add("is-invalid");
-                                }
-                                //Durée
-                                        if(document.getElementById("duree").value != ""){
-                            answers.duree = document.getElementById("duree").value;
-                    document.getElementById("duree").classList.remove("is-invalid");
+                                                                                                        send = false;
+                                                                                                document.getElementById("time").classList.add("is-invalid");
+                                                }
+                                                //Durée
+                                                if(document.getElementById("duree").value != ""){
+                                                                                                answers.duree = document.getElementById("duree").value;
+                                                                                                document.getElementById("duree").classList.remove("is-invalid");
                                                 }
                                                 else{
-                            send = false;
-                    document.getElementById("duree").classList.add("is-invalid");
-                                }
-                                //Unité
-                                        answers.unite="heures";
-                                                if($('#jours').is(':checked')){
-                            answers.unite = "jours";
-                                }
-                                                if($('#minutes').is(':checked')){
-                            answers.unite = "minutes";
-                                }
-                                        //Localisation
-                                                answers.localisation=document.getElementById('localisations').value;
-                                if(document.getElementById("nbPts").value != ""){
-                            answers.nbPts = document.getElementById("nbPts").value;
-                    document.getElementById("nbPts").classList.remove("is-invalid");
-                                                }
-else{
-                            send = false;
-                    document.getElementById("nbPts").classList.add("is-invalid");
-                                                }
-
-            if(send){
-                            //Validation
-                            $("#validation").modal();
-            }
-            });
-
-
-            document.getElementById("deposer").addEventListener("click", function(){
-                            console.log("glou");
-                    $.ajax({
+                                                                                                        send = false;
+                                                                                                document.getElementById("duree").classList.add("is-invalid");
+                                                            }
+                                                    //Unité durée
+                                                    answers.uniteDuree="heures";
+                                            if($('#jours').is(':checked')){
+                                                                                                answers.uniteDuree = "jours";
+                                                    }
+                                                            else if($('#minutes').is(':checked')){
+                                                                                                answers.uniteDuree = "minutes";
+                                            }
+                                            //Localisation
+                                            answers.localisation=document.getElementById('localisations').value;
+                                                    if(document.getElementById("nbPts").value != ""){
+                                                                                                answers.nbPts = document.getElementById("nbPts").value;
+                                                                                                document.getElementById("nbPts").classList.remove("is-invalid");
+                                        }
+                                        else{
+                                                                                                        send = false;
+                                                                                                document.getElementById("nbPts").classList.add("is-invalid");
+                                        }
+                                            //Unité prix
+                                                    answers.unitePrix="heures";
+                                            if($('#joursPrix').is(':checked')){
+                                                                                                answers.unitePrix = "jours";
+                                                    }
+                                                            else if($('#minutesPrix').is(':checked')){
+                                                                                                answers.unitePrix = "minutes";
+                                            }
+                                
+                                      if(send){
+                                                                                                //Validation
+                                                                                                $("#validation").modal();
+                                                                                                        document.getElementById("deposer").addEventListener("click", function(){
+            $.ajax({
                     type: 'POST',
                             url: 'url',
-       data: answers,
-			            timeout: 3000,
-			            success: function(data){
-			              $('#zone').html(data);
+                            data: answers,
+                            timeout: 3000,
+                            success: function(data){
+                              $('#zone').html(data);
             },
             error: function(){
 			            	$("#erreur").modal();
 			            }
 			          });
 				});
-			});
+			}
+            });
+            });
+
+
+            
 			
 			
 			
