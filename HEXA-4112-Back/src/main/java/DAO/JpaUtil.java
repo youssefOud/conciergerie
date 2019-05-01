@@ -14,7 +14,7 @@ import javax.persistence.RollbackException;
  * @author DASI Team
  */
 public class JpaUtil {
-
+    
     // *************************************************************************************
     // * TODO: IMPORTANT -- Adapter le nom de l'Unité de Persistance (cf. persistence.xml) *
     // *************************************************************************************
@@ -37,13 +37,13 @@ public class JpaUtil {
      * Thread.
      */
     private static final ThreadLocal<EntityManager> threadLocalEntityManager = new ThreadLocal<EntityManager>() {
-
+        
         @Override
         protected EntityManager initialValue() {
             return null;
         }
     };
-
+    
     // Méthode pour avoir des messages de Log dans le bon ordre (pause)
     private static void pause(long milliseconds) {
         try {
@@ -52,7 +52,7 @@ public class JpaUtil {
             ex.hashCode();
         }
     }
-
+    
     // Méthode pour avoir des messages de Log dans le bon ordre (log)
     private static void log(String message) {
         System.out.flush();
@@ -61,7 +61,7 @@ public class JpaUtil {
         System.err.flush();
         pause(5);
     }
-
+    
     /**
      * Initialise la Factory de Entity Manager.
      * <br><strong>À utiliser uniquement au début de la méthode main() [projet
@@ -75,7 +75,7 @@ public class JpaUtil {
         }
         entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
     }
-
+    
     /**
      * Libère la Factory de Entity Manager.
      * <br><strong>À utiliser uniquement à la fin de la méthode main() [projet
@@ -89,7 +89,7 @@ public class JpaUtil {
             entityManagerFactory = null;
         }
     }
-
+    
     /**
      * Créée l'instance courante de Entity Manager (liée à ce Thread).
      * <br><strong>À utiliser uniquement au niveau Service.</strong>
@@ -98,7 +98,7 @@ public class JpaUtil {
         log("Création du contexte de persistance");
         threadLocalEntityManager.set(entityManagerFactory.createEntityManager());
     }
-
+    
     /**
      * Ferme l'instance courante de Entity Manager (liée à ce Thread).
      * <br><strong>À utiliser uniquement au niveau Service.</strong>
@@ -109,7 +109,7 @@ public class JpaUtil {
         em.close();
         threadLocalEntityManager.set(null);
     }
-
+    
     /**
      * Démarre une transaction sur l'instance courante de Entity Manager.
      * <br><strong>À utiliser uniquement au niveau Service.</strong>
@@ -124,7 +124,7 @@ public class JpaUtil {
             throw ex;
         }
     }
-
+    
     /**
      * Valide la transaction courante sur l'instance courante de Entity Manager.
      * <br><strong>À utiliser uniquement au niveau Service.</strong>
@@ -141,7 +141,7 @@ public class JpaUtil {
             throw ex;
         }
     }
-
+    
     /**
      * Annule la transaction courante sur l'instance courante de Entity Manager.
      * Si la transaction courante n'est pas démarrée, cette méthode n'effectue
@@ -151,19 +151,19 @@ public class JpaUtil {
     public static void cancelTransaction() {
         try {
             log("Annulation de la transaction (rollback)");
-
+            
             EntityManager em = threadLocalEntityManager.get();
             if (em.getTransaction().isActive()) {
                 log("Annulation effective de la transaction (rollback d'une transaction active)");
                 em.getTransaction().rollback();
             }
-
+            
         } catch (Exception ex) {
             log("Erreur lors de l'annulation (rollback) de la transaction");
             throw ex;
         }
     }
-
+    
     /**
      * Retourne l'instance courante de Entity Manager.
      * <br><strong>À utiliser uniquement au niveau DAO.</strong>

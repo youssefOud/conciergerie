@@ -1,66 +1,85 @@
 package Model;
 
+import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-@Inheritance (strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
-public class Service{
+@Inheritance (strategy = InheritanceType.JOINED)
+public abstract class Service implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
-    
-    protected User userOffering;
-    
-    protected User userDemanding;
+
+    protected Person personOffering;
+
+    protected Person personDemanding;
     
     protected String category;
     
     protected String nameObject;
     
-    protected String availabilityDate;
-    
-    protected String availabilityTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date availabilityDate;
     
     protected String localisation;
     
     protected String type;
+
+    protected String description;
+    
+    protected int duration;
+    
+    protected String picture;
+    
+    protected String priceUnit;
+    
+    protected String durationUnit;
     
     public Service() {
         
     }
-    
-    public Service(User userOffering, User userDemanding, String category, String nameObject, String availabilityDate,
-            String availabilityTime, String localisation, String type) {
-        this.userOffering = userOffering;
-        this.userDemanding = userDemanding;
+
+    public Service(Person personOffering, Person personDemanding, String category, String picture, String nameObject, Date availabilityDate,
+            String localisation, String type,String description, String priceUnit, String durationUnit, int duration) {
+
+        this.personOffering = personOffering;
+        this.personDemanding = personDemanding;
         this.category = category;
+        this.picture = picture;
         this.nameObject = nameObject;
         this.availabilityDate = availabilityDate;
-        this.availabilityTime = availabilityTime;
         this.localisation = localisation;
         this.type = type;
+        this.description = description;
+        this.priceUnit = priceUnit;
+        this.durationUnit = durationUnit;
+        this.duration = duration;
     }
     
-    public User getUserOffering() {
-        return userOffering;
+    public Person getPersonOffering() {
+        return personOffering;
     }
     
-    public void setUserOffering(User userOffering) {
-        this.userOffering = userOffering;
+    public void setPersonOffering(Person personOffering) {
+        this.personOffering = personOffering;
     }
     
-    public User getUserDemanding() {
-        return userDemanding;
+    public Person getPersonDemanding() {
+        return personDemanding;
     }
     
-    public void setUserDemanding(User userDemanding) {
-        this.userDemanding = userDemanding;
+    public void setPersonDemanding(Person personDemanding) {
+        this.personDemanding = personDemanding;
     }
     
     public String getCategory() {
@@ -79,20 +98,12 @@ public class Service{
         this.nameObject = nameObject;
     }
     
-    public String getAvailabilityDate() {
+    public Date getAvailabilityDate() {
         return availabilityDate;
     }
     
-    public void setAvailabilityDate(String availabilityDate) {
+    public void setAvailabilityDate(Date availabilityDate) {
         this.availabilityDate = availabilityDate;
-    }
-    
-    public String getAvailabilityTime() {
-        return availabilityTime;
-    }
-    
-    public void setAvailabilityTime(String availabilityTime) {
-        this.availabilityTime = availabilityTime;
     }
     
     public String getLocalisation() {
@@ -114,7 +125,7 @@ public class Service{
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        String serviceString = "Service : " + userOffering + " propose un " + nameObject;
+        String serviceString = "Service : " + personOffering + " propose un " + nameObject;
         return serviceString;
     }
     
