@@ -39,15 +39,16 @@ public abstract class Service implements Serializable{
     
     protected int duration;
     
-    protected String unit;
+    protected String priceUnit;
+    
+    protected String durationUnit;
     
     public Service() {
         
     }
 
-    
     public Service(Person personOffering, Person personDemanding, String category, String nameObject, Date availabilityDate,
-            String localisation, String type,String description, String unit, int duration) {
+            String localisation, String type,String description, String priceUnit, String durationUnit, int duration) {
 
         this.personOffering = personOffering;
         this.personDemanding = personDemanding;
@@ -57,7 +58,8 @@ public abstract class Service implements Serializable{
         this.localisation = localisation;
         this.type = type;
         this.description = description;
-        this.unit = unit;
+        this.priceUnit = priceUnit;
+        this.durationUnit = durationUnit;
         this.duration = duration;
     }
     

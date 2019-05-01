@@ -14,9 +14,9 @@ public class Demand extends Service {
     }
     
     public Demand(Person personDemanding, String category, String nameObject, Date availabilityDate,
-            String localisation, String type, double nbPointMax, String description, String unit, int duration) {
+            String localisation, String type, double nbPointMax, String description, String priceUnit, String durationUnit, int duration) {
         // TODO A implementer
-        super(null, personDemanding, category, nameObject, availabilityDate, localisation, type, description, unit, duration);
+        super(null, personDemanding, category, nameObject, availabilityDate, localisation, type, description, priceUnit, durationUnit, duration);
         this.nbPointMax = nbPointMax;
     }
     

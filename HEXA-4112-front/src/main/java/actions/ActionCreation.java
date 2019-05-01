@@ -44,7 +44,8 @@ public class ActionCreation extends Action {
         int duration = Integer.valueOf(dur);
         String pts = request.getParameter("nbPts");
         int nbPts = Integer.valueOf(pts);
-        String unit = request.getParameter("units");
+        String priceUnit = request.getParameter("unitePrix");
+        String durationUnit = request.getParameter("uniteDuree");
         
         Services services = new Services();
         
@@ -56,10 +57,10 @@ public class ActionCreation extends Action {
         // TODO : A modifier quand on connait la valeur du type (demander au front)
         boolean created = false;
         if (typeService == "demande") {
-            Demand demand = new Demand(person, category, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, unit, duration);
+            Demand demand = new Demand(person, category, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
         } else if (typeService == "offre") {
-            Offer offer = new Offer(person, category, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, unit, duration);
+            Offer offer = new Offer(person, category, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createOffer(offer);
         }
         
