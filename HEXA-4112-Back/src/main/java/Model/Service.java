@@ -31,8 +31,6 @@ public abstract class Service implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     protected Date availabilityDate;
     
-    protected Date availabilityTime;
-    
     protected String localisation;
     
     protected String type;
@@ -49,14 +47,13 @@ public abstract class Service implements Serializable{
 
     
     public Service(Person personOffering, Person personDemanding, String category, String nameObject, Date availabilityDate,
-            Date availabilityTime, String localisation, String type,String description, String unit, int duration) {
+            String localisation, String type,String description, String unit, int duration) {
 
         this.personOffering = personOffering;
         this.personDemanding = personDemanding;
         this.category = category;
         this.nameObject = nameObject;
         this.availabilityDate = availabilityDate;
-        this.availabilityTime = availabilityTime;
         this.localisation = localisation;
         this.type = type;
         this.description = description;
@@ -102,14 +99,6 @@ public abstract class Service implements Serializable{
     
     public void setAvailabilityDate(Date availabilityDate) {
         this.availabilityDate = availabilityDate;
-    }
-    
-    public Date getAvailabilityTime() {
-        return availabilityTime;
-    }
-    
-    public void setAvailabilityTime(Date availabilityTime) {
-        this.availabilityTime = availabilityTime;
     }
     
     public String getLocalisation() {

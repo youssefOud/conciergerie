@@ -31,7 +31,7 @@ public class Services {
     
     // TODO : A completer : Dans l'ActionServlet, le bouton radio
     // permet de savoir si c'est une demande ou une offre
-    public boolean createDemand (Person person, Demand demand) {
+    public boolean createDemand (Demand demand) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
@@ -52,7 +52,7 @@ public class Services {
     
     
     // TODO : A completer
-    public boolean createOffer (Person person, Offer offer) {
+    public boolean createOffer (Offer offer) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
@@ -105,9 +105,9 @@ public class Services {
     // comparaison
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
-    public List<Demand> findAllDemandsWithFilter(/*Add Filter*/) {
+    public List<Demand> findAllServicesWithFilter(String category, String localisation, String date, String duration, String units, String nbPts, String type) {
         JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
+        ServiceDAO serviceDao = new ServiceDAO();
         
         List<Demand> listDemand = new ArrayList<>();
         

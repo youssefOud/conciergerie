@@ -23,7 +23,7 @@ public class Person{
     
     private String mail;
     
-    private String pointBalance;
+    private double pointBalance;
     
     private String pseudo;
     
@@ -37,7 +37,7 @@ public class Person{
         
     }
     
-    public Person(String login, String password, String numeroTel, String mail, String pointBalance, String pseudo,
+    public Person(String login, String password, String numeroTel, String mail, double pointBalance, String pseudo,
             double rating, String picture, String location) {
         //this.servicesOffered = new ArrayList<>();
         //this.servicesDemanded = new ArrayList<>();
@@ -84,11 +84,11 @@ public class Person{
         this.mail = mail;
     }
     
-    public String getPointBalance() {
+    public double getPointBalance() {
         return pointBalance;
     }
     
-    public void setPointBalance(String pointBalance) {
+    public void setPointBalance(double pointBalance) {
         this.pointBalance = pointBalance;
     }
     
