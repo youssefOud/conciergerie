@@ -53,7 +53,7 @@ public class PersonTest {
         assertEquals(expPassword, resultPassword);
         
         String expTel = "+12345";
-        String resultTel = instance.getNumeroTel();
+        String resultTel = instance.getCellNumber();
         assertEquals(expTel, resultTel);
         
         String expMail = "fifi@gmail.com";

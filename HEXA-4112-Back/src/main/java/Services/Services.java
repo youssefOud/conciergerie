@@ -109,7 +109,7 @@ public class Services {
     // comparaison
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
-    public List<Service> findAllServicesWithFilter(String category, String location, String date, String time, String duration, String units, String nbPts, String type) throws ParseException {
+    public List<Service> findAllServicesWithFilter(String category, String location, String date, String time, String duration, String units, String nbPts, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
         ServiceDAO serviceDao = new ServiceDAO();
         
@@ -126,6 +126,7 @@ public class Services {
             startingDate = formatTime.parse(formatDate.format(today) + " " + time) ;
         } 
         
+
         Long durationInMillis = 0L;
         if (!duration.isEmpty()) {
             durationInMillis = Long.valueOf(duration);
@@ -137,8 +138,14 @@ public class Services {
                 durationInMillis *= 60*1000;
             }
         }
+        else{
+            durationInMillis = new Long(0);
+        }
+        
+        
+        Date endingDate = formatTime.parse( formatTime.format(startingDate.getTime() + durationInMillis) );
                       
-        List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, durationInMillis, nbPts, type);
+        List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, endingDate, nbPts, serviceType);
         
         JpaUtil.closeEntityManager();
         return listServices;

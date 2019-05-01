@@ -5,9 +5,11 @@ import Model.Offer;
 import javax.persistence.EntityManager;
 
 import Model.Service;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 public class ServiceDAO {
     
@@ -28,20 +30,18 @@ public class ServiceDAO {
         em.remove(service);
     }
     
-    public List<Service> findAllServicesWithFilter(String category, String location, Date date, Long duration, String nbPts, String type) {
+    public List<Service> findAllServicesWithFilter(String category, String location, Date startingDate, Date endingDate, String nbPts, String type) {
         EntityManager em = JpaUtil.getEntityManager();
-        String request = "select s from Service s where ";
-        boolean isFirstCriteria = true;
+        String request = "select s from Service s where s.availabilityDate <= :startingDate and s.endOfAvailabilityDate >= :endingDate ";
         if (!category.isEmpty()) {
+            request += "and ";
             request += "s.category = :category ";
-            isFirstCriteria = false;
         }
         if (!location.isEmpty()) {
-            if (!isFirstCriteria) request += "and ";
+            request += "and ";
             request += "s.location = :location ";
-            isFirstCriteria = false;
         }
-//        if () {
+//        if (startingDate) {
 //            if (!isFirstCriteria) request += "and ";
 //            request += "s.location = :location ";
 //            isFirstCriteria = false;
@@ -52,12 +52,13 @@ public class ServiceDAO {
 //            isFirstCriteria = false;
 //        }
 if (!type.isEmpty()) {
-    if (!isFirstCriteria) request += "and ";
+    request += "and ";
     request += "type(s) = :class";
-    isFirstCriteria = false;
 }
 
 Query query = em.createQuery(request);
+query.setParameter("startingDate", startingDate, TemporalType.TIMESTAMP);
+query.setParameter("endingDate", endingDate, TemporalType.TIMESTAMP);
 if (!category.isEmpty()) {
     query.setParameter("category", category);
 }
@@ -70,6 +71,21 @@ if (!type.isEmpty()) {
     else if (type.equals("Offer")) query.setParameter("class", Offer.class);
 }
 List<Service> filteredServices = (List<Service>)query.getResultList();
+List<Service> servicesToRemove = new ArrayList<>();
+    for(Service s: filteredServices){
+        if(s instanceof Offer){
+            if(s.getNbPoint() > Double.valueOf(nbPts)){
+                servicesToRemove.add(s);
+            }
+        }
+        else if(s.getNbPoint() < Double.valueOf(nbPts)){
+                servicesToRemove.add(s);
+        }
+    }
+    
+    for(Service s: servicesToRemove){
+        filteredServices.remove(s);
+    }
 
 return filteredServices;
     }

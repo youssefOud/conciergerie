@@ -13,14 +13,13 @@ public class Offer extends Service{
     }
     
     
-    public Offer(Person personOffering, String category, String nameObject, Date availabilityDate, Date availabilityTime,
-            String localisation, String type, double nbPointMin, String description, String unit, int duration) {
-        super(personOffering, null, category, nameObject, availabilityDate,
-                availabilityTime, localisation, type, description, unit, duration);
+    public Offer(Person personOffering, String category, String picture, String nameObject, Date availabilityDate,
+            String localisation, String type, double nbPointMin, String description, String priceUnit, String durationUnit, int duration) {
+        super(personOffering, null, category, picture, nameObject, availabilityDate, localisation, type, description, priceUnit, durationUnit, duration);
         this.nbPointMin = nbPointMin;
     }
     
-    public double getNbPointMin() {
+    public double getNbPoint() {
         return nbPointMin;
     }
     

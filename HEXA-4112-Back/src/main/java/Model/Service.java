@@ -32,7 +32,7 @@ public abstract class Service implements Serializable{
     protected Date availabilityDate;
     
     @Temporal(TemporalType.TIMESTAMP)
-    protected Date availabilityTime;
+    protected Date endOfAvailabilityDate;
     
     protected String location;
     
@@ -42,27 +42,42 @@ public abstract class Service implements Serializable{
     
     protected int duration;
     
-    protected String unit;
+    protected String picture;
+    
+    protected String priceUnit;
+    
+    protected String durationUnit;
     
     public Service() {
         
     }
 
-    
-    public Service(Person personOffering, Person personDemanding, String category, String nameObject, Date availabilityDate,
-            Date availabilityTime, String localisation, String type,String description, String unit, int duration) {
+    public Service(Person personOffering, Person personDemanding, String category, String picture, String nameObject, Date availabilityDate,
+            String localisation, String type,String description, String priceUnit, String durationUnit, int duration) {
 
         this.personOffering = personOffering;
         this.personDemanding = personDemanding;
         this.category = category;
+        this.picture = picture;
         this.nameObject = nameObject;
         this.availabilityDate = availabilityDate;
-        this.availabilityTime = availabilityTime;
         this.location = localisation;
         this.type = type;
         this.description = description;
-        this.unit = unit;
+        this.priceUnit = priceUnit;
+        this.durationUnit = durationUnit;
         this.duration = duration;
+        
+        Long durationInMillis = Long.valueOf(duration);
+        if (durationUnit.equals("jours")) {
+            durationInMillis *= 24*60*60*1000;
+        } else if (durationUnit.equals("heures")) {
+            durationInMillis *= 60*60*1000;
+        }  else if (durationUnit.equals("minutes")) {
+            durationInMillis *= 60*1000;
+        }
+        
+        endOfAvailabilityDate = new Date(availabilityDate.getTime() + durationInMillis);
     }
     
     public Person getPersonOffering() {
@@ -105,14 +120,6 @@ public abstract class Service implements Serializable{
         this.availabilityDate = availabilityDate;
     }
     
-    public Date getAvailabilityTime() {
-        return availabilityTime;
-    }
-    
-    public void setAvailabilityTime(Date availabilityTime) {
-        this.availabilityTime = availabilityTime;
-    }
-    
     public String getLocation() {
         return location;
     }
@@ -136,4 +143,5 @@ public abstract class Service implements Serializable{
         return serviceString;
     }
     
+    public abstract double getNbPoint();
 }
