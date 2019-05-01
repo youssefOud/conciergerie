@@ -35,7 +35,7 @@ public class ActionCreation extends Action {
         // si c'est une demande ou une offre
         String typeService = request.getParameter("type");
         
-        String category = request.getParameter("category");
+        String category = request.getParameter("categorie");
         String nameObject = request.getParameter("objet");
         String description = request.getParameter("description");
         String picture = request.getParameter("pictures");
@@ -46,7 +46,7 @@ public class ActionCreation extends Action {
         
         String time = request.getParameter("time");
         SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");  
-        Date availabilityTime = formatDate.parse(time);
+        Date availabilityTime = formatTime.parse(time);
         
         // On combine les deux dates ensemble
         Date availabilityDateComplete = new Date(availabilityDate.getTime() + availabilityTime.getTime());
@@ -66,17 +66,20 @@ public class ActionCreation extends Action {
         // TODO : A modifier quand on aura implémenté la connection avec les sessions
         // En attendant, passer l'id du person.
         String idPerson = request.getParameter("idPerson");
-        Long idPersonLong = Long.valueOf(idPerson);
+        Long idPersonLong = 1L; //Long.valueOf(idPerson);
         Person person = services.getPersonById(idPersonLong);
         // TODO : A modifier quand on connait la valeur du type (demander au front)
         boolean created = false;
-        if (typeService == "demande") {
+        if (typeService.equals("demande")) {
             Demand demand = new Demand(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
-        } else if (typeService == "offre") {
+            System.out.println("Value de la demande : " + demand);
+        } else if (typeService.equals("offre")) {
             Offer offer = new Offer(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createOffer(offer);
+            System.out.println("Value de la offre : " + offer);
         }
+        System.out.println("Value : " + created);
         
         request.setAttribute("created", created);
         
