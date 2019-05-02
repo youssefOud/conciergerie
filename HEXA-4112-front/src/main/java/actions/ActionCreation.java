@@ -77,11 +77,11 @@ public class ActionCreation extends Action {
         // TODO : A modifier quand on connait la valeur du type (demander au front)
         boolean created = false;
         if (typeService.equals("demande")) {
-            Demand demand = new Demand(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+            Demand demand = new Demand(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
             System.out.println("Value de la demande : " + demand);
         } else if (typeService.equals("offre")) {
-            Offer offer = new Offer(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+            Offer offer = new Offer(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createOffer(offer);
             System.out.println("Value de la offre : " + offer);
         }
