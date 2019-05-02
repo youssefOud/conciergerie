@@ -67,18 +67,27 @@ public class SerialisationJSON {
             }
             
             Date date = s.getAvailabilityDate();
+            Date datePublication = s.getPublicationDate();
             String pattern = "MM/dd/yyyy HH:mm:ss";
             DateFormat df = new SimpleDateFormat(pattern);  
             String dateAsString = df.format(date);
+            String datePublicationAsString = df.format(datePublication);
             
             String theDate = dateAsString.substring(0,11);
             String theTime = dateAsString.substring(11);
             
+            String theDateOfPublication = datePublicationAsString.substring(0,11);
+            String theTimeOfPublication = datePublicationAsString.substring(11);
+            
             jo.addProperty("date", theDate);
             jo.addProperty("time", theTime);
+            jo.addProperty("datePublication", theDateOfPublication);
+            jo.addProperty("timePublication", theTimeOfPublication);
+            
             int duration = s.getDuration();
             String theDuration = Integer.toString(duration);
             jo.addProperty("duree", theDuration);
+            
             jo.addProperty("unitePrix", s.getPriceUnit());
             jo.addProperty("uniteDuree", s.getDurationUnit());
             jo.addProperty("pseudoPersonneDemande", s.getPersonDemanding().getPseudo());
