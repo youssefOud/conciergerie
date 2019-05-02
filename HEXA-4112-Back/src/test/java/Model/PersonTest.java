@@ -43,7 +43,7 @@ public class PersonTest {
     @org.junit.Test
     public void testCreatePerson() {
         System.out.println("Test : Create Person");
-        Person instance = new Person("fifi","12345","+12345","fifi@gmail.com",5,"fifi",4.5,"/url/img.png","Residence A");
+        Person instance = new Person("fifi","12345","+12345","fifi@gmail.com","fifi","/url/img.png","Residence A");
         String expLogin = "fifi";
         String resultLogin = instance.getLogin();
         assertEquals(expLogin, resultLogin);

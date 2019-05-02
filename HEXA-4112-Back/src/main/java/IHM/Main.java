@@ -27,7 +27,7 @@ public class Main {
         Services s = new Services();
         
   
-        Person person = new Person("fifi","12345","+12345","fifi@gmail.com",5,"fifi",4.5,"/url/img.png","Residence A");
+        Person person = new Person("fifi","12345","+12345","fifi@gmail.com","fifi","/url/img.png","Residence A");
                 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         

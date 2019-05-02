@@ -36,20 +36,28 @@ public class Person{
     public Person() {
         
     }
-    
-    public Person(String login, String password, String cellNumber, String mail, double pointBalance, String pseudo,
-            double rating, String picture, String location) {
+    // Pas de rating ni de solde de points dans le contructeur
+    public Person(String login, String password, String cellNumber, String mail, String pseudo,
+            String picture, String location) {
         //this.servicesOffered = new ArrayList<>();
         //this.servicesDemanded = new ArrayList<>();
         this.login = login;
         this.password = password;
         this.cellNumber = cellNumber;
         this.mail = mail;
-        this.pointBalance = pointBalance;
+        this.pointBalance = 50;
         this.pseudo = pseudo;
-        this.rating = rating;
+        this.rating = -1; // Par défaut, si aucune annonce d'offre terminée
         this.picture = picture;
         this.location = location;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
     
     public String getLogin() {

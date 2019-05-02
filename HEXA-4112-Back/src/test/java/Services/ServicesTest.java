@@ -36,8 +36,8 @@ public class ServicesTest {
     @BeforeClass
     public static void setUpClass() {
         JpaUtil.init();
-        Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com", 5,
-                "fifi", 4.5, "img.png", "Residence A");
+        Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com",
+                "fifi", "img.png", "Residence A");
         PersonDAO personDAO = new PersonDAO();
         
         JpaUtil.createEntityManager();
@@ -111,8 +111,8 @@ public class ServicesTest {
     public void testCreateDemandFail() throws ParseException {
         System.out.println("createDemandFail");
         
-        Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com", 5,
-                "fifi", 4.5, "img.png", "Residence A");
+        Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com",
+                "fifi", "img.png", "Residence A");
         
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         

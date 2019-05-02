@@ -101,4 +101,8 @@ public class SerialisationJSON {
         out.println(gson.toJson(container));
         out.close();
     }
+
+    public void executeInscription(HttpServletRequest request, HttpServletResponse response) {
+        // TODO : A implementer
+    }
 }

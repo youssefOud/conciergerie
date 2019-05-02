@@ -208,4 +208,20 @@ public class Services {
         return service;
     }
 
+    public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
+        // TODO : to implement : persist la personne en base de données
+        return new Person();
+    }
+    
+    public boolean verifyEmailAdress(String mail) {
+        // TODO : to implement : envoyer un mail et attendre la validation de celui-ci
+        // Voir comment faire cela
+        return false;
+    }
+
+    public Person connectPerson(String mail, String password) {
+        // TODO : to implement
+        return new Person();
+    }
+
 }
