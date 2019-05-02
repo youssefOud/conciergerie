@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="css/style.css"></link>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
         <!-- JS Files -->
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js">
+        <script src="//code.jquery.com/jquery-1.12.0.min.js">
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -290,8 +290,8 @@
                         nbPictures++;
                     }
                     console.log(nbPictures);
-                });
 
+                });
                 $(document).on("click", "i.del", function () {
                     if (nbPictures == 5) {
                         $(this).parent().siblings().last().after('<i class="fa fa-plus imgAdd" id="ajouterBox"></i>');
@@ -371,7 +371,7 @@
                         send = false;
                         document.getElementById("time").classList.add("is-invalid");
                     }
-
+                    
                     //Durée
                     if (document.getElementById("duree").value != "") {
                         answers.duree = document.getElementById("duree").value;
@@ -404,9 +404,10 @@
                     } else if ($('#minutesPrix').is(':checked')) {
                         answers.unitePrix = "minutes";
                     }
-
+                    
                     myArrayFile = $('.uploadFile');
                     var picturesArray = [];
+                    
                     for (i = 0; i < myArrayFile.length; i++) {
                         var uploadFile = myArrayFile[i];
                         var files = !!myArrayFile[i].files ? myArrayFile[i].files : [];
@@ -426,16 +427,17 @@
                     }
                     answers.pictures = picturesArray;
                     console.log(answers);
-
+                    
                     if (send) {
                         //Validation
                         $("#validation").modal();
                         document.getElementById("deposer").addEventListener("click", function () {
                             $.ajax({
                                 type: 'POST',
-                                url: 'url',
+                                url: './ActionServlet',
                                 data: answers,
                                 timeout: 3000,
+                                dataType:'json',
                                 success: function (data) {
                                     $('#zone').html(data);
                                 },
@@ -444,7 +446,7 @@
                                 }
                             });
                         });
-                    }
+                    };
                 });
             });
 
