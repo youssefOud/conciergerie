@@ -30,7 +30,7 @@ public class ServiceDAO {
         em.remove(service);
     }
     
-    public List<Service> findAllServicesWithFilter(String object, String category, String location, Date startingDate, Date endingDate, String nbPts, String type) {
+    public List<Service> findAllServicesWithFilter(String object, String category, String location, Date startingDate, Date endingDate, String nbPts, String paymentUnit, String type) {
         EntityManager em = JpaUtil.getEntityManager();
         String request;
         if(startingDate == null){
@@ -85,15 +85,26 @@ public class ServiceDAO {
         List<Service> filteredServices = (List<Service>)query.getResultList();
         System.out.println("filtered: " + filteredServices.size());
         
+        int nbPtsPerDay;
+        if(paymentUnit.equals("minutes")){
+            nbPtsPerDay = Integer.valueOf(nbPts)*60*24;
+        }
+        else if(paymentUnit.equals("heures")){
+            nbPtsPerDay = Integer.valueOf(nbPts)*24;
+        }
+        else{
+            nbPtsPerDay = Integer.valueOf(nbPts);
+        }
+        
         if (!nbPts.isEmpty()) {
             List<Service> servicesToRemove = new ArrayList<>();
             for(Service s: filteredServices){
                 if(s instanceof Offer){
-                    if(s.getNbPoint() > Double.valueOf(nbPts)){
+                    if(s.getNbPointPerDay() > nbPtsPerDay){
                         servicesToRemove.add(s);
                     }
                 }
-                else if(s.getNbPoint() < Double.valueOf(nbPts)){
+                else if(s.getNbPointPerDay() < nbPtsPerDay){
                     servicesToRemove.add(s);
                 }
             }
