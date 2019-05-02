@@ -5,6 +5,7 @@
  */
 package vue;
 
+import Model.Offer;
 import Model.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,29 +59,28 @@ public class SerialisationJSON {
             jo.addProperty("localisation", s.getLocation());
             jo.addProperty("nomObjet", s.getNameObject());
             jo.addProperty("nbPts", s.getNbPoint());
-            jo.addProperty("typeDeService", s.getType());
+            jo.addProperty("typeService", s.getType());
+            if (s instanceof Offer) {
+                jo.addProperty("typeAnnonce", "offre");
+            } else {
+                jo.addProperty("typeAnnonce", "demande");
+            }
             
-            // Voir avec les filles si traitement fait cote front ou action
             Date date = s.getAvailabilityDate();
-            Date endDate = s.getEndOfAvailabilityDate();
             String pattern = "MM/dd/yyyy HH:mm:ss";
             DateFormat df = new SimpleDateFormat(pattern);  
             String dateAsString = df.format(date);
-            String endDateAsString = df.format(endDate);
             
             String theDate = dateAsString.substring(0,11);
             String theTime = dateAsString.substring(11);
-            
-            String theEndDate = endDateAsString.substring(0,11);
-            String theEndTime = endDateAsString.substring(11);
             
             jo.addProperty("date", theDate);
             jo.addProperty("time", theTime);
             int duration = s.getDuration();
             String theDuration = Integer.toString(duration);
             jo.addProperty("duree", theDuration);
-            jo.addProperty("prixUnite", s.getPriceUnit());
-            jo.addProperty("uureeUnite", s.getDurationUnit());
+            jo.addProperty("unitePrix", s.getPriceUnit());
+            jo.addProperty("uniteDuree", s.getDurationUnit());
             jo.addProperty("pseudoPersonneDemande", s.getPersonDemanding().getPseudo());
             jo.addProperty("pseudoPersonneOffre", s.getPersonOffering().getPseudo());
             
