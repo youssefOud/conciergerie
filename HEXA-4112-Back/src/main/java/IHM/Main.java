@@ -31,11 +31,11 @@ public class Main {
                 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Offer offer = new Offer(person, "Bricolage", null, "marteau",  formatDate.parse("02/05/2019 00:00")
+        Offer offer = new Offer(person, "Bricolage", null, "marteau",  formatDate.parse("09/05/2019 00:00")
                 ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
         Demand demand = new Demand(person, "Bricolage",null, "marteau", formatDate.parse("12/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
-        Offer offer2 = new Offer(person, "Bricolage", null, "four",  formatDate.parse("01/05/2019 00:00")
+        Offer offer2 = new Offer(person, "Bricolage", null, "four",  formatDate.parse("09/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
         
         System.out.println(s.createPerson(person));
@@ -43,9 +43,9 @@ public class Main {
         System.out.println(s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
     
-     //   List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
-        List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "02/05/2019", "", "","","" ,"Offer");
-        
+        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+        List<Service> listS = s.findAllServicesWithFilter("", "", "", "", "","","" ,"");
+        //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         System.out.println();
 
         JpaUtil.destroy();
