@@ -27,7 +27,7 @@ public class Main {
         JpaUtil.init();
         Services s = new Services();
         
-        EmailSenderService.sendVerificationEmail("oliviacaraiman@gmail.com");
+        //EmailSenderService.sendVerificationEmail("oliviacaraiman@gmail.com");
        /* Person person = new Person("12345","+12345","fifi@gmail.com","fifi","/url/img.png","Residence A");
                 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -52,14 +52,15 @@ public class Main {
        
        
        
-        boolean emailSent = s.sendVerificationEmail("mets ton adresse mail ici");
-        System.out.println("--------------------------------"+emailSent+"-------------------");
+        //boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
+       // System.out.println("--------------------------------"+emailSent+"-------------------");
         
         
         
         //A décommenter quand tu recois le code de vérification (et insérer le code de vérification
         
-        //Person p = s.registerPerson("Dupont", "Jean", "Password", "adresseMailDeOlivia@gmail.com", "000000000000", mettre verification code ici);
+        Person p = s.registerPerson("Dupont", "Jean", "Password", "oliviacaraiman@gmail.com", "000000000000", "858639");
+        //System.out.println("IHM.Main.main()"+p);
         JpaUtil.destroy();
         
         
