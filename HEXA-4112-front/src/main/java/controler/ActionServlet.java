@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import DAO.JpaUtil;
 import actions.ActionCreation;
+import actions.ActionShowTimeline;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,18 +32,33 @@ public class ActionServlet extends HttpServlet {
         System.out.println(todo);
         SerialisationJSON serialisationJSON = new SerialisationJSON();
         
-        if ("deposerAnnonce".equals(todo)) {
-            ActionCreation ac = new ActionCreation();
+        switch (todo) {
+            case "deposerAnnonce":
+                ActionCreation ac = new ActionCreation();
             
-            try {
-                ac.executeAction(request);
-            } catch (ParseException ex) {
-                Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            System.out.println("request set Attribute ");
-            boolean created = (boolean) request.getAttribute("created");
+
+                try {
+                    ac.executeAction(request);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                boolean created = (boolean) request.getAttribute("created");
+
+                serialisationJSON.executeDeposerAnnonce(request, response);
+
+                break;
             
-            serialisationJSON.executeDeposerAnnonce(request, response);
+            case "afficherFilActualite":
+                ActionShowTimeline astl = new ActionShowTimeline();
+                
+                try {
+                    astl.executeAction(request);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                serialisationJSON.executeShowTimeline(request, response);
         }
     }
     

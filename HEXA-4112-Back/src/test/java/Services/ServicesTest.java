@@ -10,6 +10,7 @@ import DAO.PersonDAO;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class ServicesTest {
         Person person  = instance.getPersonById(1L);
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Demand demand = new Demand(person, "Bricolage", "010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
+        Demand demand = new Demand(person, "Bricolage", null, "marteau", formatDate.parse("12/05/2019 19:00")
                 ,"Résidence M", "prêt", 2, "Recherche marteau classique","heures", "heures", 2);
         boolean expResult = true;
         boolean result = instance.createDemand(demand);
@@ -115,7 +116,7 @@ public class ServicesTest {
         
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Demand demand = new Demand(person, "Bricolage","010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
+        Demand demand = new Demand(person, "Bricolage",null, "marteau", formatDate.parse("09/05/2019 20:00")
                 ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         
         Services instance = new Services();
@@ -130,13 +131,22 @@ public class ServicesTest {
     @org.junit.Test
     public void testCreateOfferOK() throws ParseException {
         System.out.println("createOfferOK");
-        Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com", 5,
-                "fifi", 4.5, "img.png", "Residence A");
-        
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
-                ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures","heures", 2);
         Services instance = new Services();
+        Person person  = instance.getPersonById(1L);
+        
+
+//        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+//        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+//        
+//        Offer offer = new Offer(person, "Bricolage", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
+//                ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures", 2);
+//        
+
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Offer offer = new Offer(person, "Bricolage",null, "marteau", formatDate.parse("09/05/2019 20:00")
+                ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures","heures", 2);
+        
+
         boolean expResult = true;
         boolean result = instance.createOffer(offer);
         assertEquals(expResult, result);
@@ -153,7 +163,7 @@ public class ServicesTest {
         
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("12/05/2013 19:00")
+        Offer offer = new Offer(person, "Bricolage", null, "marteau", formatDate.parse("09/05/2019 20:00")
                 ,"Résidence M", "prêt", 2, "Propose un marteau classique","heures", "heures", 2);
         
         boolean expResult = true;
@@ -179,19 +189,47 @@ public class ServicesTest {
      * Test of findAllDemandsWithFilter method, of class Services.
      */
     
-    /*
+   
     @org.junit.Test
-    public void testFindAllDemandsWithFilter() {
-        System.out.println("findAllDemandsWithFilter");
+    public void testFindAllServicesWithFilterOK() throws ParseException {
+        System.out.println("findAllServicesWithFilter");
         Services instance = new Services();
-        List<Demand> expResult = new ArrayList<Demand>();
-        List<Demand> result = instance.findAllServicesWithFilter();
-        assertEquals(expResult, result);
+//        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//        Person person = instance.getPersonById(1L);
+//        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("10/04/2019 19:00")
+//                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
+//        Offer offer2 = new Offer(person, "Bricolage", "010010100110", "four",  formatDate.parse("10/04/2019 19:00")
+//                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
+        
+        List<Service> expResult = new ArrayList<Service>();
+        Service s = instance.getServiceById(2L);
+        expResult.add(s);
+         
+        List<Service> result = instance.findAllServicesWithFilter("marteau","Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+        System.out.println("list : " + result.size());
+        
+        assertEquals(s, result.get(0));
         // TODO review the generated test code and remove the default call to //fail.
-        //fail("The test case is a prototype.");
     }
-    */
     
+     @org.junit.Test
+    public void testFindAllServicesWithFilterFail() throws ParseException {
+        System.out.println("findAllServicesWithFilter");
+        Services instance = new Services();
+        List<Service> expResult = new ArrayList<Service>();
+        Service s = instance.getServiceById(3L);
+        System.out.println("serv" + s.toString());
+                
+        List<Service> result = instance.findAllServicesWithFilter("marteau","Bricolage", "Residence M", "", "", "5","minutes","2" ,"Offer");
+       
+         System.out.println("list : " + result.size());
+        System.out.println("serv" + result.get(0).toString());
+        assertEquals(expResult, result.get(0));
+        
+        // TODO review the generated test code and remove the default call to //fail.
+
+    }
+      
     
     /**
      * Test of findAllOffers method, of class Services.

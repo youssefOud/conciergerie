@@ -12,25 +12,32 @@ import Model.Person;
 import Services.Services;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 public class ActionCreation extends Action {
     
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
         
-        /*Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonObject jo = new JsonObject(request.getParameter("pictures"));
-        Iterator it = jo.keys(); //gets all the keys
-
+        List<String> pictures = new ArrayList<>();
+        /*String picturesArray = request.getParameter("pictures");
+        JsonParser jsonParser = new JsonParser();
+        JsonArray picturesFromString = jsonParser.parse(picturesArray).getAsJsonArray();
+        Iterator it = picturesFromString.iterator();
         while(it.hasNext())
         {
-            String key = it.next(); // get key
-            Object o = jObj.get(key); // get value
-            System.out.println(key + " : " +  o); // print the key and value
+            Object indexPicture = (String) it.next(); // get key
+            Object o = picturesFromString.get(indexPicture); // get value
+            System.out.println(indexPicture + " : " +  o); // print the key and value
         }*/
+        
         // On recupere le parametre du bouton radio pour savoir
         // si c'est une demande ou une offre
         String typeService = request.getParameter("type");
@@ -38,7 +45,6 @@ public class ActionCreation extends Action {
         String category = request.getParameter("categorie");
         String nameObject = request.getParameter("objet");
         String description = request.getParameter("description");
-        String picture = request.getParameter("pictures");
         
         String date = request.getParameter("date");
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");  
@@ -71,11 +77,11 @@ public class ActionCreation extends Action {
         // TODO : A modifier quand on connait la valeur du type (demander au front)
         boolean created = false;
         if (typeService.equals("demande")) {
-            Demand demand = new Demand(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+            Demand demand = new Demand(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
             System.out.println("Value de la demande : " + demand);
         } else if (typeService.equals("offre")) {
-            Offer offer = new Offer(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+            Offer offer = new Offer(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createOffer(offer);
             System.out.println("Value de la offre : " + offer);
         }

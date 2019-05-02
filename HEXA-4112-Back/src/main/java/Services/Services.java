@@ -9,20 +9,33 @@ import DAO.*;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Service;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
  * @author B3427
  */
+
 public class Services {
+    final private DemandDAO demandDAO;
+    final private OfferDAO offerDAO;
+    final private PersonDAO personDAO;
+    final private ServiceDAO serviceDAO;
+    
     public Services(){
-        
+        this.demandDAO = new DemandDAO();
+        this.offerDAO = new OfferDAO();
+        this.personDAO = new PersonDAO();
+        this.serviceDAO = new ServiceDAO();   
     }
+    
     
     // TODO : compléter
     public Person connexion (String mail, String mdp) {
         JpaUtil.createEntityManager();
-        PersonDAO personDAO = new PersonDAO();
         Person person = personDAO.verifyPersonAccount(mail, mdp);
         JpaUtil.closeEntityManager();
         
@@ -35,7 +48,6 @@ public class Services {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
-        DemandDAO demandDAO = new DemandDAO();
         demandDAO.persist(demand);
         
         try {
@@ -58,7 +70,6 @@ public class Services {
         
         // Traitement sur offer ? Date de début ?
         
-        OfferDAO offerDAO = new OfferDAO();
         offerDAO.persist(offer);
         
         try {
@@ -71,22 +82,39 @@ public class Services {
         return true;
     }
     
-    public boolean createPerson (Person person) {
+    public Person registerPerson (Person person) {
         JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
         
-        PersonDAO personDAO = new PersonDAO();
-        personDAO.persist(person);
+        if((personDAO.personExists(person.getMail()))){
+            
+            JpaUtil.closeEntityManager();
+            return null;
+        }
+        else{
+        
+        
+        
+        
+        
+        
+        
         
         try {
+            JpaUtil.openTransaction();
+            //Create person plutot que de le prendre en paramètre
+            personDAO.persist(person);
             JpaUtil.validateTransaction();
-        } catch (RollbackException e) {
+        }
+            
+         catch (Exception e) {
             JpaUtil.cancelTransaction();
-            return false;
+            JpaUtil.closeEntityManager();
+            return null;
         }
         
         JpaUtil.closeEntityManager();
-        return true;
+        return person;
+    }
     }
     
     // TODO : A completer : permet de retourner toutes les demandes
@@ -105,16 +133,60 @@ public class Services {
     // comparaison
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
-    public List<Demand> findAllServicesWithFilter(String category, String localisation, String date, String duration, String units, String nbPts, String type) {
+
+    public List<Service> findAllServicesWithFilter(String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
-        ServiceDAO serviceDao = new ServiceDAO();
         
-        List<Demand> listDemand = new ArrayList<>();
+        Date today = new Date();
+        SimpleDateFormat formatNormal = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy"); 
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm"); 
+        Date startingDate;
         
+        if (!date.isEmpty()) {
+            if (time.isEmpty()) {
+                if (date.equals(formatDate.format(today))) time = formatTime.format(today);
+                else  time="00:00";
+                
+            startingDate = formatNormal.parse(date + " " + time);
+            }
+            else{
+                startingDate = formatNormal.parse(date + " " + time);
+            }
+        } else if (!time.isEmpty()) {
+            startingDate = formatNormal.parse(formatDate.format(today) + " " + time) ;
+        } else{
+            startingDate = null;
+        }
         
+
+        Long durationInMillis = 0L;
+        if (!duration.isEmpty()) {
+            durationInMillis = Long.valueOf(duration);
+            if (timeUnit.equals("jours")) {
+                durationInMillis *= 24*60*60*1000;
+            } else if (timeUnit.equals("heures")) {
+                durationInMillis *= 60*60*1000;
+            }  else if (timeUnit.equals("minutes")) {
+                durationInMillis *= 60*1000;
+            }
+        }
+        else{
+            durationInMillis = new Long(0);
+        }
+        
+        Date endingDate;
+        if(startingDate != null){
+            endingDate = formatNormal.parse( formatNormal.format(startingDate.getTime() + durationInMillis) );
+        }
+        else{
+            endingDate = formatNormal.parse( formatNormal.format(today.getTime() + durationInMillis) );
+        }
+              
+        List<Service> listServices = serviceDAO.findAllServicesWithFilter(object, category, location, startingDate, endingDate, nbPts, paymentUnit, serviceType);
         
         JpaUtil.closeEntityManager();
-        return listDemand;
+        return listServices;
     }
     
     // TODO : A completer : permet de retourner toutes les offres
@@ -151,10 +223,20 @@ public class Services {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
-        PersonDAO personDAO = new PersonDAO();
         Person person = personDAO.findById(idPerson);
         
         JpaUtil.closeEntityManager();
         return person;
     }
+    
+    public Service getServiceById(Long idService) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        Service service = serviceDAO.findById(idService);
+        
+        JpaUtil.closeEntityManager();
+        return service;
+    }
+
 }

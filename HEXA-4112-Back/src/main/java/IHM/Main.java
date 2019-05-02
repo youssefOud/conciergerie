@@ -9,9 +9,11 @@ import DAO.JpaUtil;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Service;
 import Services.Services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  *
@@ -29,15 +31,23 @@ public class Main {
                 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("10/05/2019 19:00")
-                ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
-        Demand demand = new Demand(person, "Bricolage", "010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
-                ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
+        Offer offer = new Offer(person, "Bricolage", null, "marteau",  formatDate.parse("09/05/2019 00:00")
+                ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
+        Demand demand = new Demand(person, "Bricolage",null, "marteau", formatDate.parse("12/05/2019 19:00")
+                ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
+        Offer offer2 = new Offer(person, "Bricolage", null, "four",  formatDate.parse("09/05/2019 00:00")
+                ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
         
         System.out.println(s.createPerson(person));
         System.out.println(s.createDemand(demand));
+        System.out.println(s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
     
+        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+        List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
+        //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
+        System.out.println();
+
         JpaUtil.destroy();
         
         
