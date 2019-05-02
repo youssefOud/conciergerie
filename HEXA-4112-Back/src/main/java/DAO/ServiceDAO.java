@@ -32,10 +32,8 @@ public class ServiceDAO {
     
     public List<Service> findAllServicesWithFilter(String category, String location, Date startingDate, Date endingDate, String nbPts, String type) {
         EntityManager em = JpaUtil.getEntityManager();
-        String request = "select s from Service s where s.availabilityDate <= :startingDate ";
-        if (endingDate.compareTo(startingDate) > 0) {
-            request += "and s.endOfAvailabilityDate >= :endingDate ";
-        }        
+        String request = "select s from Service s where s.availabilityDate <= :startingDate and s.endOfAvailabilityDate >= :endingDate ";
+    
                 
         if (!category.isEmpty()) {
             request += "and ";
@@ -52,16 +50,15 @@ public class ServiceDAO {
         }
         
         request += " order by s.publicationDate desc";
-
+       
         System.out.println("request: " + request);
         System.out.println("startingDate: " + startingDate);
         System.out.println("endingDate:" + endingDate);
         
         Query query = em.createQuery(request);
         query.setParameter("startingDate", startingDate, TemporalType.TIMESTAMP);
-         if (endingDate.compareTo(startingDate) > 0) {
-            query.setParameter("endingDate", endingDate, TemporalType.TIMESTAMP);
-        } 
+        query.setParameter("endingDate", endingDate, TemporalType.TIMESTAMP);
+       
         
         if (!category.isEmpty()) {
             query.setParameter("category", category);
