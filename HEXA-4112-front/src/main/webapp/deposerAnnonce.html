@@ -412,8 +412,11 @@
                         var uploadFile = myArrayFile[i];
                         var files = !!myArrayFile[i].files ? myArrayFile[i].files : [];
                         if (!files.length || !window.FileReader) {
-                            send = false;
-                            return; // no file selected, or no FileReader support
+                            console.log(myArrayFile.length);
+                            if(myArrayFile.length>1){
+                                send = false;
+                            }
+                            break; // no file selected, or no FileReader support
                         }
                         if (/^image/.test(files[0].type)) { // only image file
                             var reader = new FileReader(); // instance of the FileReader
