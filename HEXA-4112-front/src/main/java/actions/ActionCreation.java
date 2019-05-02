@@ -1,4 +1,3 @@
-
 package actions;
 
 import java.io.IOException;
@@ -91,5 +90,4 @@ public class ActionCreation extends Action {
         request.setAttribute("created", created);
         
     }
-
 }
