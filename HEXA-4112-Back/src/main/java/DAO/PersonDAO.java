@@ -25,11 +25,17 @@ public class PersonDAO {
         em.remove(person);
     }
     
-    public Person verifyPersonAccount(String login, String password) {
+    public boolean personExists(String mail){
         EntityManager em = JpaUtil.getEntityManager();
-        Query query = em.createQuery("select u from Person u where u.login=:loginToVerify"
+        Query query = em.createQuery("SELECT u FROM Person u where u.mail = :mailToVerify").setParameter("mailToVerify", mail);
+        return !(((List<Person>) query.getResultList()).isEmpty());
+    }
+    
+    public Person verifyPersonAccount(String mail, String password) {
+        EntityManager em = JpaUtil.getEntityManager();
+        Query query = em.createQuery("select u from Person u where u.login=:mailToVerify"
                 + " AND u.password=:passwordToVerify");
-        query.setParameter("loginToVerify", login);
+        query.setParameter("mailToVerify", mail);
         query.setParameter("passwordToVerify", password);
         
         if(((List<Person>) query.getResultList()).isEmpty()){

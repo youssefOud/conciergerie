@@ -22,6 +22,8 @@ public class ActionShowTimeline extends Action {
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
         // TODO : Verifier le nom des parametres
+        String objectName = request.getParameter("objet");
+        String priceUnit = request.getParameter("uniteePrix"); 
         String category = request.getParameter("categorie");
         String location = request.getParameter("localisation");
         String availabilityDate = request.getParameter("date");
@@ -32,8 +34,8 @@ public class ActionShowTimeline extends Action {
         String typeService = request.getParameter("type");
         
         Services services = new Services(); 
-        List<Service> listOfServices = services.findAllServicesWithFilter(category, location,availabilityDate,
-                availabilityTime, duration, durationUnit, nbPts, typeService);
+        List<Service> listOfServices = services.findAllServicesWithFilter(objectName, category, location,availabilityDate,
+                availabilityTime, duration, durationUnit, nbPts, priceUnit, typeService);
         
         request.setAttribute("listOfServices", listOfServices);
     }

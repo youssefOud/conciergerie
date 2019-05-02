@@ -15,19 +15,17 @@ public class Person{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private String login;
-    
     private String password;
     
     private String cellNumber;
     
     private String mail;
     
-    private double pointBalance;
+    private Integer pointBalance;
     
     private String pseudo;
     
-    private double rating;
+    private Double rating;
     
     private String picture;
     
@@ -41,13 +39,12 @@ public class Person{
             String picture, String location) {
         //this.servicesOffered = new ArrayList<>();
         //this.servicesDemanded = new ArrayList<>();
-        this.login = login;
         this.password = password;
         this.cellNumber = cellNumber;
         this.mail = mail;
         this.pointBalance = 50;
         this.pseudo = pseudo;
-        this.rating = -1; // Par défaut, si aucune annonce d'offre terminée
+        this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
         this.picture = picture;
         this.location = location;
     }
@@ -58,14 +55,6 @@ public class Person{
 
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    public String getLogin() {
-        return login;
-    }
-    
-    public void setLogin(String login) {
-        this.login = login;
     }
     
     public String getPassword() {
@@ -96,7 +85,7 @@ public class Person{
         return pointBalance;
     }
     
-    public void setPointBalance(double pointBalance) {
+    public void setPointBalance(int pointBalance) {
         this.pointBalance = pointBalance;
     }
     
