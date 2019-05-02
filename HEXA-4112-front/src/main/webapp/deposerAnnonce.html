@@ -263,7 +263,9 @@
 
         </div>
         <script>
+
             $(document).ready(function () {
+
                 $('#date').datepicker({
                     format: "dd/mm/yyyy",
                     locale: "fr",
@@ -271,11 +273,15 @@
                     todayHighlight: true,
                     pick12HourFormat: true
                 });
+
+
                 $('#time').clockpicker({
                     autoclose: true,
                     donetext: 'Done'
                 });
+
                 var nbPictures = 1;
+
                 document.getElementById("ajouterBox").addEventListener("click", function () {
                     if (nbPictures < 4) {
                         $(this).closest(".row").find('.imgAdd').before('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
@@ -285,6 +291,7 @@
                         nbPictures++;
                     }
                     console.log(nbPictures);
+
                 });
                 $(document).on("click", "i.del", function () {
                     if (nbPictures == 5) {
@@ -308,18 +315,23 @@
                         var files = !!this.files ? this.files : [];
                         if (!files.length || !window.FileReader)
                             return; // no file selected, or no FileReader support
+
                         if (/^image/.test(files[0].type)) { // only image file
                             var reader = new FileReader(); // instance of the FileReader
                             reader.readAsDataURL(files[0]); // read the local file
+
                             reader.onloadend = function () { // set image data as background of div
                                 //alert(uploadFile.closest(".upimage").find('.imagePreview').length);
                                 uploadFile.closest(".imgUp").find('.imagePreview').css("background-image", "url(" + this.result + ")");
                             }
                         }
+
                     });
                 });
+
                 var answers = new Object();
                 document.getElementById("valider").addEventListener("click", function () {
+
                     var send = true;
                     var answers = new Object();
                     answers.todo = "deposerAnnonce";
@@ -328,8 +340,10 @@
                     if ($('#offre').is(':checked')) {
                         answers.type = "offre";
                     }
+
                     //Catégorie
                     answers.categorie = document.getElementById('categories').value;
+
                     //Nom objet
                     if (document.getElementById("objet").value != "") {
                         answers.objet = document.getElementById("objet").value;
@@ -338,8 +352,10 @@
                         send = false;
                         document.getElementById("objet").classList.add("is-invalid");
                     }
+
                     //Description
                     answers.description = document.getElementById("description").value;
+
                     //Date
                     if (document.getElementById("date").value != "") {
                         answers.date = document.getElementById("date").value;
@@ -348,6 +364,7 @@
                         send = false;
                         document.getElementById("date").classList.add("is-invalid");
                     }
+
                     if (document.getElementById("time").value != "") {
                         answers.time = document.getElementById("time").value;
                         document.getElementById("time").classList.remove("is-invalid");
@@ -355,6 +372,7 @@
                         send = false;
                         document.getElementById("time").classList.add("is-invalid");
                     }
+                    
                     //Durée
                     if (document.getElementById("duree").value != "") {
                         answers.duree = document.getElementById("duree").value;
@@ -370,6 +388,7 @@
                     } else if ($('#minutes').is(':checked')) {
                         answers.uniteDuree = "minutes";
                     }
+
                     //Localisation
                     answers.localisation = document.getElementById('localisations').value;
                     if (document.getElementById("nbPts").value != "") {
@@ -386,27 +405,33 @@
                     } else if ($('#minutesPrix').is(':checked')) {
                         answers.unitePrix = "minutes";
                     }
+                    
                     myArrayFile = $('.uploadFile');
-                    var objMap = new Map()
+                    var picturesArray = [];
+                    
                     for (i = 0; i < myArrayFile.length; i++) {
                         var uploadFile = myArrayFile[i];
                         var files = !!myArrayFile[i].files ? myArrayFile[i].files : [];
                         if (!files.length || !window.FileReader) {
-                            send = false;
-                            return; // no file selected, or no FileReader support
+                            console.log(myArrayFile.length);
+                            if(myArrayFile.length>1){
+                                send = false;
+                            }
+                            break; // no file selected, or no FileReader support
                         }
                         if (/^image/.test(files[0].type)) { // only image file
                             var reader = new FileReader(); // instance of the FileReader
                             reader.onload = function (event) {
                                 // I usually remove the prefix to only keep data, but it depends on your server
                                 var data = event.target.result.replace("data:" + files[0].type + ";base64,", '');
-                                objMap.set("image_" + objMap.size, data);
+                                picturesArray.push(data);
                             };
                             reader.readAsDataURL(files[0]);
                         }
                     }
-                    answers.pictures = objMap;
+                    answers.pictures = picturesArray;
                     console.log(answers);
+                    
                     if (send) {
                         //Validation
                         $("#validation").modal();
@@ -428,6 +453,7 @@
                     };
                 });
             });
+
         </script>
     </body>
 </html>
