@@ -244,9 +244,4 @@ public class Services {
         return false;
     }
 
-    public Person connectPerson(String mail, String password) {
-        // TODO : to implement
-        return new Person();
-    }
-
 }
