@@ -205,7 +205,7 @@ public class ServicesTest {
         Service s = instance.getServiceById(2L);
         expResult.add(s);
          
-        List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+        List<Service> result = instance.findAllServicesWithFilter("marteau","Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
         System.out.println("list : " + result.size());
         
         assertEquals(s, result.get(0));
@@ -220,7 +220,7 @@ public class ServicesTest {
         Service s = instance.getServiceById(3L);
         System.out.println("serv" + s.toString());
                 
-        List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "5","minutes","2" ,"Offer");
+        List<Service> result = instance.findAllServicesWithFilter("marteau","Bricolage", "Residence M", "", "", "5","minutes","2" ,"Offer");
        
          System.out.println("list : " + result.size());
         System.out.println("serv" + result.get(0).toString());

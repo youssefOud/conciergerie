@@ -109,7 +109,7 @@ public class Services {
     // comparaison
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
-    public List<Service> findAllServicesWithFilter(String category, String location, String date, String time, String duration, String units, String nbPts, String serviceType) throws ParseException {
+    public List<Service> findAllServicesWithFilter(String object, String category, String location, String date, String time, String duration, String units, String nbPts, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
         ServiceDAO serviceDao = new ServiceDAO();
         
@@ -159,7 +159,7 @@ public class Services {
             endingDate = formatNormal.parse( formatNormal.format(today.getTime() + durationInMillis) );
         }
               
-        List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, endingDate, nbPts, serviceType);
+        List<Service> listServices = serviceDao.findAllServicesWithFilter(object, category, location, startingDate, endingDate, nbPts, serviceType);
         
         JpaUtil.closeEntityManager();
         return listServices;
