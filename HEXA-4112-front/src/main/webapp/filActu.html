@@ -66,8 +66,10 @@
             </div>
         </nav>
 
-        <div class='container'>
-
+       
+ <div class='container'>
+            <div  id="popup">
+</div>
             <ul class="nav nav-pills flex-column"  >
 
                 <li class="nav-item dropdown show " style ="width:100%" >
@@ -215,7 +217,7 @@
             </ul>
             <br/>
             <div id="fil"></div>
-            <div class="card mb-3">
+<!--            <div class="card mb-3">
 
                 <h3 class="card-header">Prêt - Four
                     <div class="text-right"><button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>
@@ -253,12 +255,18 @@
                 </div>
 
 
-            </div>
+            </div>-->
         </div>
 
         <script>
 
             $(document).ready(function () {
+                        
+            if(window.location.href.indexOf('annonce') > -1){
+                   $('#popup').append(' <div class="alert alert-dismissible alert-primary" id="popup"><button type="button" class="close" data-dismiss="alert">&times;</button> <a class="alert-link">Votre annonce a bien été publiée.</div>');
+
+            }
+                
 
                 $('#date').datepicker({
                     format: "dd/mm/yyyy",
@@ -375,25 +383,28 @@
 
                                         for(var i in data.Annonces)
                                         {
-                                             $('#fil').append('<div class="card mb-3"><h3 class="card-header">Prêt - '+data[i].objet+'<div class="text-right">\n\
-                                                               <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
-                                                                <div class="card-body"><h6 class="card-subtitle text-muted">'+data[i].categorie+'</h6>\n\
-                                                                <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div></div>\n\
-                                                                <div><div class="card"><div class="card-header">\n\
-                                                                <h5 class="mb-0">\n\
-                                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">\n\
-                                                                  Détails\n\
-                                                                </button>\n\
-                                                                </h5>\n\
-                                                                </div>\n\
-                                                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">\n\
-                                                                <div class="card-body">'+data[i].description+'</div>\n\
-                                                                <ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+data[i].date+' '+data[i].time+'</li>\n\
-                                                                <li class="list-group-item">Durée de disponibilité : '+data[i].duree+' '+data[i].uniteDuree+'</li>\n\
-                                                                <li class="list-group-item">Prix : '+data[i].nbPts+' points par '+data[i].unitePrix+ '</li>\n\
-                                                                <li class="list-group-item">Localisation : '+ data[i].localisation+'</li>\n\
-                                                                </ul></div></div><div class="card-footer text-muted">Le '+data[i].datePublication+' à '+data[i].timePublication+'</div></div></div>'
-                                             );
+                                            var annonce ='<div class="card mb-3"><h3 class="card-header">Prêt - '+data.Annonces[i].nomObjet+'<div class="text-right">\n\
+                                                           <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
+                                                            <div class="card-body"><h6 class="card-subtitle text-muted">'+data.Annonces[i].categorie+'</h6>\n\
+                                                            <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div></div>\n\
+                                                            <div><div class="card"><div class="card-header">\n\
+                                                            <h5 class="mb-0">\n\
+                                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'" id="accordion'+i+'">\n\
+                                                              Détails\n\
+                                                            </button>\n\
+                                                            </h5>\n\
+                                                            </div>\n\
+                                                            <div id="collapse'+i+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordion'+i+'">';
+                                                            if(data.Annonces[i].description!=undefined){
+                                                                annonce+='<div class="card-body">'+data.Annonces[i].description+'</div>';
+                                                            }
+                                                            
+                                                            annonce +='<ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+data.Annonces[i].date+' '+data.Annonces[i].time+'</li>\n\
+                                                            <li class="list-group-item">Durée de disponibilité : '+data.Annonces[i].duree+' '+data.Annonces[i].uniteDuree+'</li>\n\
+                                                            <li class="list-group-item">Prix : '+data.Annonces[i].nbPts+' points par '+data.Annonces[i].unitePrix+ '</li>\n\
+                                                            <li class="list-group-item">Localisation : '+ data.Annonces[i].localisation+'</li>\n\
+                                                            </ul></div></div><div class="card-footer text-muted">Le '+data.Annonces[i].datePublication+' à '+data.Annonces[i].timePublication+'</div></div></div>'
+                                        $('#fil').append(annonce );
                                         }
                                     },
                                     error: function (data) {
@@ -448,25 +459,28 @@
                                 
                                     for(var i in data.Annonces)
                                     {
-                                         $('#fil').append('<div class="card mb-3"><h3 class="card-header">Prêt - '+data[i].objet+'<div class="text-right">\n\
+                                        var annonce ='<div class="card mb-3"><h3 class="card-header">Prêt - '+data.Annonces[i].nomObjet+'<div class="text-right">\n\
                                                            <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
-                                                            <div class="card-body"><h6 class="card-subtitle text-muted">'+data[i].categorie+'</h6>\n\
+                                                            <div class="card-body"><h6 class="card-subtitle text-muted">'+data.Annonces[i].categorie+'</h6>\n\
                                                             <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div></div>\n\
                                                             <div><div class="card"><div class="card-header">\n\
                                                             <h5 class="mb-0">\n\
-                                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">\n\
+                                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'" id="accordion'+i+'">\n\
                                                               Détails\n\
                                                             </button>\n\
                                                             </h5>\n\
                                                             </div>\n\
-                                                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">\n\
-                                                            <div class="card-body">'+data[i].description+'</div>\n\
-                                                            <ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+data[i].date+' '+data[i].time+'</li>\n\
-                                                            <li class="list-group-item">Durée de disponibilité : '+data[i].duree+' '+data[i].uniteDuree+'</li>\n\
-                                                            <li class="list-group-item">Prix : '+data[i].nbPts+' points par '+data[i].unitePrix+ '</li>\n\
-                                                            <li class="list-group-item">Localisation : '+ data[i].localisation+'</li>\n\
-                                                            </ul></div></div><div class="card-footer text-muted">Le '+data[i].datePublication+' à '+data[i].timePublication+'</div></div></div>'
-                                         );
+                                                            <div id="collapse'+i+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordion'+i+'">';
+                                                            if(data.Annonces[i].description!=undefined){
+                                                                annonce+='<div class="card-body">'+data.Annonces[i].description+'</div>';
+                                                            }
+                                                            
+                                                            annonce +='<ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+data.Annonces[i].date+' '+data.Annonces[i].time+'</li>\n\
+                                                            <li class="list-group-item">Durée de disponibilité : '+data.Annonces[i].duree+' '+data.Annonces[i].uniteDuree+'</li>\n\
+                                                            <li class="list-group-item">Prix : '+data.Annonces[i].nbPts+' points par '+data.Annonces[i].unitePrix+ '</li>\n\
+                                                            <li class="list-group-item">Localisation : '+ data.Annonces[i].localisation+'</li>\n\
+                                                            </ul></div></div><div class="card-footer text-muted">Le '+data.Annonces[i].datePublication+' à '+data.Annonces[i].timePublication+'</div></div></div>'
+                                        $('#fil').append(annonce );
                                     }
                                 },
                                 error: function (data) {

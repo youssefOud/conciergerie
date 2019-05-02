@@ -79,8 +79,8 @@ public class ServiceDAO {
         }
 
         if (!type.isEmpty()) {
-            if (type.equals("Demand")) query.setParameter("class", Demand.class);
-            else if (type.equals("Offer")) query.setParameter("class", Offer.class);
+            if (type.equals("demande")) query.setParameter("class", Demand.class);
+            else if (type.equals("offre")) query.setParameter("class", Offer.class);
         }
         List<Service> filteredServices = (List<Service>)query.getResultList();
         System.out.println("filtered: " + filteredServices.size());

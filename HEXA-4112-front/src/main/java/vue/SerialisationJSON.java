@@ -90,8 +90,15 @@ public class SerialisationJSON {
             
             jo.addProperty("unitePrix", s.getPriceUnit());
             jo.addProperty("uniteDuree", s.getDurationUnit());
-            jo.addProperty("pseudoPersonneDemande", s.getPersonDemanding().getPseudo());
-            jo.addProperty("pseudoPersonneOffre", s.getPersonOffering().getPseudo());
+            
+            if(s.getPersonDemanding() != null){
+                jo.addProperty("auteur", s.getPersonDemanding().getPseudo());
+            }
+            else if( s.getPersonOffering()!= null){
+                jo.addProperty("auteur", s.getPersonOffering().getPseudo());
+            }
+            
+            
             
             // pictures aussi a mettre
             /*JsonObject containerPictures = new JsonObject();

@@ -455,11 +455,13 @@
                                 timeout: 3000,
                                 dataType:'json',
                                 success: function (data) {
+                                    console.log(data);                                
                                     if(data.created){
                                         window.location.replace(
-                                        "http://localhost:8080/HEXA-4112-front/filActu.html");
+                                        "http://localhost:8080/HEXA-4112-front/filActu.html?annonce");
                                     }
                                     else{
+                                    
                                         $("#erreur").modal();
                                     }
                                 },
