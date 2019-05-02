@@ -34,7 +34,7 @@ public class Services {
     
     
     // TODO : compléter
-    public Person connexion (String mail, String mdp) {
+    public Person connectPerson (String mail, String mdp) {
         JpaUtil.createEntityManager();
         Person person = personDAO.verifyPersonAccount(mail, mdp);
         JpaUtil.closeEntityManager();
@@ -82,39 +82,33 @@ public class Services {
         return true;
     }
     
-    public Person registerPerson (Person person) {
+    public Person registerPerson (String lastName, String firstName, String password, String mail, String cellNumber) {
         JpaUtil.createEntityManager();
         
-        if((personDAO.personExists(person.getMail()))){
+        if( personDAO.personExists(mail) ){
             
             JpaUtil.closeEntityManager();
             return null;
         }
         else{
-        
-        
-        
-        
-        
-        
-        
-        
-        try {
-            JpaUtil.openTransaction();
-            //Create person plutot que de le prendre en paramètre
-            personDAO.persist(person);
-            JpaUtil.validateTransaction();
-        }
+            Person p = new Person(firstName, lastName, password, cellNumber, mail);
+            try {
+                JpaUtil.openTransaction();
+                //Create person plutot que de le prendre en paramètre
+                personDAO.persist(p);
+                JpaUtil.validateTransaction();
+                p = personDAO.verifyPersonAccount(mail, password);  
+            }
+
+             catch (Exception e) {
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return null;
+            }
             
-         catch (Exception e) {
-            JpaUtil.cancelTransaction();
             JpaUtil.closeEntityManager();
-            return null;
-        }
-        
-        JpaUtil.closeEntityManager();
-        return person;
-    }
+            return p;
+            }
     }
     
     // TODO : A completer : permet de retourner toutes les demandes
