@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="UTF-8">
+        <!--  CSS Files -->
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous" />
+        <link rel="stylesheet" href="css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="css/datepicker.css"></link>
+        <link rel="stylesheet" href="css/clockpicker.css"></link>
+        <link rel="stylesheet" href="css/style.css"></link>
+        <!-- JS Files -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/clockpicker.js"></script>
+
+
+        <link rel="shortcut icon" type="images/png" href="img/favicon.png"/>
+
+        <title>Fil d'actualité</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="filActu.html">
+                <img src="img/logo.png" alt="Campus Exchange">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarColor02" aria-controls="navbarColor02"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="deposerAnnonce.html">D&eacute;poser
+                            une annonce
+                        </a></li>
+                    <li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
+                    <li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item dropdown"><a
+                            class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="true" aria-expanded="true">Bonjour,
+                            Agathe</a>
+                        <div class="dropdown-menu" x-placement="bottom-start"
+                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
+                            <a class="dropdown-item" href="parametres.html">Paramètres</a> <a
+                                class="dropdown-item" href="contact.html">Contact support</a> <a
+                                class="dropdown-item" href="#">Déconnexion</a>
+                        </div></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class='container'>
+
+            <ul class="nav nav-pills flex-column"  >
+
+                <li class="nav-item dropdown show " style ="width:100%" >
+                    <a id="filtres" class="nav-link dropdown-toggle"  data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Filtrer</a>
+                    <div  id="menu" class="dropdown-menu" style ="width:100%" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <!-- Type d'annonce  -->
+                        <div class="form-inline form-group">
+                            &nbsp;
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input"
+                                       id="offre" checked="" name="type">
+                                <label class="custom-control-label" for="offre">Offre</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input"
+                                       id="demande" name="type"> <label
+                                       class="custom-control-label" for="demande">Demande</label>
+                            </div>
+                            <!-- Catégories -->
+                            <div class="form-group">
+
+                                <label for="categories"> <select
+                                        class="form-control select" id="categories">
+                                        <option>Toutes catégories</option>
+                                        <option>Bricolage</option>
+                                        <option>Education</option>
+                                        <option>Electrom&eacute;nager</option>
+                                        <option>Informatique</option>
+                                        <option>Jeux</option>
+                                        <option>Literie</option>
+                                        <option>Meubles</option>
+                                        <option>T&eacute;l&eacute;phonie</option>
+                                        <option>Ustensiles de cuisine</option>
+                                        <option>V&ecirc;tements</option>
+                                    </select>
+                            </div>
+                            &nbsp;
+
+                            <!-- Localisations-->
+                            <div class="form-group">
+                                <select
+                                    class="form-control select" id="localisations">
+                                    <option>Toutes localisations</option>
+                                    <option>R&eacute;sidence A</option>
+                                    <option>R&eacute;sidence B</option>
+                                    <option>R&eacute;sidence C</option>
+                                    <option>R&eacute;sidence D</option>
+                                    <option>R&eacute;sidence E</option>
+                                    <option>R&eacute;sidence F</option>
+                                    <option>R&eacute;sidence G</option>
+                                    <option>R&eacute;sidence H</option>
+                                    <option>R&eacute;sidence I</option>
+                                    <option>R&eacute;sidence J</option>
+                                    <option>R&eacute;sidence M</option>
+                                    <option>Autre</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <!-- Objet -->
+                        <div class="form-group">
+
+                            <input type="text"
+                                   class="form-control" id="objet"
+                                   placeholder="Que recherchez-vous ?">
+                        </div>
+
+                        <!-- Date de dispo -->
+                        <div class="form-group form-inline">
+                            &nbsp;
+                            <label class="control-label" for="date">Date de
+                                disponibilité</label> &nbsp;<input class="form-control" id="date" 
+                                                               placeholder="le DD/MM/AAAA" type="text" />&nbsp;<input type="text"
+                                                               class="form-control" id="time" placeholder="à HH:mm">
+                        </div>
+
+                        <!-- Durée de dispo-->
+                        <div class="form-inline form-group">
+                            &nbsp;
+                            <div class="form-group">
+                                <label for="objet">Dur&eacute;e de disponibilit&eacute;</label>&nbsp; <input
+                                    type="number" class="form-control" id="duree" min="0"
+                                    placeholder="Renseignez la dur&eacute;e de disponibilit&eacute; de l'objet">
+                            </div>&nbsp;
+
+                            <!-- En minutes, en heures ou en jours-->
+                            <div class="form-group ">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input"
+                                           id="minutes" name="unite" checked="">
+                                    <label class="custom-control-label" for="minutes">Minutes</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input"
+                                           id="heures" name="unite">
+                                    <label class="custom-control-label" for="heures">Heures</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input"
+                                           id="jours" name="unite"> <label
+                                           class="custom-control-label" for="jours">Jours</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nombre de points-->
+                        <div class="form-inline form-group" >
+                            &nbsp;
+                            <div class="form-group">
+                                <label for="nbPts">Nombre de points </label>&nbsp; <input type="number"
+                                                                                          class="form-control" id="nbPts" min="0"
+                                                                                          placeholder="Renseignez le nombre de points par">
+
+                            </div>&nbsp;
+                            <div class="form-group ">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input"
+                                           id="minutesPrix" name="unitePrix" checked="">
+                                    <label class="custom-control-label" for="minutesPrix">Minutes</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input"
+                                           id="heuresPrix" name="unitePrix">
+                                    <label class="custom-control-label" for="heuresPrix">Heures</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input"
+                                           id="joursPrix" name="unitePrix"> <label
+                                           class="custom-control-label" for="joursPrix">Jours</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Validation -->
+                        <div class="center form-inline">
+                            <button type="button" class="btn btn-primary" id="filtrer"
+                                    >Filtrer</button>
+                            <button type="button" class="btn btn-primary" id="annuler"
+                                    >Annuler</button>
+                        </div>
+
+                    </div>
+
+                </li>
+
+            </ul>
+            <br/>
+            <div class="card mb-3">
+                <div >
+                <h3 class="card-header">Prêt - Four
+                <div class="text-right"><button type="button" class="btn btn-outline-warning">Répondre</button></div></h3></div>
+                <div class="card-body">
+                    <h6 class="card-subtitle text-muted">Electroménager</h6>
+                    <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div>
+                </div>
+                <div id="accordion">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Détails
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">
+                                Mon four est un Moulinex super fort.
+                            </div>
+                            <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Date de disponibilité : 20/02/2019 03:10</li>
+                    <li class="list-group-item">Durée de disponibilité : 5 jours</li>
+                    <li class="list-group-item">Prix : 3 points par jour</li>
+                    <li class="list-group-item">Localisation : Résidence A</li>
+                </ul>
+                        </div>
+                    </div>
+                
+                
+                    <div class="card-footer text-muted">
+                        Le 10/02/2019 à 12:39
+                    </div>
+                </div>
+
+
+            </div>
+
+            <script>
+
+                $(document).ready(function () {
+
+                    $('#date').datepicker({
+                        format: "dd/mm/yyyy",
+                        locale: "fr",
+                        autoclose: true,
+                        todayHighlight: true,
+                        pick12HourFormat: true
+                    });
+
+
+                    $('#time').clockpicker({
+                        autoclose: true,
+                        donetext: 'Done'
+                    });
+
+                    $('#filtres').click(function (e) {
+                        if ($("#menu").is(":visible") && e.target.attributes[0].nodeValue == "filtres") {
+                            $('#menu').hide()
+                        } else {
+                            e.stopPropagation()
+                            $('#menu').show()
+                        }
+
+                    })
+                    $('#filtrer').click(function (e) {
+                        $('#menu').hide()
+                    })
+                    $('#annuler').click(function (e) {
+                        $('#menu').hide()
+                    })
+
+
+
+                });
+
+
+
+
+
+            </script>
+
+
+    </body>
+</html>
