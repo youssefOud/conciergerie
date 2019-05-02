@@ -117,7 +117,7 @@ public class Services {
         SimpleDateFormat formatNormal = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy"); 
         SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm"); 
-        Date startingDate = formatNormal.parse(formatNormal.format(today)) ;
+        Date startingDate;
         
         if (!date.isEmpty()) {
             if (time.isEmpty()) {
@@ -126,10 +126,14 @@ public class Services {
                 
             startingDate = formatNormal.parse(date + " " + time);
             }
+            else{
+                startingDate = formatNormal.parse(date + " " + time);
+            }
         } else if (!time.isEmpty()) {
-            
             startingDate = formatNormal.parse(formatDate.format(today) + " " + time) ;
-        } 
+        } else{
+            startingDate = null;
+        }
         
 
         Long durationInMillis = 0L;
@@ -147,8 +151,13 @@ public class Services {
             durationInMillis = new Long(0);
         }
         
-        
-        Date endingDate = formatNormal.parse( formatNormal.format(startingDate.getTime() + durationInMillis) );
+        Date endingDate;
+        if(startingDate != null){
+            endingDate = formatNormal.parse( formatNormal.format(startingDate.getTime() + durationInMillis) );
+        }
+        else{
+            endingDate = formatNormal.parse( formatNormal.format(today.getTime() + durationInMillis) );
+        }
               
         List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, endingDate, nbPts, serviceType);
         
