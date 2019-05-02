@@ -2,6 +2,7 @@ package Model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,8 +37,55 @@ public abstract class Service implements Serializable{
     
     @Temporal(TemporalType.TIMESTAMP)
     protected Date publicationDate;
+    
+    protected String location;
+    
+    protected String type;
 
-    public Long getId() {
+    protected String description;
+    
+    protected int duration;
+    
+    protected List<String> pictures;
+    
+    protected String priceUnit;
+    
+    protected String durationUnit;
+    
+    public Service() {
+        
+    }
+
+    public Service(Person personOffering, Person personDemanding, String category, List<String> pictures, String nameObject, Date availabilityDate,
+            String localisation, String type, String description, String priceUnit, String durationUnit, int duration) {
+
+        this.personOffering = personOffering;
+        this.personDemanding = personDemanding;
+        this.category = category;
+        this.pictures = pictures;
+        this.nameObject = nameObject;
+        this.availabilityDate = availabilityDate;
+        this.location = localisation;
+        this.type = type;
+        this.description = description;
+        this.priceUnit = priceUnit;
+        this.durationUnit = durationUnit;
+        this.duration = duration;
+        this.publicationDate = new Date();
+        
+        Long durationInMillis = Long.valueOf(duration);
+        if (durationUnit.equals("jours")) {
+            durationInMillis *= 24*60*60*1000;
+        } else if (durationUnit.equals("heures")) {
+            durationInMillis *= 60*60*1000;
+        }  else if (durationUnit.equals("minutes")) {
+            durationInMillis *= 60*1000;
+        }
+        
+        endOfAvailabilityDate = new Date(availabilityDate.getTime() + durationInMillis);
+    }
+    
+     public Long getId() {
         return id;
     }
 
@@ -77,12 +125,12 @@ public abstract class Service implements Serializable{
         this.duration = duration;
     }
 
-    public String getPicture() {
-        return picture;
+    public List<String> getPictures() {
+        return pictures;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 
     public String getPriceUnit() {
@@ -99,53 +147,6 @@ public abstract class Service implements Serializable{
 
     public void setDurationUnit(String durationUnit) {
         this.durationUnit = durationUnit;
-    }
-    
-    protected String location;
-    
-    protected String type;
-
-    protected String description;
-    
-    protected int duration;
-    
-    protected String picture;
-    
-    protected String priceUnit;
-    
-    protected String durationUnit;
-    
-    public Service() {
-        
-    }
-
-    public Service(Person personOffering, Person personDemanding, String category, String picture, String nameObject, Date availabilityDate,
-            String localisation, String type, String description, String priceUnit, String durationUnit, int duration) {
-
-        this.personOffering = personOffering;
-        this.personDemanding = personDemanding;
-        this.category = category;
-        this.picture = picture;
-        this.nameObject = nameObject;
-        this.availabilityDate = availabilityDate;
-        this.location = localisation;
-        this.type = type;
-        this.description = description;
-        this.priceUnit = priceUnit;
-        this.durationUnit = durationUnit;
-        this.duration = duration;
-        this.publicationDate = new Date();
-        
-        Long durationInMillis = Long.valueOf(duration);
-        if (durationUnit.equals("jours")) {
-            durationInMillis *= 24*60*60*1000;
-        } else if (durationUnit.equals("heures")) {
-            durationInMillis *= 60*60*1000;
-        }  else if (durationUnit.equals("minutes")) {
-            durationInMillis *= 60*1000;
-        }
-        
-        endOfAvailabilityDate = new Date(availabilityDate.getTime() + durationInMillis);
     }
     
     public Person getPersonOffering() {

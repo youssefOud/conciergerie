@@ -31,12 +31,12 @@ public class Main {
                 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("02/05/2019 00:00")
+        Offer offer = new Offer(person, "Bricolage", null, "marteau",  formatDate.parse("02/05/2019 00:00")
                 ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
-        Demand demand = new Demand(person, "Bricolage", "010010100110", "marteau", formatDate.parse("12/05/2019 19:00")
+        Demand demand = new Demand(person, "Bricolage",null, "marteau", formatDate.parse("12/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
-        Offer offer2 = new Offer(person, "Bricolage", "010010100110", "four",  formatDate.parse("02/05/2019 00:00")
-                ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
+        Offer offer2 = new Offer(person, "Bricolage", null, "four",  formatDate.parse("01/05/2019 00:00")
+                ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
         
         System.out.println(s.createPerson(person));
         System.out.println(s.createDemand(demand));
