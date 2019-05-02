@@ -30,9 +30,11 @@ public class ActionRegistration extends Action {
         EmailSenderService ems = new EmailSenderService();
         Services services = new Services();
         // TODO : Verifier en envoyant un mail
-        boolean verifiedIdentity = ems.sendVerificationEmail(mail);
         
-        if (verifiedIdentity) {
+        //A REVOIR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Utiliser le service: sendVerificationEmail(mail) : boolean
+        String verifiedIdentity = ems.sendVerificationEmail(mail);
+        
+        if (!verifiedIdentity.isEmpty()) {
             Person person = services.inscription(name, firstName, password, mail, cellNumber);
             // TODO : modifier avec les infos que veulent les filles : directement dans la classe sérialisation
             request.setAttribute("registered", true);

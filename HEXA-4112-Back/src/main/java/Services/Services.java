@@ -10,6 +10,9 @@ import Model.Demand;
 import Model.Offer;
 import Model.Person;
 import Model.Service;
+import Model.VerificationToken;
+import Utils.EmailSenderService;
+import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,12 +27,14 @@ public class Services {
     final private OfferDAO offerDAO;
     final private PersonDAO personDAO;
     final private ServiceDAO serviceDAO;
+    final private VerificationTokenDAO verificationTokenDAO;
     
     public Services(){
         this.demandDAO = new DemandDAO();
         this.offerDAO = new OfferDAO();
         this.personDAO = new PersonDAO();
         this.serviceDAO = new ServiceDAO();   
+        this.verificationTokenDAO = new VerificationTokenDAO();   
     }
     
     
@@ -40,6 +45,35 @@ public class Services {
         JpaUtil.closeEntityManager();
         
         return person;
+    }
+    
+    public boolean sendVerificationEmail (String mail){
+        JpaUtil.createEntityManager();
+        
+        if( personDAO.personExists(mail) ){
+            
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        else{
+            String verifCode = EmailSenderService.sendVerificationEmail(mail);
+            if(!verifCode.isEmpty()){
+                VerificationToken vt = new VerificationToken(verifCode, mail);
+                try {
+                    JpaUtil.openTransaction();
+                    verificationTokenDAO.persist(vt);
+                    JpaUtil.validateTransaction();
+                }
+                catch(Exception e){
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
+            }
+            
+        }
+        JpaUtil.closeEntityManager();
+        return true;
     }
     
     // TODO : A completer : Dans l'ActionServlet, le bouton radio
@@ -82,20 +116,23 @@ public class Services {
         return true;
     }
     
-    public Person registerPerson (String lastName, String firstName, String password, String mail, String cellNumber) {
+    public Person registerPerson (String lastName, String firstName, String password, String mail, String cellNumber, String verificationCode) {
         JpaUtil.createEntityManager();
         
-        if( personDAO.personExists(mail) ){
-            
+        boolean tokenExists = verificationTokenDAO.verificationTokenExists(mail, verificationCode);
+        
+        if( !tokenExists || personDAO.personExists(mail) ){ 
             JpaUtil.closeEntityManager();
             return null;
         }
+        
         else{
             Person p = new Person(firstName, lastName, password, cellNumber, mail);
             try {
                 JpaUtil.openTransaction();
                 //Create person plutot que de le prendre en paramètre
                 personDAO.persist(p);
+                /////////////////////////////////////////Ajouter si possible la suppression du verification token utilisé
                 JpaUtil.validateTransaction();
                 p = personDAO.verifyPersonAccount(mail, password);  
             }

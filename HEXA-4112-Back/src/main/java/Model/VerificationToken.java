@@ -21,6 +21,9 @@ public class VerificationToken {
     private Long id;
     private String token;
     private String email;
+    
+    public VerificationToken(){
+    }
 
     public VerificationToken(String token, String email) {
         this.token = token;
