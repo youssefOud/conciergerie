@@ -7,6 +7,7 @@
     <class>Model.Offer</class>
     <class>Model.Person</class>
     <class>Model.Service</class>
+    <class>Model.VerificationToken</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/HEXA-4112"/>
       <property name="javax.persistence.jdbc.user" value="test"/>

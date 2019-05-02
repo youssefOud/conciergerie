@@ -23,7 +23,7 @@ public class EmailSenderService {
     
     private static final String email = "hexa4112@gmail.com";
     private static final String password = "test_Conciergerie";
-    private static final String msg = "Bonjour,\nPour finir votre inscription veuillez saisir le code ci-dessus : \n";
+    private static final String msg = "Bonjour,\nPour finir votre inscription veuillez saisir le code ci-dessous : \n";
     //sendMail("oliviacaraiman@gmail.com","RegistTest", "TEST SUCCESSFUL");
     private static String generateCode() {
         int leftLimit = '0';

@@ -49,6 +49,17 @@ public class Main {
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         System.out.println();
 */
+       
+       
+       
+        boolean emailSent = s.sendVerificationEmail("mets ton adresse mail ici");
+        System.out.println("--------------------------------"+emailSent+"-------------------");
+        
+        
+        
+        //A décommenter quand tu recois le code de vérification (et insérer le code de vérification
+        
+        //Person p = s.registerPerson("Dupont", "Jean", "Password", "adresseMailDeOlivia@gmail.com", "000000000000", mettre verification code ici);
         JpaUtil.destroy();
         
         
