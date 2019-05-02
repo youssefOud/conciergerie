@@ -13,9 +13,7 @@
         <link rel="stylesheet" href="css/style.css"></link>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
         <!-- JS Files -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js">
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -408,7 +406,7 @@
                     }
 
                     myArrayFile = $('.uploadFile');
-                    var objMap = new Map()
+                    var picturesArray = [];
                     for (i = 0; i < myArrayFile.length; i++) {
                         var uploadFile = myArrayFile[i];
                         var files = !!myArrayFile[i].files ? myArrayFile[i].files : [];
@@ -421,12 +419,12 @@
                             reader.onload = function (event) {
                                 // I usually remove the prefix to only keep data, but it depends on your server
                                 var data = event.target.result.replace("data:" + files[0].type + ";base64,", '');
-                                objMap.set("image_" + objMap.size, data);
+                                picturesArray.push(data);
                             };
                             reader.readAsDataURL(files[0]);
                         }
                     }
-                    answers.pictures = objMap;
+                    answers.pictures = picturesArray;
                     console.log(answers);
 
                     if (send) {
@@ -449,6 +447,7 @@
                     }
                 });
             });
+
         </script>
     </body>
 </html>
