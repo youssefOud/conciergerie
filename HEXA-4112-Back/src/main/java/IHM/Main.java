@@ -11,6 +11,7 @@ import Model.Offer;
 import Model.Person;
 import Model.Service;
 import Services.Services;
+import Utils.EmailSenderService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -26,7 +27,7 @@ public class Main {
         JpaUtil.init();
         Services s = new Services();
         
-  
+        EmailSenderService.sendVerificationEmail("oliviacaraiman@gmail.com");
        /* Person person = new Person("12345","+12345","fifi@gmail.com","fifi","/url/img.png","Residence A");
                 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
