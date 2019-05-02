@@ -194,7 +194,6 @@ public class ServicesTest {
     public void testFindAllServicesWithFilterOK() throws ParseException {
         System.out.println("findAllServicesWithFilter");
         Services instance = new Services();
-        
 //        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 //        Person person = instance.getPersonById(1L);
 //        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("10/04/2019 19:00")
@@ -206,8 +205,9 @@ public class ServicesTest {
         Service s = instance.getServiceById(2L);
         expResult.add(s);
          
-        List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "", "", "","","" ,"Offer");
+        List<Service> result = instance.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
         System.out.println("list : " + result.size());
+        
         assertEquals(s, result.get(0));
         // TODO review the generated test code and remove the default call to //fail.
     }
