@@ -9,6 +9,10 @@ import DAO.*;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Service;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -105,16 +109,51 @@ public class Services {
     // comparaison
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
-    public List<Demand> findAllServicesWithFilter(String category, String localisation, String date, String duration, String units, String nbPts, String type) {
+    public List<Service> findAllServicesWithFilter(String category, String location, String date, String time, String duration, String units, String nbPts, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
         ServiceDAO serviceDao = new ServiceDAO();
         
-        List<Demand> listDemand = new ArrayList<>();
+        Date today = new Date();
+        SimpleDateFormat formatNormal = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy"); 
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm"); 
+        Date startingDate = formatNormal.parse(formatNormal.format(today)) ;
+        
+        if (!date.isEmpty()) {
+            if (time.isEmpty()) {
+                if (date.equals(formatDate.format(today))) time = formatTime.format(today);
+                else  time="00:00";
+                
+            startingDate = formatNormal.parse(date + " " + time);
+            }
+        } else if (!time.isEmpty()) {
+            
+            startingDate = formatNormal.parse(formatDate.format(today) + " " + time) ;
+        } 
+        
+
+        Long durationInMillis = 0L;
+        if (!duration.isEmpty()) {
+            durationInMillis = Long.valueOf(duration);
+            if (units.equals("jours")) {
+                durationInMillis *= 24*60*60*1000;
+            } else if (units.equals("heures")) {
+                durationInMillis *= 60*60*1000;
+            }  else if (units.equals("minutes")) {
+                durationInMillis *= 60*1000;
+            }
+        }
+        else{
+            durationInMillis = new Long(0);
+        }
         
         
+        Date endingDate = formatNormal.parse( formatNormal.format(startingDate.getTime() + durationInMillis) );
+              
+        List<Service> listServices = serviceDao.findAllServicesWithFilter(category, location, startingDate, endingDate, nbPts, serviceType);
         
         JpaUtil.closeEntityManager();
-        return listDemand;
+        return listServices;
     }
     
     // TODO : A completer : permet de retourner toutes les offres
@@ -157,4 +196,16 @@ public class Services {
         JpaUtil.closeEntityManager();
         return person;
     }
+    
+    public Service getServiceById(Long idService) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        ServiceDAO serviceDAO = new ServiceDAO();
+        Service service = serviceDAO.findById(idService);
+        
+        JpaUtil.closeEntityManager();
+        return service;
+    }
+
 }
