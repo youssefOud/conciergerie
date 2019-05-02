@@ -212,5 +212,6 @@ public abstract class Service implements Serializable{
         return serviceString;
     }
     
-    public abstract double getNbPoint();
+    public abstract int getNbPoint();
+    public abstract int getNbPointPerDay();
 }

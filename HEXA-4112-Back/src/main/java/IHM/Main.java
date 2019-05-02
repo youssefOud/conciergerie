@@ -27,7 +27,7 @@ public class Main {
         Services s = new Services();
         
   
-        Person person = new Person("fifi","12345","+12345","fifi@gmail.com",5,"fifi",4.5,"/url/img.png","Residence A");
+       /* Person person = new Person("12345","+12345","fifi@gmail.com","fifi","/url/img.png","Residence A");
                 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
@@ -44,10 +44,10 @@ public class Main {
         System.out.println(s.createOffer(offer));
     
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
-        List<Service> listS = s.findAllServicesWithFilter("", "", "", "", "","","" ,"");
+       // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         System.out.println();
-
+*/
         JpaUtil.destroy();
         
         
