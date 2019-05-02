@@ -219,7 +219,7 @@
             <div id="fil"></div>
 <!--            <div class="card mb-3">
 
-                <h3 class="card-header">Prêt - Four
+                <h3 class="card-header"><span style="color:#007bff" >OFFRE</span> - Prêt - Four 
                     <div class="text-right"><button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>
                 <div class="card-body">
                     <h6 class="card-subtitle text-muted">Electroménager</h6>
@@ -383,7 +383,15 @@
 
                                         for(var i in data.Annonces)
                                         {
-                                            var annonce ='<div class="card mb-3"><h3 class="card-header">Prêt - '+data.Annonces[i].nomObjet+'<div class="text-right">\n\
+                                            var annonce ='<div class="card mb-3"><h3 class="card-header">';
+                                                            if(data.Annonces[i].typeAnnonce=="offre"){
+                                                                annonce+='<span style="color:#007bff" >OFFRE</span>';
+                                                            }
+                                                            else if(data.Annonces[i].typeAnnonce=="demande"){
+                                                                annonce+='<span style="color:#f47d42" >DEMANDE</span>';
+                                                            }
+                                                            
+                                                            annonce +=' - Prêt - '+data.Annonces[i].nomObjet+'<div class="text-right">\n\
                                                            <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
                                                             <div class="card-body"><h6 class="card-subtitle text-muted">'+data.Annonces[i].categorie+'</h6>\n\
                                                             <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div></div>\n\
@@ -459,7 +467,15 @@
                                 
                                     for(var i in data.Annonces)
                                     {
-                                        var annonce ='<div class="card mb-3"><h3 class="card-header">Prêt - '+data.Annonces[i].nomObjet+'<div class="text-right">\n\
+                                        var annonce ='<div class="card mb-3"><h3 class="card-header">';
+                                                            if(data.Annonces[i].typeAnnonce=="offre"){
+                                                                annonce+='<span style="color:#007bff" >OFFRE</span>';
+                                                            }
+                                                            else if(data.Annonces[i].typeAnnonce=="demande"){
+                                                                annonce+='<span style="color:#f47d42" >DEMANDE</span>';
+                                                            }
+                                                            
+                                                            annonce +=' - Prêt - '+data.Annonces[i].nomObjet+'<div class="text-right">\n\
                                                            <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
                                                             <div class="card-body"><h6 class="card-subtitle text-muted">'+data.Annonces[i].categorie+'</h6>\n\
                                                             <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div></div>\n\
