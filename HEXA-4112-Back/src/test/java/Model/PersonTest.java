@@ -44,8 +44,6 @@ public class PersonTest {
     
     @org.junit.Test
     public void testCreatePerson() {
-        System.out.println("Test : Create Person");
-        //TO DO
         
 //        Person instance = new Person("fifi","12345","+12345","fifi@gmail.com",5,"fifi",4.5,"/url/img.png","Residence A");
 //             

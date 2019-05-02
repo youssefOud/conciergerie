@@ -38,11 +38,37 @@ public class Person{
     }
     
     public Person(String firstName, String lastName, String password, String cellNumber, String mail) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
         this.cellNumber = cellNumber;
         this.mail = mail;
         this.pointBalance = 100;
-        this.location = location;
+        this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
     
     public String getPassword() {
