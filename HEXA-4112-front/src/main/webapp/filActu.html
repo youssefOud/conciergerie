@@ -12,9 +12,7 @@
         <link rel="stylesheet" href="css/clockpicker.css"></link>
         <link rel="stylesheet" href="css/style.css"></link>
         <!-- JS Files -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.min.js">
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -215,10 +213,11 @@
 
             </ul>
             <br/>
+            <div id="fil"></div>
             <div class="card mb-3">
-                <div >
+
                 <h3 class="card-header">Prêt - Four
-                <div class="text-right"><button type="button" class="btn btn-outline-warning">Répondre</button></div></h3></div>
+                    <div class="text-right"><button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>
                 <div class="card-body">
                     <h6 class="card-subtitle text-muted">Electroménager</h6>
                     <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div>
@@ -238,15 +237,15 @@
                                 Mon four est un Moulinex super fort.
                             </div>
                             <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Date de disponibilité : 20/02/2019 03:10</li>
-                    <li class="list-group-item">Durée de disponibilité : 5 jours</li>
-                    <li class="list-group-item">Prix : 3 points par jour</li>
-                    <li class="list-group-item">Localisation : Résidence A</li>
-                </ul>
+                                <li class="list-group-item">Date de disponibilité : 20/02/2019 03:10</li>
+                                <li class="list-group-item">Durée de disponibilité : 5 jours</li>
+                                <li class="list-group-item">Prix : 3 points par jour</li>
+                                <li class="list-group-item">Localisation : Résidence A</li>
+                            </ul>
                         </div>
                     </div>
-                
-                
+
+
                     <div class="card-footer text-muted">
                         Le 10/02/2019 à 12:39
                     </div>
@@ -254,45 +253,171 @@
 
 
             </div>
+        </div>
 
-            <script>
+        <script>
 
-                $(document).ready(function () {
+            $(document).ready(function () {
 
-                    $('#date').datepicker({
-                        format: "dd/mm/yyyy",
-                        locale: "fr",
-                        autoclose: true,
-                        todayHighlight: true,
-                        pick12HourFormat: true
-                    });
-
-
-                    $('#time').clockpicker({
-                        autoclose: true,
-                        donetext: 'Done'
-                    });
-
-                    $('#filtres').click(function (e) {
-                        if ($("#menu").is(":visible") && e.target.attributes[0].nodeValue == "filtres") {
-                            $('#menu').hide()
-                        } else {
-                            e.stopPropagation()
-                            $('#menu').show()
-                        }
-
-                    })
-                    $('#filtrer').click(function (e) {
-                        $('#menu').hide()
-                    })
-                    $('#annuler').click(function (e) {
-                        $('#menu').hide()
-                    })
-
-
-
+                $('#date').datepicker({
+                    format: "dd/mm/yyyy",
+                    locale: "fr",
+                    autoclose: true,
+                    todayHighlight: true,
+                    pick12HourFormat: true
                 });
 
+
+                $('#time').clockpicker({
+                    autoclose: true,
+                    donetext: 'Done'
+                });
+
+                $('#filtres').click(function (e) {
+                    if ($("#menu").is(":visible") && e.target.attributes[0].nodeValue == "filtres") {
+                        $('#menu').hide()
+                    } else {
+                        e.stopPropagation()
+                        $('#menu').show()
+                    }
+
+                })
+                $('#filtrer').click(function (e) {
+                    $('#menu').hide()
+                })
+                $('#annuler').click(function (e) {
+                    $('#menu').hide()
+                })
+                
+                $('#filtrer').click(function(e){
+                var filtres = new Object();
+                filtres.todo = "afficherFilActualite";
+                
+                //Type
+                    filtres.type = "demande";
+                    if ($('#offre').is(':checked')) {
+                        filtres.type = "offre";
+                    }
+                    //Catégorie
+                    filtres.categorie = document.getElementById('categories').value;
+                    //Nom objet
+                        filtres.objet = document.getElementById("objet").value;
+                    
+                    //Date
+                        filtres.date = document.getElementById("date").value;
+                        
+                    //Heure
+                        filtres.time = document.getElementById("time").value;
+                        
+                    //Durée
+                        filtres.duree = document.getElementById("duree").value;
+                        
+                    //Unité durée
+                    filtres.uniteDuree = "heures";
+                    if ($('#jours').is(':checked')) {
+                        filtres.uniteDuree = "jours";
+                    } else if ($('#minutes').is(':checked')) {
+                        filtres.uniteDuree = "minutes";
+                    }
+                    //Localisation
+                    filtres.localisation = document.getElementById('localisations').value;
+                    
+                    //nbPts
+                        filtres.nbPts = document.getElementById("nbPts").value;
+                        
+                    //Unité prix
+                    filtres.unitePrix = "heures";
+                    if ($('#joursPrix').is(':checked')) {
+                        filtres.unitePrix = "jours";
+                    } else if ($('#minutesPrix').is(':checked')) {
+                        filtres.unitePrix = "minutes";
+                    }
+                    console.log(filtres);
+                })
+                
+                var filtres = new Object();
+                filtres.todo = "afficherFilActualite";
+                
+                //Type
+                    filtres.type = "";
+                    //Catégorie
+                    filtres.categorie = document.getElementById('categories').value;
+                    //Nom objet
+                        filtres.objet = document.getElementById("objet").value;
+                    
+                    //Date
+                        filtres.date = document.getElementById("date").value;
+                        
+                    //Heure
+                        filtres.time = document.getElementById("time").value;
+                        
+                    //Durée
+                        filtres.duree = document.getElementById("duree").value;
+                        
+                    //Unité durée
+                    filtres.uniteDuree = "heures";
+                    if ($('#jours').is(':checked')) {
+                        filtres.uniteDuree = "jours";
+                    } else if ($('#minutes').is(':checked')) {
+                        filtres.uniteDuree = "minutes";
+                    }
+                    //Localisation
+                    filtres.localisation = document.getElementById('localisations').value;
+                    
+                    //nbPts
+                        filtres.nbPts = document.getElementById("nbPts").value;
+                        
+                    //Unité prix
+                    filtres.unitePrix = "heures";
+                    if ($('#joursPrix').is(':checked')) {
+                        filtres.unitePrix = "jours";
+                    } else if ($('#minutesPrix').is(':checked')) {
+                        filtres.unitePrix = "minutes";
+                    }
+                    
+                    console.log(filtres);
+                    
+                
+                $.ajax({
+                                type: 'GET',
+                                url: './ActionServlet',
+                                data: filtres,
+                                timeout: 3000,
+                                dataType:'json',
+                                success: function (data) {
+                                    for(var i in x)
+                                    {
+                                         $('#fil').append('<div class="card mb-3"><h3 class="card-header">Prêt - '+x[i].objet+'<div class="text-right">\n\
+                                                           <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
+                                                            <div class="card-body"><h6 class="card-subtitle text-muted">'+x[i].categorie+'</h6>\n\
+                                                            <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div></div>\n\
+                                                            <div><div class="card"><div class="card-header">\n\
+                                                            <h5 class="mb-0">\n\
+                                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">\n\
+                                                              Détails\n\
+                                                            </button>\n\
+                                                            </h5>\n\
+                                                            </div>\n\
+                                                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">\n\
+                                                            <div class="card-body">'+x[i].description+'</div>\n\
+                                                            <ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+x[i].date+' '+x[i].time+'</li>\n\
+                                                            <li class="list-group-item">Durée de disponibilité : '+x[i].duree+' '+x[i].uniteDuree+'</li>\n\
+                                                            <li class="list-group-item">Prix : '+x[i].nbPts+' points par '+x[i].unitePrix+ '</li>\n\
+                                                            <li class="list-group-item">Localisation : '+ x[i].localisation+'</li>\n\
+                                                            </ul></div></div><div class="card-footer text-muted">Le '+x[i].datePublication+' à '+x[i].timePublication+'</div></div></div>'
+                                         );
+                                    }
+                                },
+                                error: function () {
+                                    $("#erreur").modal();
+                                }
+                            });
+                 
+                
+
+
+
+            });
             </script>
 
 
