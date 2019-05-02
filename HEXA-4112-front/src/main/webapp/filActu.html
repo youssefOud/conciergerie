@@ -17,6 +17,7 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
+        
         <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -139,8 +140,8 @@
                             &nbsp;
                             <label class="control-label" for="date">Date de
                                 disponibilité</label> &nbsp;<input class="form-control" id="date" 
-                                                               placeholder="le DD/MM/AAAA" type="text" />&nbsp;<input type="text"
-                                                               class="form-control" id="time" placeholder="à HH:mm">
+                                             placeholder="le DD/MM/AAAA" type="text" />&nbsp;<div><input type="text"
+                                                               class="form-control" id="time" placeholder="à HH:mm"><div class="invalid-feedback">Veuillez renseigner une date ultérieure.</div></div>
                         </div>
 
                         <!-- Durée de dispo-->
@@ -148,7 +149,7 @@
                             &nbsp;
                             <div class="form-group">
                                 <label for="objet">Dur&eacute;e de disponibilit&eacute;</label>&nbsp; <input
-                                    type="number" class="form-control" id="duree" min="0"
+                                    type="number" class="form-control" id="duree" min="1"
                                     placeholder="Renseignez la dur&eacute;e de disponibilit&eacute; de l'objet">
                             </div>&nbsp;
 
@@ -177,7 +178,7 @@
                             &nbsp;
                             <div class="form-group">
                                 <label for="nbPts">Nombre de points </label>&nbsp; <input type="number"
-                                                                                          class="form-control" id="nbPts" min="0"
+                                                                                          class="form-control" id="nbPts" min="1"
                                                                                           placeholder="Renseignez le nombre de points par">
 
                             </div>&nbsp;
@@ -200,7 +201,7 @@
                             </div>
                         </div>
                         <!-- Validation -->
-                        <div class="center form-inline">
+                        <div class="center">
                             <button type="button" class="btn btn-primary" id="filtrer"
                                     >Filtrer</button>
                             <button type="button" class="btn btn-primary" id="annuler"
@@ -282,15 +283,14 @@
                     }
 
                 })
-                $('#filtrer').click(function (e) {
-                    $('#menu').hide()
-                })
+                
                 $('#annuler').click(function (e) {
                     $('#menu').hide()
                 })
                 
                 $('#filtrer').click(function(e){
                 var filtres = new Object();
+                var send=true;
                 filtres.todo = "afficherFilActualite";
                 
                 //Type
@@ -303,8 +303,37 @@
                     //Nom objet
                         filtres.objet = document.getElementById("objet").value;
                     
+                    filtres.date = document.getElementById("date").value;
+                    filtres.time = document.getElementById("time").value;
                     //Date
-                        filtres.date = document.getElementById("date").value;
+                    if (document.getElementById("date").value != "" && document.getElementById("time").value != "") {
+                        var wanted=new Date(filtres.date.split('/')[2],filtres.date.split('/')[1]-1,filtres.date.split('/')[0],filtres.time.split(':')[0],filtres.time.split(':')[1]);
+                        if(Date.now()<=wanted.getTime()){
+                            document.getElementById("date").classList.remove("is-invalid");
+                            document.getElementById("time").classList.remove("is-invalid");
+                        }
+                        else{
+                        send = false;
+                        document.getElementById("date").classList.add("is-invalid");
+                        document.getElementById("time").classList.add("is-invalid");
+                        }
+                        
+                        
+                    } else if(document.getElementById("date").value == "" && document.getElementById("time").value != ""){
+                        send = false;
+                        document.getElementById("date").classList.add("is-invalid");
+                    }
+                    else if(document.getElementById("date").value != "" && document.getElementById("time").value == ""){
+                        var wanted=new Date(filtres.date.split('/')[2],filtres.date.split('/')[1]-1,filtres.date.split('/')[0],0,0);
+                        if(Date.now()<=wanted.getTime()){
+                            document.getElementById("date").classList.remove("is-invalid");
+                            document.getElementById("time").classList.remove("is-invalid");
+                        }
+                        else{
+                        send = false;
+                        document.getElementById("date").classList.add("is-invalid");
+                        }
+                    }
                         
                     //Heure
                         filtres.time = document.getElementById("time").value;
@@ -333,6 +362,47 @@
                         filtres.unitePrix = "minutes";
                     }
                     console.log(filtres);
+                    if(send){
+                        $('#menu').hide()
+                        $.ajax({
+                                    type: 'GET',
+                                    url: './ActionServlet',
+                                    data: filtres,
+                                    timeout: 3000,
+                                    dataType:'json',
+                                    success: function (data) {
+                                        console.log(data);
+
+                                        for(var i in data.Annonces)
+                                        {
+                                             $('#fil').append('<div class="card mb-3"><h3 class="card-header">Prêt - '+data[i].objet+'<div class="text-right">\n\
+                                                               <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
+                                                                <div class="card-body"><h6 class="card-subtitle text-muted">'+data[i].categorie+'</h6>\n\
+                                                                <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div></div>\n\
+                                                                <div><div class="card"><div class="card-header">\n\
+                                                                <h5 class="mb-0">\n\
+                                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">\n\
+                                                                  Détails\n\
+                                                                </button>\n\
+                                                                </h5>\n\
+                                                                </div>\n\
+                                                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">\n\
+                                                                <div class="card-body">'+data[i].description+'</div>\n\
+                                                                <ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+data[i].date+' '+data[i].time+'</li>\n\
+                                                                <li class="list-group-item">Durée de disponibilité : '+data[i].duree+' '+data[i].uniteDuree+'</li>\n\
+                                                                <li class="list-group-item">Prix : '+data[i].nbPts+' points par '+data[i].unitePrix+ '</li>\n\
+                                                                <li class="list-group-item">Localisation : '+ data[i].localisation+'</li>\n\
+                                                                </ul></div></div><div class="card-footer text-muted">Le '+data[i].datePublication+' à '+data[i].timePublication+'</div></div></div>'
+                                             );
+                                        }
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        $("#erreur").modal();
+                                    }
+                                });
+                        }
+                    
                 })
                 
                 var filtres = new Object();
@@ -341,40 +411,29 @@
                 //Type
                     filtres.type = "";
                     //Catégorie
-                    filtres.categorie = document.getElementById('categories').value;
+                    filtres.categorie = "";
                     //Nom objet
-                        filtres.objet = document.getElementById("objet").value;
+                        filtres.objet = "";
                     
                     //Date
-                        filtres.date = document.getElementById("date").value;
+                        filtres.date = "";
                         
                     //Heure
-                        filtres.time = document.getElementById("time").value;
+                        filtres.time = "";
                         
                     //Durée
-                        filtres.duree = document.getElementById("duree").value;
+                        filtres.duree = "";
                         
                     //Unité durée
-                    filtres.uniteDuree = "heures";
-                    if ($('#jours').is(':checked')) {
-                        filtres.uniteDuree = "jours";
-                    } else if ($('#minutes').is(':checked')) {
-                        filtres.uniteDuree = "minutes";
-                    }
+                    filtres.uniteDuree = "";
                     //Localisation
-                    filtres.localisation = document.getElementById('localisations').value;
+                    filtres.localisation = "";
                     
                     //nbPts
-                        filtres.nbPts = document.getElementById("nbPts").value;
+                        filtres.nbPts = "";
                         
                     //Unité prix
-                    filtres.unitePrix = "heures";
-                    if ($('#joursPrix').is(':checked')) {
-                        filtres.unitePrix = "jours";
-                    } else if ($('#minutesPrix').is(':checked')) {
-                        filtres.unitePrix = "minutes";
-                    }
-                    
+                    filtres.unitePrix = "";
                     console.log(filtres);
                     
                 
@@ -382,14 +441,16 @@
                                 type: 'GET',
                                 url: './ActionServlet',
                                 data: filtres,
-                                timeout: 3000,
+//                                timeout: 3000,
                                 dataType:'json',
                                 success: function (data) {
-                                    for(var i in x)
+                                    console.log(data);
+                                
+                                    for(var i in data.Annonces)
                                     {
-                                         $('#fil').append('<div class="card mb-3"><h3 class="card-header">Prêt - '+x[i].objet+'<div class="text-right">\n\
+                                         $('#fil').append('<div class="card mb-3"><h3 class="card-header">Prêt - '+data[i].objet+'<div class="text-right">\n\
                                                            <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
-                                                            <div class="card-body"><h6 class="card-subtitle text-muted">'+x[i].categorie+'</h6>\n\
+                                                            <div class="card-body"><h6 class="card-subtitle text-muted">'+data[i].categorie+'</h6>\n\
                                                             <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div></div>\n\
                                                             <div><div class="card"><div class="card-header">\n\
                                                             <h5 class="mb-0">\n\
@@ -399,16 +460,17 @@
                                                             </h5>\n\
                                                             </div>\n\
                                                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">\n\
-                                                            <div class="card-body">'+x[i].description+'</div>\n\
-                                                            <ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+x[i].date+' '+x[i].time+'</li>\n\
-                                                            <li class="list-group-item">Durée de disponibilité : '+x[i].duree+' '+x[i].uniteDuree+'</li>\n\
-                                                            <li class="list-group-item">Prix : '+x[i].nbPts+' points par '+x[i].unitePrix+ '</li>\n\
-                                                            <li class="list-group-item">Localisation : '+ x[i].localisation+'</li>\n\
-                                                            </ul></div></div><div class="card-footer text-muted">Le '+x[i].datePublication+' à '+x[i].timePublication+'</div></div></div>'
+                                                            <div class="card-body">'+data[i].description+'</div>\n\
+                                                            <ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+data[i].date+' '+data[i].time+'</li>\n\
+                                                            <li class="list-group-item">Durée de disponibilité : '+data[i].duree+' '+data[i].uniteDuree+'</li>\n\
+                                                            <li class="list-group-item">Prix : '+data[i].nbPts+' points par '+data[i].unitePrix+ '</li>\n\
+                                                            <li class="list-group-item">Localisation : '+ data[i].localisation+'</li>\n\
+                                                            </ul></div></div><div class="card-footer text-muted">Le '+data[i].datePublication+' à '+data[i].timePublication+'</div></div></div>'
                                          );
                                     }
                                 },
-                                error: function () {
+                                error: function (data) {
+                                console.log(data);
                                     $("#erreur").modal();
                                 }
                             });
