@@ -39,7 +39,7 @@ public class EmailSenderService {
         return generatedString;
     }
     
-    public static boolean sendVerificationEmail(String sendTo){
+    public static String sendVerificationEmail(String sendTo){
         //Get properties object
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -56,18 +56,18 @@ public class EmailSenderService {
                     }
                 });
         
-        boolean success = false;
+        String code = "";
         
         try {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
             message.setSubject("Bienvenue sur Campus Exchange");
-            message.setText(msg + generateCode());
+            code = generateCode();
+            message.setText(msg + code);
             //send message
             Transport.send(message);
-            success = true;            
         } catch (MessagingException e) {throw new RuntimeException(e); }
         
-        return success;
+        return code;
     }
 }
