@@ -120,14 +120,14 @@
                     <label class="control-label" for="date">Date de
                         disponibilité</label> <input class="form-control" id="date" 
                                                  placeholder="le DD/MM/AAAA" type="text" /><br> <input type="text"
-                                                 class="form-control" id="time" placeholder="à HH:mm">
+                                                 class="form-control" id="time" placeholder="à HH:mm"><div class="invalid-feedback">Veuillez renseigner une date ultérieure.</div>
                 </div>
 
 
                 <!-- Durée de dispo-->
                 <div class="form-group">
                     <label for="objet">Dur&eacute;e de disponibilit&eacute;</label> <input
-                        type="number" min="0" class="form-control" id="duree"
+                        type="number" min="1" class="form-control" id="duree"
                         placeholder="Renseignez la dur&eacute;e de disponibilit&eacute; de l'objet">
                 </div>
 
@@ -172,7 +172,7 @@
                 <!-- Nombre de points-->
                 <div class="form-group">
                     <label for="nbPts">Nombre de points </label> <input type="number"
-                                                                        class="form-control" id="nbPts" min="0"
+                                                                        class="form-control" id="nbPts" min="1"
                                                                         placeholder="Renseignez le nombre de points par">
 
                 </div>
@@ -201,7 +201,7 @@
                     <div class="row">
                         <div class="col-sm-2 imgUp">
                             <div class="imagePreview"></div>
-                            <label class="btn btn-primary">
+                            <label class="btn btn-primary btn-image">
                                 Charger<input type="file" class="uploadFile img" value="Upload Photo" 
                                               style="width: 0px;height: 0px;overflow: hidden;">
                             </label>
@@ -357,21 +357,32 @@
                     answers.description = document.getElementById("description").value;
 
                     //Date
-                    if (document.getElementById("date").value != "") {
+                    if (document.getElementById("date").value != "" && document.getElementById("time").value != "") {
                         answers.date = document.getElementById("date").value;
-                        document.getElementById("date").classList.remove("is-invalid");
-                    } else {
+                        answers.time = document.getElementById("time").value;
+//                        var current=new Date(Date.now());
+                        var wanted=new Date(answers.date.split('/')[2],answers.date.split('/')[1]-1,answers.date.split('/')[0],answers.time.split(':')[0],answers.time.split(':')[1]);
+                        console.log(wanted);
+                        if(Date.now()<=wanted.getTime()){
+                            document.getElementById("date").classList.remove("is-invalid");
+                            document.getElementById("time").classList.remove("is-invalid");
+                        }
+                        else{
+                        send = false;
+                        document.getElementById("date").classList.add("is-invalid");
+                        document.getElementById("time").classList.add("is-invalid");
+                        }
+                        
+                        
+                    } else if(document.getElementById("date").value == ""){
                         send = false;
                         document.getElementById("date").classList.add("is-invalid");
                     }
-
-                    if (document.getElementById("time").value != "") {
-                        answers.time = document.getElementById("time").value;
-                        document.getElementById("time").classList.remove("is-invalid");
-                    } else {
-                        send = false;
+                    if(document.getElementById("time").value == ""){
+                         send = false;
                         document.getElementById("time").classList.add("is-invalid");
                     }
+
                     
                     //Durée
                     if (document.getElementById("duree").value != "") {
@@ -391,6 +402,7 @@
 
                     //Localisation
                     answers.localisation = document.getElementById('localisations').value;
+                    //NbPts
                     if (document.getElementById("nbPts").value != "") {
                         answers.nbPts = document.getElementById("nbPts").value;
                         document.getElementById("nbPts").classList.remove("is-invalid");
@@ -443,7 +455,13 @@
                                 timeout: 3000,
                                 dataType:'json',
                                 success: function (data) {
-                                    $('#zone').html(data);
+                                    if(data.created){
+                                        window.location.replace(
+                                        "http://localhost:8080/HEXA-4112-front/filActu.html");
+                                    }
+                                    else{
+                                        $("#erreur").modal();
+                                    }
                                 },
                                 error: function () {
                                     $("#erreur").modal();

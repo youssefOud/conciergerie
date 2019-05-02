@@ -44,7 +44,7 @@ public class Main {
         System.out.println(s.createOffer(offer));
     
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
-        List<Service> listS = s.findAllServicesWithFilter("", "", "", "", "","","" ,"");
+        List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         System.out.println();
 
