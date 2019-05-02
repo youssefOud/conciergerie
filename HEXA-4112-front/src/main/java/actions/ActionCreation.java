@@ -47,7 +47,7 @@ public class ActionCreation extends Action {
         String time = request.getParameter("time");
         SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");  
         Date availabilityTime = formatTime.parse(time);
-        
+       
         // On combine les deux dates ensemble
         Date availabilityDateComplete = new Date(availabilityDate.getTime() + availabilityTime.getTime());
         
