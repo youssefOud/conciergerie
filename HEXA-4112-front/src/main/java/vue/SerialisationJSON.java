@@ -93,10 +93,10 @@ public class SerialisationJSON {
             // TODO : A changer quand l'attribut preferences de contact sera mis en place
             
             if(s.getPersonDemanding() != null){
-                jo.addProperty("auteur", s.getPersonDemanding().getPseudo());
+                jo.addProperty("auteur", s.getPersonDemanding().getMail());
             }
             else if( s.getPersonOffering()!= null){
-                jo.addProperty("auteur", s.getPersonOffering().getPseudo());
+                jo.addProperty("auteur", s.getPersonOffering().getMail());
             }
             
             // pictures aussi a mettre
@@ -156,7 +156,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        if (request.getAttribute("idPerson") != null) {
+        if (request.getAttribute("person") != null) {
             jo.addProperty("connected", true);
         } else {
             jo.addProperty("connected", false);

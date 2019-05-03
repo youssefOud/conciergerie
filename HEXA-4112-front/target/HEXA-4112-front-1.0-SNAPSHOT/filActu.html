@@ -465,7 +465,7 @@
                     annonce += ' - Prêt - ' + data.Annonces[i].nomObjet + '<div class="text-right">\n\
                                                            <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
                                                             <div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
-                    if (data.Annonces[i].images.length != 0){
+                    if (data.Annonces[i].images!=undefined && data.Annonces[i].images.length != 0){
                         annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
                                         <div class="carousel-inner">\n\
                                         <div class="carousel-item active">\n\
