@@ -89,11 +89,14 @@ public class SerialisationJSON {
             
             jo.addProperty("unitePrix", s.getPriceUnit());
             jo.addProperty("uniteDuree", s.getDurationUnit());
+
             // TODO : A changer quand l'attribut preferences de contact sera mis en place
-            if (s.getPersonDemanding() != null) {
-                jo.addProperty("pseudoPersonneDemande", s.getPersonDemanding().getMail());
-            } else {
-                jo.addProperty("pseudoPersonneOffre", s.getPersonOffering().getMail());
+            
+            if(s.getPersonDemanding() != null){
+                jo.addProperty("auteur", s.getPersonDemanding().getPseudo());
+            }
+            else if( s.getPersonOffering()!= null){
+                jo.addProperty("auteur", s.getPersonOffering().getPseudo());
             }
             
             // pictures aussi a mettre
