@@ -10,6 +10,9 @@ import Model.Demand;
 import Model.Offer;
 import Model.Person;
 import Model.Service;
+import Model.VerificationToken;
+import Utils.EmailSenderService;
+import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,19 +21,84 @@ import java.util.Date;
  *
  * @author B3427
  */
+
 public class Services {
+    final private DemandDAO demandDAO;
+    final private OfferDAO offerDAO;
+    final private PersonDAO personDAO;
+    final private ServiceDAO serviceDAO;
+    final private VerificationTokenDAO verificationTokenDAO;
+    
     public Services(){
-        
+        this.demandDAO = new DemandDAO();
+        this.offerDAO = new OfferDAO();
+        this.personDAO = new PersonDAO();
+        this.serviceDAO = new ServiceDAO();   
+        this.verificationTokenDAO = new VerificationTokenDAO();   
     }
     
+    
     // TODO : compléter
-    public Person connexion (String mail, String mdp) {
+    public Person connectPerson (String mail, String mdp) {
         JpaUtil.createEntityManager();
-        PersonDAO personDAO = new PersonDAO();
         Person person = personDAO.verifyPersonAccount(mail, mdp);
         JpaUtil.closeEntityManager();
         
         return person;
+    }
+    
+    public boolean sendVerificationEmail (String mail){
+        JpaUtil.createEntityManager();
+        
+        if( personDAO.personExists(mail) ){
+            
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        else if (verificationTokenDAO.findByMail(mail) != null){
+            VerificationToken vt = verificationTokenDAO.findByMail(mail);
+            String verifCode = EmailSenderService.sendVerificationEmail(mail);
+            if(!verifCode.isEmpty()){
+                try {
+                    JpaUtil.openTransaction();
+                    vt.setToken(verifCode);
+                    verificationTokenDAO.merge(vt);
+                    JpaUtil.validateTransaction();
+                }
+                catch(Exception e){
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
+            }
+            else{
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        }
+        else{
+            String verifCode = EmailSenderService.sendVerificationEmail(mail);
+            if(!verifCode.isEmpty()){
+                VerificationToken vt = new VerificationToken(verifCode, mail);
+                try {
+                    JpaUtil.openTransaction();
+                    verificationTokenDAO.persist(vt);
+                    JpaUtil.validateTransaction();
+                }
+                catch(Exception e){
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
+            }
+            else{
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+            
+        }
+        JpaUtil.closeEntityManager();
+        return true;
     }
     
     // TODO : A completer : Dans l'ActionServlet, le bouton radio
@@ -39,7 +107,6 @@ public class Services {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
-        DemandDAO demandDAO = new DemandDAO();
         demandDAO.persist(demand);
         
         try {
@@ -54,15 +121,12 @@ public class Services {
     }
     
     
-    
-    // TODO : A completer
     public boolean createOffer (Offer offer) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
         // Traitement sur offer ? Date de début ?
         
-        OfferDAO offerDAO = new OfferDAO();
         offerDAO.persist(offer);
         
         try {
@@ -75,22 +139,34 @@ public class Services {
         return true;
     }
     
-    public boolean createPerson (Person person) {
+    public Person registerPerson (String lastName, String firstName, String password, String mail, String cellNumber, String verificationCode) {
         JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
         
-        PersonDAO personDAO = new PersonDAO();
-        personDAO.persist(person);
+        boolean tokenExists = verificationTokenDAO.verificationTokenExists(mail, verificationCode);
         
-        try {
-            JpaUtil.validateTransaction();
-        } catch (RollbackException e) {
-            JpaUtil.cancelTransaction();
-            return false;
+        if( !tokenExists || personDAO.personExists(mail) ){ 
+            JpaUtil.closeEntityManager();
+            return null;
         }
         
-        JpaUtil.closeEntityManager();
-        return true;
+        else{
+            Person p = new Person(firstName, lastName, password, cellNumber, mail);
+            try {
+                JpaUtil.openTransaction();
+                //Create person plutot que de le prendre en paramètre
+                personDAO.persist(p);
+                JpaUtil.validateTransaction();  
+            }
+
+             catch (Exception e) {
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return null;
+            }
+            
+            JpaUtil.closeEntityManager();
+            return p;
+            }
     }
     
     // TODO : A completer : permet de retourner toutes les demandes
@@ -109,9 +185,9 @@ public class Services {
     // comparaison
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
-    public List<Service> findAllServicesWithFilter(String object, String category, String location, String date, String time, String duration, String units, String nbPts, String serviceType) throws ParseException {
+
+    public List<Service> findAllServicesWithFilter(String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
-        ServiceDAO serviceDao = new ServiceDAO();
         
         Date today = new Date();
         SimpleDateFormat formatNormal = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
@@ -139,11 +215,11 @@ public class Services {
         Long durationInMillis = 0L;
         if (!duration.isEmpty()) {
             durationInMillis = Long.valueOf(duration);
-            if (units.equals("jours")) {
+            if (timeUnit.equals("jours")) {
                 durationInMillis *= 24*60*60*1000;
-            } else if (units.equals("heures")) {
+            } else if (timeUnit.equals("heures")) {
                 durationInMillis *= 60*60*1000;
-            }  else if (units.equals("minutes")) {
+            }  else if (timeUnit.equals("minutes")) {
                 durationInMillis *= 60*1000;
             }
         }
@@ -159,7 +235,7 @@ public class Services {
             endingDate = formatNormal.parse( formatNormal.format(today.getTime() + durationInMillis) );
         }
               
-        List<Service> listServices = serviceDao.findAllServicesWithFilter(object, category, location, startingDate, endingDate, nbPts, serviceType);
+        List<Service> listServices = serviceDAO.findAllServicesWithFilter(object, category, location, startingDate, endingDate, nbPts, paymentUnit, serviceType);
         
         JpaUtil.closeEntityManager();
         return listServices;
@@ -199,7 +275,6 @@ public class Services {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
-        PersonDAO personDAO = new PersonDAO();
         Person person = personDAO.findById(idPerson);
         
         JpaUtil.closeEntityManager();
@@ -210,11 +285,21 @@ public class Services {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
-        ServiceDAO serviceDAO = new ServiceDAO();
         Service service = serviceDAO.findById(idService);
         
         JpaUtil.closeEntityManager();
         return service;
+    }
+
+    public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
+        // TODO : to implement : persist la personne en base de données
+        return new Person();
+    }
+    
+    public boolean verifyEmailAdress(String mail) {
+        // TODO : to implement : envoyer un mail et attendre la validation de celui-ci
+        // Voir comment faire cela
+        return false;
     }
 
 }

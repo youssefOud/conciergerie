@@ -6,13 +6,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import DAO.JpaUtil;
+import Model.Person;
+import actions.ActionCheckEmail;
+import actions.ActionConnection;
 import actions.ActionCreation;
+import actions.ActionRegistration;
 import actions.ActionShowTimeline;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import vue.SerialisationJSON;
 
 /**
@@ -22,44 +27,109 @@ import vue.SerialisationJSON;
 @WebServlet(name="ActionServlet", urlPatterns = {"/ActionServlet"})
 public class ActionServlet extends HttpServlet {
     
-    // A modifier l'annotation en fonction du nom de la servlet choisie
     private static final long serialVersionUID = 1L;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         String todo = request.getParameter("todo");
-        System.out.println(todo);
+        
+        
+        HttpSession session = request.getSession(true); 
         SerialisationJSON serialisationJSON = new SerialisationJSON();
         
         switch (todo) {
-            case "deposerAnnonce":
-                ActionCreation ac = new ActionCreation();
-            
-
+            case "generationCode":
+                ActionCheckEmail actionCheckEmail = new ActionCheckEmail();
                 try {
-                    ac.executeAction(request);
+                    actionCheckEmail.executeAction(request);
                 } catch (ParseException ex) {
                     Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
+                serialisationJSON.executeGenerationCode(request, response);
+                
+                break;
+                
+            case "inscription":
+                ActionRegistration ar = new ActionRegistration();
+                try {
+                    ar.executeAction(request);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                Person personRegistered = (Person) request.getAttribute("person");
+                if (personRegistered != null){
+                    session.setAttribute("idPerson", personRegistered.getId());
+                }
+                
+                serialisationJSON.executeInscription(request, response);
+                
+                break;
+                
+            case "connexion":
+                ActionConnection actionConnection = new ActionConnection();
+                try {
+                    actionConnection.executeAction(request);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                Person personConnected = (Person) request.getAttribute("person");
+                if (personConnected != null){
+                    session.setAttribute("idPerson", personConnected.getId());
+                }
+                
+                serialisationJSON.executeConnexion(request,response);
+                
+                break;
+                
+            case "deposerAnnonce":
+                if (session.getAttribute("idPerson") != null){
+                    ActionCreation actionCreation = new ActionCreation();
 
-                boolean created = (boolean) request.getAttribute("created");
+                    try {
+                        actionCreation.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-                serialisationJSON.executeDeposerAnnonce(request, response);
+                    boolean created = (boolean) request.getAttribute("created");
+
+                    serialisationJSON.executeDeposerAnnonce(request, response);
+                    
+                } else {
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
 
                 break;
             
             case "afficherFilActualite":
-                ActionShowTimeline astl = new ActionShowTimeline();
+                if (session.getAttribute("idPerson") != null){
+                    ActionShowTimeline astl = new ActionShowTimeline();
+
+                    try {
+                        astl.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeShowTimeline(request, response);
                 
-                try {
-                    astl.executeAction(request);
-                } catch (ParseException ex) {
-                    Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } else {
+                    serialisationJSON.executeErrorNotConnected(request, response);
                 }
                 
-                serialisationJSON.executeShowTimeline(request, response);
-        }
+                break;
+            
+            case "seDeconnecter":
+                if (session.getAttribute("idPerson") != null){
+                    
+                } else {
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+            }
     }
     
     @Override
