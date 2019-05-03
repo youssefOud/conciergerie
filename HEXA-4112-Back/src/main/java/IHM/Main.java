@@ -6,6 +6,7 @@
 package IHM;
 
 import DAO.JpaUtil;
+import DAO.PersonDAO;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
@@ -15,6 +16,7 @@ import Utils.EmailSenderService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.persistence.RollbackException;
 
 /**
  *
@@ -55,10 +57,23 @@ public class Main {
         //boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
         //System.out.println("--------------------------------"+emailSent+"-------------------");
         
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
         
+        PersonDAO persDAO = new PersonDAO();
+        Person person = new Person("Chris", "Mouata", "password", "0635399", "chris.mouata@insa-lyon.fr");
+        persDAO.persist(person);
+        
+        try {
+            JpaUtil.validateTransaction();
+        } catch (RollbackException e) {
+            JpaUtil.cancelTransaction();
+        }
+        
+        JpaUtil.closeEntityManager();
         
         //A décommenter quand tu recois le code de vérification (et insérer le code de vérification
-        
+       
         Person p = s.registerPerson("Dupont", "Jean", "Password", "oliviacaraiman@gmail.com", "000000000000", "666585");
         //System.out.println("IHM.Main.main()"+p);
         JpaUtil.destroy();

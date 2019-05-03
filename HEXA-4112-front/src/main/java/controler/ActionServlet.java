@@ -91,6 +91,7 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "deposerAnnonce":
+                System.out.println("idPerson : " + session.getAttribute("idPerson"));
                 if (session.getAttribute("idPerson") != null){
                     ActionCreation actionCreation = new ActionCreation();
 
