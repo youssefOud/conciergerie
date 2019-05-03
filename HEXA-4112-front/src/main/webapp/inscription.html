@@ -203,7 +203,7 @@
                     type: 'POST',
                             url: './ActionServlet',
                             data: firstSend,
-                            timeout: 3000,
+//                            timeout: 3000,
                             dataType:'json',
                             success: function (data) {
                             console.log(data);
@@ -247,7 +247,8 @@
                                     $("#erreurDejaInscrit").modal();
                     }
                     },
-                error: function () {
+                error: function (data) {
+                                    console.log(data);
                                     $("#erreurReseau").modal();
                     }
                     });

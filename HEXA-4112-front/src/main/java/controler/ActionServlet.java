@@ -12,6 +12,7 @@ import actions.ActionConnection;
 import actions.ActionCreation;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +37,13 @@ public class ActionServlet extends HttpServlet {
         
         HttpSession session = request.getSession(true); 
         SerialisationJSON serialisationJSON = new SerialisationJSON();
-        
+//        System.out.println("id : " + session.getAttribute("idPerson"));
+//        System.out.println("Affichage request");
+//        Enumeration<String> params = request.getParameterNames(); 
+//while(params.hasMoreElements()){
+// String paramName = params.nextElement();
+// System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+//}
         switch (todo) {
             case "generationCode":
                 ActionCheckEmail actionCheckEmail = new ActionCheckEmail();

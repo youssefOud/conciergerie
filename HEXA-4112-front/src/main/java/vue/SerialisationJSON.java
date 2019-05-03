@@ -98,16 +98,17 @@ public class SerialisationJSON {
             else if( s.getPersonOffering()!= null){
                 jo.addProperty("auteur", s.getPersonOffering().getMail());
             }
-            
-            JsonObject containerPictures = new JsonObject();
             JsonArray jsonListPictures = new JsonArray();
-            String pictures = s.getPictures();
-            String[] picturesArray = pictures.split(",");
-            for (String picture : picturesArray) {
-                jsonListPictures.add(picture);
+            if (s.getPictures() != null && s.getPictures() != "") {
+                String pictures = s.getPictures();
+                String[] picturesArray = pictures.split("-");
+                System.out.println("array string " + picturesArray.length);
+                for (int i = 0; i<picturesArray.length; i++) {
+                    jsonListPictures.add(  picturesArray[i]);
+                    System.out.println(i + ": pic" );
+                }
+                jo.add("images", jsonListPictures);
             }
-            containerPictures.add("images", jsonListPictures);
-            
             jsonList.add(jo);
         }
         
@@ -138,7 +139,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        jo.addProperty("registered", (String) request.getAttribute("registered"));
+        jo.addProperty("registered", (boolean) request.getAttribute("registered"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

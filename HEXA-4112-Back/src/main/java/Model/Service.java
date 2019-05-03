@@ -46,6 +46,7 @@ public abstract class Service implements Serializable{
     
     protected int duration;
     
+    @javax.persistence.Lob
     protected String pictures;
     
     protected String priceUnit;

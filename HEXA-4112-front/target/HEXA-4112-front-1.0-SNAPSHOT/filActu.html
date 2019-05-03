@@ -469,10 +469,10 @@
                         annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
                                         <div class="carousel-inner">\n\
                                         <div class="carousel-item active">\n\
-                                    <img class="d-block w-100" src="' + data.Annonces[i].images[0] + '" alt="First slide"></div>';
-                        for (var j = 1; i < data.Annonces[i].images.length; j++){
+                                    <img class="d-block w-100 center"  style="max-width:50%;max-height:20%" src="' + data.Annonces[i].images[0] + '" alt="First slide"></div>';
+                        for (var j = 1; j < data.Annonces[i].images.length; j++){
                             annonce += '<div class="carousel-item">\n\
-                                                   <img class="d-block w-100" src="' + data.Annonces[i].images[j] + '" alt="Second slide">\n\
+                                                   <img class="d-block w-100 center" style="max-width:50%;max-height:20%" src="' + data.Annonces[i].images[j] + '" alt="Second slide">\n\
                                                    </div>';
                         }
                         annonce += '</div>\n\

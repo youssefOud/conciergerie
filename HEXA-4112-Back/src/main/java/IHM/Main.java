@@ -61,7 +61,7 @@ public class Main {
         JpaUtil.openTransaction();
         
         PersonDAO persDAO = new PersonDAO();
-        Person person = new Person("Chris", "Mouata", "password", "0635399", "chris.mouata@insa-lyon.fr");
+        Person person = new Person("agathe", "agathe", "password", "0635399", "agathe.mouata@insa-lyon.fr");
         persDAO.persist(person);
         
         try {

@@ -60,4 +60,10 @@
     font-size:15px;
 }
 
+.carousel-control-next {
+    filter: invert(100%);
+}
 
+.carousel-control-prev {
+    filter: invert(100%);
+}
