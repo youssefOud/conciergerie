@@ -12,6 +12,10 @@ import actions.ActionConnection;
 import actions.ActionCreation;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import java.util.Iterator;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +37,6 @@ public class ActionServlet extends HttpServlet {
             throws ServletException, IOException {
         
         String todo = request.getParameter("todo");
-        
         
         HttpSession session = request.getSession(true); 
         SerialisationJSON serialisationJSON = new SerialisationJSON();
@@ -61,7 +64,10 @@ public class ActionServlet extends HttpServlet {
                 
                 Person personRegistered = (Person) request.getAttribute("person");
                 if (personRegistered != null){
+                    request.setAttribute("registered", true);
                     session.setAttribute("idPerson", personRegistered.getId());
+                } else {
+                    request.setAttribute("registered", false);
                 }
                 
                 serialisationJSON.executeInscription(request, response);
@@ -78,7 +84,10 @@ public class ActionServlet extends HttpServlet {
                 
                 Person personConnected = (Person) request.getAttribute("person");
                 if (personConnected != null){
+                    request.setAttribute("connected", true);
                     session.setAttribute("idPerson", personConnected.getId());
+                } else {
+                    request.setAttribute("connected", false);
                 }
                 
                 serialisationJSON.executeConnexion(request,response);
@@ -100,6 +109,7 @@ public class ActionServlet extends HttpServlet {
                     serialisationJSON.executeDeposerAnnonce(request, response);
                     
                 } else {
+                    request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
 
@@ -118,6 +128,7 @@ public class ActionServlet extends HttpServlet {
                     serialisationJSON.executeShowTimeline(request, response);
                 
                 } else {
+                    request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
                 
@@ -127,6 +138,7 @@ public class ActionServlet extends HttpServlet {
                 if (session.getAttribute("idPerson") != null){
                     
                 } else {
+                    request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
             }
