@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -46,6 +47,7 @@ public abstract class Service implements Serializable{
     
     protected int duration;
     
+    @OneToMany
     protected List<String> pictures;
     
     protected String priceUnit;

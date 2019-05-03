@@ -93,10 +93,10 @@ public class SerialisationJSON {
             // TODO : A changer quand l'attribut preferences de contact sera mis en place
             
             if(s.getPersonDemanding() != null){
-                jo.addProperty("auteur", s.getPersonDemanding().getPseudo());
+                jo.addProperty("auteur", s.getPersonDemanding().getMail());
             }
             else if( s.getPersonOffering()!= null){
-                jo.addProperty("auteur", s.getPersonOffering().getPseudo());
+                jo.addProperty("auteur", s.getPersonOffering().getMail());
             }
             
             // pictures aussi a mettre
@@ -123,8 +123,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        boolean emailSent = (boolean) request.getAttribute("emailSent");
-        jo.addProperty("emailSent", emailSent);
+        jo.addProperty("emailSent", (boolean) request.getAttribute("emailSent"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -138,11 +137,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        if (request.getAttribute("idPerson") != null) {
-            jo.addProperty("registered", true);
-        } else {
-            jo.addProperty("registered", false);
-        }
+        jo.addProperty("registered", (String) request.getAttribute("registered"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -156,11 +151,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        if (request.getAttribute("idPerson") != null) {
-            jo.addProperty("connected", true);
-        } else {
-            jo.addProperty("connected", false);
-        }
+        jo.addProperty("connected", (boolean) request.getAttribute("connected"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -175,11 +166,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        if (request.getAttribute("idPerson") != null) {
-            jo.addProperty("error", false);
-        } else {
-            jo.addProperty("error", true);
-        }
+        jo.addProperty("error", (boolean) request.getAttribute("error"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
