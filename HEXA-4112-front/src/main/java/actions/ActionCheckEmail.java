@@ -16,23 +16,17 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author X
  */
-public class ActionRegistration extends Action {
+public class ActionCheckEmail extends Action {
 
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
-        String name = request.getParameter("nom");
-        String firstName = request.getParameter("prenom");
-        String password = request.getParameter("motDePasse");
+        
         String mail = request.getParameter("mail");
-        String cellNumber = request.getParameter("numeroTel");
-        String verificationCode = request.getParameter("code");
         
         Services services = new Services();
         
-        Person person = services.registerPerson(name, firstName, password, mail, cellNumber, verificationCode);
+        boolean emailSent = services.sendVerificationEmail(mail);
         
-        request.setAttribute("person", person);
+        request.setAttribute("emailSent", emailSent);
     }
-    
-    
 }

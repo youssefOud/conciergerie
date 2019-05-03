@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ActionShowTimeline extends Action {
     
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
-        // TODO : Verifier le nom des parametres
+
         String objectName = request.getParameter("objet");
         String priceUnit = request.getParameter("uniteePrix"); 
         String category = request.getParameter("categorie");
@@ -34,8 +35,7 @@ public class ActionShowTimeline extends Action {
         String typeService = request.getParameter("type");
         
         Services services = new Services(); 
-        List<Service> listOfServices = services.findAllServicesWithFilter(objectName, category, location,availabilityDate,
-                availabilityTime, duration, durationUnit, nbPts, priceUnit, typeService);
+        List<Service> listOfServices = services.findAllServicesWithFilter(objectName, category, location,availabilityDate, availabilityTime, duration, durationUnit, nbPts, priceUnit, typeService);
         
         request.setAttribute("listOfServices", listOfServices);
     }

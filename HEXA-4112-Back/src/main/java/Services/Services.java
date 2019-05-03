@@ -61,6 +61,7 @@ public class Services {
                 try {
                     JpaUtil.openTransaction();
                     vt.setToken(verifCode);
+                    vt.setDate(new Date());
                     verificationTokenDAO.merge(vt);
                     JpaUtil.validateTransaction();
                 }
@@ -243,4 +244,19 @@ public class Services {
         return service;
     }
 
+
+
+    public boolean deleteOldTokens(Long delay) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        verificationTokenDAO.removeOldTokens(delay);
+        try {
+            JpaUtil.validateTransaction();
+        } catch (RollbackException e) {
+            JpaUtil.cancelTransaction();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
+    }
 }
