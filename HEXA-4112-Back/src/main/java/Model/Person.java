@@ -1,12 +1,9 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Person{
@@ -33,6 +30,8 @@ public class Person{
     
     private String location;
     
+    private String privilegedContactWay;
+    
     public Person() {
         
     }
@@ -45,6 +44,7 @@ public class Person{
         this.mail = mail;
         this.pointBalance = 100;
         this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
+        this.privilegedContactWay = "mail";
     }
 
     public Long getId() {
@@ -125,6 +125,14 @@ public class Person{
     
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getPrivilegedContactWay() {
+        return privilegedContactWay;
+    }
+
+    public void setPrivilegedContactWay(String privilegedContactWay) {
+        this.privilegedContactWay = privilegedContactWay;
     }
     
     
