@@ -62,6 +62,7 @@ public class Services {
                 try {
                     JpaUtil.openTransaction();
                     vt.setToken(verifCode);
+                    vt.setDate(new Date());
                     verificationTokenDAO.merge(vt);
                     JpaUtil.validateTransaction();
                 }

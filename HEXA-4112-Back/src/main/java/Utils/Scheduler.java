@@ -5,6 +5,7 @@
 */
 package Utils;
 
+import DAO.JpaUtil;
 import Services.Services;
 import java.util.Date;
 import java.util.Timer;
@@ -13,11 +14,13 @@ import java.util.TimerTask;
 public class Scheduler {
         
     public static void main(String[] args){
+        
         Task t1 = new Task("delete_token");
         //Task te2=new TimerExample("Task2");
         Timer t=new Timer();
         t.scheduleAtFixedRate(t1, 0, 2*1000);
         //t.scheduleAtFixedRate(te2, 0,1000);
+        
     }
 }
 
@@ -28,6 +31,7 @@ class Task extends TimerTask{
     }
     @Override
     public void run() {
+        JpaUtil.init();
         System.out.println(Thread.currentThread().getName() + " " + job + " the task has executed successfully " + new Date());
         if("delete_token".equalsIgnoreCase(job)){
             Services s = new Services();
@@ -40,5 +44,6 @@ class Task extends TimerTask{
 //            }
             
         }
+        JpaUtil.destroy();
     }
 }

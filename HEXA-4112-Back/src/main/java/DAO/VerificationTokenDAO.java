@@ -30,8 +30,8 @@ public class VerificationTokenDAO {
     
     public void removeOldTokens(Long delay){
         EntityManager em = JpaUtil.getEntityManager();
-         Query query = em.createQuery("SELECT u FROM VerificationToken u where u.email = :mailToVerify and u.token = :tokenToVerify");
-        
+        Query query = em.createQuery("DELETE FROM VerificationToken u where (getdate()- :delay) >= u.date").setParameter("delay",delay);
+        query.executeUpdate();
     }
     
     public boolean verificationTokenExists(String mail, String token){
