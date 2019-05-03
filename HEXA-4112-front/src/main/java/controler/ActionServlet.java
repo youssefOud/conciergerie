@@ -10,6 +10,7 @@ import Model.Person;
 import actions.ActionCheckEmail;
 import actions.ActionConnection;
 import actions.ActionCreation;
+import actions.ActionDeconnection;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
 import javax.servlet.ServletException;
@@ -36,6 +37,10 @@ public class ActionServlet extends HttpServlet {
         
         HttpSession session = request.getSession(true); 
         SerialisationJSON serialisationJSON = new SerialisationJSON();
+        
+        System.out.println("request");
+        System.out.println(request);
+        System.out.println(request.getParameterMap().toString());
         
         switch (todo) {
             case "generationCode":
@@ -132,12 +137,23 @@ public class ActionServlet extends HttpServlet {
                 break;
             
             case "seDeconnecter":
-                if (session.getAttribute("idPerson") != null){
+                if (session.getAttribute("idPerson") != null) {
+                    ActionDeconnection ad = new ActionDeconnection();
                     
-                } else {
+                    try {
+                        ad.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    serialisationJSON.executeSeDeconnecter(request, response);
+                }
+                else {
                     request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
+                
+                break;
             }
     }
     
