@@ -54,7 +54,6 @@ public class SerialisationJSON {
         for (Service s : listOfServices) {
             JsonObject jo = new JsonObject();
             
-            // TODO : voir avec les filles pour nom parametres et ceux qu'il faut exactement (est-ce qu'il manque des choses
             jo.addProperty("categorie", s.getCategory());
             jo.addProperty("localisation", s.getLocation());
             jo.addProperty("nomObjet", s.getNameObject());
@@ -90,8 +89,15 @@ public class SerialisationJSON {
             
             jo.addProperty("unitePrix", s.getPriceUnit());
             jo.addProperty("uniteDuree", s.getDurationUnit());
-            jo.addProperty("pseudoPersonneDemande", s.getPersonDemanding().getPseudo());
-            jo.addProperty("pseudoPersonneOffre", s.getPersonOffering().getPseudo());
+
+            // TODO : A changer quand l'attribut preferences de contact sera mis en place
+            
+            if(s.getPersonDemanding() != null){
+                jo.addProperty("auteur", s.getPersonDemanding().getPseudo());
+            }
+            else if( s.getPersonOffering()!= null){
+                jo.addProperty("auteur", s.getPersonOffering().getPseudo());
+            }
             
             // pictures aussi a mettre
             /*JsonObject containerPictures = new JsonObject();
@@ -111,11 +117,73 @@ public class SerialisationJSON {
         out.close();
     }
 
-    public void executeInscription(HttpServletRequest request, HttpServletResponse response) {
-        // TODO : A implementer
+    public void executeGenerationCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        boolean emailSent = (boolean) request.getAttribute("emailSent");
+        jo.addProperty("emailSent", emailSent);
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+     
+    public void executeInscription(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        if (request.getAttribute("idPerson") != null) {
+            jo.addProperty("registered", true);
+        } else {
+            jo.addProperty("registered", false);
+        }
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
     }
 
-    public void executeConnexion(HttpServletRequest request, HttpServletResponse response) {
-         //TODO
+    public void executeConnexion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        if (request.getAttribute("idPerson") != null) {
+            jo.addProperty("connected", true);
+        } else {
+            jo.addProperty("connected", false);
+        }
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+
+    // TODO : A voir avec les filles
+    public void executeErrorNotConnected(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        if (request.getAttribute("idPerson") != null) {
+            jo.addProperty("error", false);
+        } else {
+            jo.addProperty("error", true);
+        }
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
     }
 }

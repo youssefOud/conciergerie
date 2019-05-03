@@ -20,11 +20,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 
 public class ActionCreation extends Action {
     
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
+        
+        HttpSession session = request.getSession();
+        Long idPerson = (Long) session.getAttribute("idPerson");
+        
+        Services services = new Services();
+        Person person = services.getPersonById(idPerson);
         
         List<String> pictures = new ArrayList<>();
         /*String picturesArray = request.getParameter("pictures");
@@ -67,14 +74,6 @@ public class ActionCreation extends Action {
         String priceUnit = request.getParameter("unitePrix");
         String durationUnit = request.getParameter("uniteDuree");
         
-        Services services = new Services();
-        
-        // TODO : A modifier quand on aura implémenté la connection avec les sessions
-        // En attendant, passer l'id du person.
-        String idPerson = request.getParameter("idPerson");
-        Long idPersonLong = 1L; //Long.valueOf(idPerson);
-        Person person = services.getPersonById(idPersonLong);
-        // TODO : A modifier quand on connait la valeur du type (demander au front)
         boolean created = false;
         if (typeService.equals("demande")) {
             Demand demand = new Demand(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
@@ -83,7 +82,7 @@ public class ActionCreation extends Action {
         } else if (typeService.equals("offre")) {
             Offer offer = new Offer(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createOffer(offer);
-            System.out.println("Value de la offre : " + offer);
+            System.out.println("Value de l'offre : " + offer);
         }
         System.out.println("Value : " + created);
         
