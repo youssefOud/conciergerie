@@ -281,4 +281,18 @@ public class Services {
         return false;
     }
 
+    public boolean deleteOldTokens(Long delay) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        verificationTokenDAO.removeOldTokens(delay);
+        try {
+            JpaUtil.validateTransaction();
+        } catch (RollbackException e) {
+            JpaUtil.cancelTransaction();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+
 }

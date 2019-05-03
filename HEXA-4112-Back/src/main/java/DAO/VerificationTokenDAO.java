@@ -28,6 +28,12 @@ public class VerificationTokenDAO {
         em.remove(verificationToken);
     }
     
+    public void removeOldTokens(Long delay){
+        EntityManager em = JpaUtil.getEntityManager();
+         Query query = em.createQuery("SELECT u FROM VerificationToken u where u.email = :mailToVerify and u.token = :tokenToVerify");
+        
+    }
+    
     public boolean verificationTokenExists(String mail, String token){
         EntityManager em = JpaUtil.getEntityManager();
         Query query = em.createQuery("SELECT u FROM VerificationToken u where u.email = :mailToVerify and u.token = :tokenToVerify");

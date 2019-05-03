@@ -52,14 +52,14 @@ public class Main {
        
        
        
-        //boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
-       // System.out.println("--------------------------------"+emailSent+"-------------------");
+        boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
+        System.out.println("--------------------------------"+emailSent+"-------------------");
         
         
         
         //A décommenter quand tu recois le code de vérification (et insérer le code de vérification
         
-        Person p = s.registerPerson("Dupont", "Jean", "Password", "oliviacaraiman@gmail.com", "000000000000", "858639");
+        //Person p = s.registerPerson("Dupont", "Jean", "Password", "oliviacaraiman@gmail.com", "000000000000", "858639");
         //System.out.println("IHM.Main.main()"+p);
         JpaUtil.destroy();
         
