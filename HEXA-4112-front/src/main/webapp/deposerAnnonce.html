@@ -435,7 +435,7 @@
                             var reader = new FileReader(); // instance of the FileReader
                             reader.onload = function (event) {
                                 // I usually remove the prefix to only keep data, but it depends on your server
-                                var data = event.target.result.replace("data:" + files[0].type + ";base64,", '');
+                                var data = event.target.result.replace("data:" + files[0].type + ";base64,", "data:" + files[0].type + ";base64 ");
                                 picturesArray.push(data);
                             };
                             reader.readAsDataURL(files[0]);
