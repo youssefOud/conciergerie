@@ -121,6 +121,22 @@ public class Services {
         return true;
     }
     
+    public boolean createToken (VerificationToken vt) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        verificationTokenDAO.persist(vt);
+        
+        try {
+            JpaUtil.validateTransaction();
+        } catch (RollbackException e) {
+            JpaUtil.cancelTransaction();
+            return false;
+        }
+        
+        JpaUtil.closeEntityManager();
+        return true;
+    }
     
     public boolean createOffer (Offer offer) {
         JpaUtil.createEntityManager();

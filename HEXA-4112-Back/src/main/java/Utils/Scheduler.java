@@ -18,7 +18,7 @@ public class Scheduler {
         Task t1 = new Task("delete_token");
         //Task te2=new TimerExample("Task2");
         Timer t=new Timer();
-        t.scheduleAtFixedRate(t1, 0, 2*1000);
+        t.scheduleAtFixedRate(t1, 15*1000, 60*1000);
         //t.scheduleAtFixedRate(te2, 0,1000);
         
     }
@@ -35,7 +35,7 @@ class Task extends TimerTask{
         System.out.println(Thread.currentThread().getName() + " " + job + " the task has executed successfully " + new Date());
         if("delete_token".equalsIgnoreCase(job)){
             Services s = new Services();
-            s.deleteOldTokens(1*60*1000L);
+            s.deleteOldTokens(24*60*60*1000L);
 //            try {
 //                Thread.sleep(10000);
 //            } catch (InterruptedException e) {
