@@ -15,6 +15,10 @@ public class Person{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    private String firstName;
+    
+    private String lastName;
+    
     private String password;
     
     private String cellNumber;
@@ -22,8 +26,6 @@ public class Person{
     private String mail;
     
     private Integer pointBalance;
-    
-    private String pseudo;
     
     private Double rating;
     
@@ -35,16 +37,38 @@ public class Person{
         
     }
     
-    public Person(String login, String password, String cellNumber, String mail, Integer pointBalance, String pseudo,
-        double rating, String picture, String location) {
+    public Person(String firstName, String lastName, String password, String cellNumber, String mail) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
         this.cellNumber = cellNumber;
         this.mail = mail;
-        this.pointBalance = pointBalance;
-        this.pseudo = pseudo;
-        this.rating = rating;
-        this.picture = picture;
-        this.location = location;
+        this.pointBalance = 100;
+        this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
     
     public String getPassword() {
@@ -77,14 +101,6 @@ public class Person{
     
     public void setPointBalance(int pointBalance) {
         this.pointBalance = pointBalance;
-    }
-    
-    public String getPseudo() {
-        return pseudo;
-    }
-    
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
     }
     
     public double getRating() {

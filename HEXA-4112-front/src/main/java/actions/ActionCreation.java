@@ -20,27 +20,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 
 public class ActionCreation extends Action {
     
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
         
-        List<String> pictures = new ArrayList<>();
-        /*String picturesArray = request.getParameter("pictures");
-        JsonParser jsonParser = new JsonParser();
-        JsonArray picturesFromString = jsonParser.parse(picturesArray).getAsJsonArray();
-        Iterator it = picturesFromString.iterator();
-        while(it.hasNext())
-        {
-            Object indexPicture = (String) it.next(); // get key
-            Object o = picturesFromString.get(indexPicture); // get value
-            System.out.println(indexPicture + " : " +  o); // print the key and value
-        }*/
+        HttpSession session = request.getSession();
+        Long idPerson = (Long) session.getAttribute("idPerson");
         
+        Services services = new Services();
+        Person person = services.getPersonById(idPerson);
+        
+        String pictures = request.getParameter("pictures");
+//        String[] picts = pictures.split("data:");
+//        System.out.println("reception " + picts.length);
+//        for (int i=0; i<picts.length; i++) {
+//            System.out.println("image " + i + " " + picts[i]);
+//        }
+//        System.out.println("image" " + pictures);
         // On recupere le parametre du bouton radio pour savoir
         // si c'est une demande ou une offre
-        String typeService = request.getParameter("type");
+        String typeAnnonce = request.getParameter("type");
         
         String category = request.getParameter("categorie");
         String nameObject = request.getParameter("objet");
@@ -67,23 +69,15 @@ public class ActionCreation extends Action {
         String priceUnit = request.getParameter("unitePrix");
         String durationUnit = request.getParameter("uniteDuree");
         
-        Services services = new Services();
-        
-        // TODO : A modifier quand on aura implémenté la connection avec les sessions
-        // En attendant, passer l'id du person.
-        String idPerson = request.getParameter("idPerson");
-        Long idPersonLong = 1L; //Long.valueOf(idPerson);
-        Person person = services.getPersonById(idPersonLong);
-        // TODO : A modifier quand on connait la valeur du type (demander au front)
         boolean created = false;
-        if (typeService.equals("demande")) {
+        if (typeAnnonce.equals("demande")) {
             Demand demand = new Demand(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
             System.out.println("Value de la demande : " + demand);
-        } else if (typeService.equals("offre")) {
+        } else if (typeAnnonce.equals("offre")) {
             Offer offer = new Offer(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createOffer(offer);
-            System.out.println("Value de la offre : " + offer);
+            System.out.println("Value de l'offre : " + offer);
         }
         System.out.println("Value : " + created);
         
