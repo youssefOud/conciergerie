@@ -174,4 +174,37 @@ public class SerialisationJSON {
         out.println(gson.toJson(jo));
         out.close();
     }
+
+    public void executeSeDeconnecter(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        jo.addProperty("deconnexion", true);
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+
+    public void executeRecupererInfoPersonne(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        if ((boolean) request.getAttribute("session")) {
+            jo.addProperty("session", true);
+            jo.addProperty("prenom", (String) request.getAttribute("prenom"));
+        } else {
+            jo.addProperty("session", false);
+        }
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
 }

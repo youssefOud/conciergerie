@@ -11,6 +11,7 @@ import actions.ActionCheckEmail;
 import actions.ActionConnection;
 import actions.ActionCreation;
 import actions.ActionDeconnection;
+import actions.ActionGetInformationPerson;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
 import javax.servlet.ServletException;
@@ -117,6 +118,25 @@ public class ActionServlet extends HttpServlet {
 
                 break;
             
+            case "recupererInfoPersonne":
+                if (session.getAttribute("idPerson") != null){
+                    ActionGetInformationPerson agip = new ActionGetInformationPerson();
+
+                    try {
+                        agip.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeRecupererInfoPersonne(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
             case "afficherFilActualite":
                 if (session.getAttribute("idPerson") != null){
                     ActionShowTimeline astl = new ActionShowTimeline();
