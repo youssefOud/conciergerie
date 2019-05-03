@@ -55,6 +55,27 @@ public class Services {
             JpaUtil.closeEntityManager();
             return false;
         }
+        else if (verificationTokenDAO.findByMail(mail) != null){
+            VerificationToken vt = verificationTokenDAO.findByMail(mail);
+            String verifCode = EmailSenderService.sendVerificationEmail(mail);
+            if(!verifCode.isEmpty()){
+                try {
+                    JpaUtil.openTransaction();
+                    vt.setToken(verifCode);
+                    verificationTokenDAO.merge(vt);
+                    JpaUtil.validateTransaction();
+                }
+                catch(Exception e){
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
+            }
+            else{
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        }
         else{
             String verifCode = EmailSenderService.sendVerificationEmail(mail);
             if(!verifCode.isEmpty()){
@@ -69,6 +90,10 @@ public class Services {
                     JpaUtil.closeEntityManager();
                     return false;
                 }
+            }
+            else{
+                JpaUtil.closeEntityManager();
+                return false;
             }
             
         }
@@ -96,8 +121,6 @@ public class Services {
     }
     
     
-    
-    // TODO : A completer
     public boolean createOffer (Offer offer) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
@@ -132,9 +155,7 @@ public class Services {
                 JpaUtil.openTransaction();
                 //Create person plutot que de le prendre en paramètre
                 personDAO.persist(p);
-                /////////////////////////////////////////Ajouter si possible la suppression du verification token utilisé
-                JpaUtil.validateTransaction();
-                p = personDAO.verifyPersonAccount(mail, password);  
+                JpaUtil.validateTransaction();  
             }
 
              catch (Exception e) {
