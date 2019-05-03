@@ -3,14 +3,13 @@ package Model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -47,8 +46,7 @@ public abstract class Service implements Serializable{
     
     protected int duration;
     
-    @OneToMany
-    protected List<String> pictures;
+    protected String pictures;
     
     protected String priceUnit;
     
@@ -58,7 +56,7 @@ public abstract class Service implements Serializable{
         
     }
 
-    public Service(Person personOffering, Person personDemanding, String category, List<String> pictures, String nameObject, Date availabilityDate,
+    public Service(Person personOffering, Person personDemanding, String category, String pictures, String nameObject, Date availabilityDate,
             String localisation, String type, String description, String priceUnit, String durationUnit, int duration) {
 
         this.personOffering = personOffering;
@@ -127,11 +125,11 @@ public abstract class Service implements Serializable{
         this.duration = duration;
     }
 
-    public List<String> getPictures() {
+    public String getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<String> pictures) {
+    public void setPictures(String pictures) {
         this.pictures = pictures;
     }
 

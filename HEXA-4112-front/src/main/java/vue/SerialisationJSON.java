@@ -99,13 +99,14 @@ public class SerialisationJSON {
                 jo.addProperty("auteur", s.getPersonOffering().getMail());
             }
             
-            // pictures aussi a mettre
-            /*JsonObject containerPictures = new JsonObject();
+            JsonObject containerPictures = new JsonObject();
             JsonArray jsonListPictures = new JsonArray();
-            for (String picture : s.getPictures()) {
+            String pictures = s.getPictures();
+            String[] picturesArray = pictures.split(",");
+            for (String picture : picturesArray) {
                 jsonListPictures.add(picture);
             }
-            containerPictures.add("images", jsonListPictures);*/
+            containerPictures.add("images", jsonListPictures);
             
             jsonList.add(jo);
         }

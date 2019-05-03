@@ -33,12 +33,7 @@ public class ActionCreation extends Action {
         Services services = new Services();
         Person person = services.getPersonById(idPerson);
         
-        List<String> pictures = new ArrayList<>();
-        String picturesToGet = request.getParameter("pictures[]");
-        String[] picturesArray = picturesToGet.split(",");
-        for (String pict : picturesArray) {
-            pictures.add(pict);
-        }
+        String pictures = request.getParameter("pictures[]");
         
         // On recupere le parametre du bouton radio pour savoir
         // si c'est une demande ou une offre
