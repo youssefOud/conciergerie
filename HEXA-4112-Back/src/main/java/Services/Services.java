@@ -302,11 +302,12 @@ public class Services {
         return true;
     }
     
-    public boolean createReservation(Long idServiceOwner, Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
+    public boolean createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
         JpaUtil.createEntityManager();
-        Person serviceOwner = personDAO.findById(idServiceOwner);
+        Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
         Person reservationOwner = personDAO.findById(idReservationOwner);
         Service service = serviceDAO.findById(idService);
+        if (service != null) serviceOwner = service.getPerson();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date reservationStartingDate;
         try{
@@ -321,7 +322,7 @@ public class Services {
         if(serviceOwner != null && reservationOwner != null && service != null){
             try {
                 JpaUtil.openTransaction();
-                Reservation reservation = new Reservation(serviceOwner, reservationOwner, service, reservationStartingDate, reservationDuration, durationUnit, reservationRequestDate);
+                Reservation reservation = new Reservation(reservationOwner, service, reservationStartingDate, reservationDuration, durationUnit, reservationRequestDate);
                 if(reservation.getReservationStartingDate().getTime() < service.getAvailabilityDate().getTime() || reservation.getReservationEndingDate().getTime() > service.getEndOfAvailabilityDate().getTime()){
                     JpaUtil.validateTransaction();
                     JpaUtil.closeEntityManager();
@@ -402,4 +403,35 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
+    
+    public int calculateReservationPrice(Long idService, int reservationDuration, String durationUnit){
+        Long durationInMinutes = Long.valueOf(reservationDuration);
+        if (durationUnit.equals("jours")) {
+            durationInMinutes *= 24*60;
+        } else if (durationUnit.equals("heures")) {
+            durationInMinutes *= 60;
+        }
+        
+        JpaUtil.createEntityManager();
+        Service service = serviceDAO.findById(idService);
+        String priceUnit = service.getPriceUnit();
+        
+        double nbPts = service.getNbPoint();
+        double nbPtsInMinutes;
+        
+        if(priceUnit.equals("jours")){
+            nbPtsInMinutes = nbPts/(60*24);
+        }
+        else if (priceUnit.equals("heures")){
+            nbPtsInMinutes = nbPts/(60);
+        }
+        else{
+            nbPtsInMinutes = nbPts;
+        }
+        JpaUtil.closeEntityManager();
+        
+        return (int)Math.ceil(durationInMinutes * nbPtsInMinutes);
+    }
+    
+    
 }

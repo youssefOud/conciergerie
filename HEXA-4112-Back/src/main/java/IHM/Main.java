@@ -44,8 +44,8 @@ public class Main {
         System.out.println(s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
-        s.createReservation(person1.getId(), person2.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
-        s.createReservation(person1.getId(), person2.getId(), offer2.getId(), "04/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person2.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person2.getId(), offer2.getId(), "04/05/2019", "00:00", 5, "minutes");
         
         
     
