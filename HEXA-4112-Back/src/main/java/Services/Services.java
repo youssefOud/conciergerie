@@ -311,10 +311,8 @@ public class Services {
     
     public Person getPersonById(Long idPerson) {
         JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        Person person = personDAO.findById(idPerson);
-        
+        JpaUtil.openTransaction();     
+        Person person = personDAO.findById(idPerson);      
         JpaUtil.closeEntityManager();
         return person;
     }
@@ -354,8 +352,22 @@ public class Services {
         return true;
     }
     
-    public boolean updateServiceState(Service service) {
+    public boolean createReservation(Long idServiceOwner, Long idReservationOwner, Long idService, String reservationStartingDate, int reservationDuration, String durationUnit){
         JpaUtil.createEntityManager();
+        Person serviceOwner = personDAO.findById(idServiceOwner);
+        Person reservationOwner = personDAO.findById(idReservationOwner);
+        Service service = serviceDAO.findById(idService);
+        // Date reservationRequestDate
+        //Passer en accepted si ca a été accepté
+        return false;
+    }
+    
+    public List<Reservation> getReservationByPersonId(Long personId){
+        //todo
+        return null;
+    }
+
+    public boolean updateServiceState(Service service) {
         if (service == null) return false;
         Date now  = new Date();
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
@@ -374,18 +386,20 @@ public class Services {
         return true;
     }
     
-    public HashMap<Service, ArrayList<Reservation>> getAdsByPerson(Person person) {
+    public HashMap<Service, ArrayList<Reservation>> getAdsByIdPerson(Person person) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
+        
+        //Person person = getPersonById(idPerson);
         if (person == null) return null;
         
         List<Service> services = serviceDAO.findAllServicesByPerson(person);
         for (Service serv :services) {
              // DAO : findReservationByServiceId(Long idService)
-            updateServiceState(serv);
+        
+        // updateServiceState -> expire
         }
         JpaUtil.closeEntityManager();       
         return null;
     }
-
 }
