@@ -104,15 +104,17 @@ public class SerialisationJSON {
             else if( s.getPersonOffering()!= null){
                 jo.addProperty("auteur", s.getPersonOffering().getMail());
             }
-            
-            // pictures aussi a mettre
-            /*JsonObject containerPictures = new JsonObject();
             JsonArray jsonListPictures = new JsonArray();
-            for (String picture : s.getPictures()) {
-                jsonListPictures.add(picture);
+            if (s.getPictures() != null && s.getPictures() != "") {
+                String pictures = s.getPictures();
+                String[] picturesArray = pictures.split("-");
+                System.out.println("array string " + picturesArray.length);
+                for (int i = 0; i<picturesArray.length; i++) {
+                    jsonListPictures.add(  picturesArray[i]);
+                    System.out.println(i + ": pic" );
+                }
+                jo.add("images", jsonListPictures);
             }
-            containerPictures.add("images", jsonListPictures);*/
-            
             jsonList.add(jo);
         }
         
@@ -129,8 +131,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        boolean emailSent = (boolean) request.getAttribute("emailSent");
-        jo.addProperty("emailSent", emailSent);
+        jo.addProperty("emailSent", (boolean) request.getAttribute("emailSent"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -144,11 +145,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        if (request.getAttribute("idPerson") != null) {
-            jo.addProperty("registered", true);
-        } else {
-            jo.addProperty("registered", false);
-        }
+        jo.addProperty("registered", (boolean) request.getAttribute("registered"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -162,11 +159,7 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        if (request.getAttribute("idPerson") != null) {
-            jo.addProperty("connected", true);
-        } else {
-            jo.addProperty("connected", false);
-        }
+        jo.addProperty("connected", (boolean) request.getAttribute("connected"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -174,18 +167,13 @@ public class SerialisationJSON {
         out.close();
     }
 
-    // TODO : A voir avec les filles
     public void executeErrorNotConnected(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        if (request.getAttribute("idPerson") != null) {
-            jo.addProperty("error", false);
-        } else {
-            jo.addProperty("error", true);
-        }
+        jo.addProperty("error", (boolean) request.getAttribute("error"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -290,6 +278,59 @@ public class SerialisationJSON {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(container));
+        out.close();
+    }
+    
+    public void executeSeDeconnecter(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        jo.addProperty("deconnexion", true);
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+    
+    public void executeRecupererInfoPersonne(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        if ((boolean) request.getAttribute("session")) {
+            jo.addProperty("session", true);
+            jo.addProperty("prenom", (String) request.getAttribute("prenom"));
+            jo.addProperty("nom", (String) request.getAttribute("nom"));
+            jo.addProperty("nbPoint", (double) request.getAttribute("nbPoint"));
+            jo.addProperty("email", (String) request.getAttribute("email"));
+            jo.addProperty("numTel", (String) request.getAttribute("numTel"));
+            jo.addProperty("contactPrefere", (String) request.getAttribute("contactPrefere"));
+            jo.addProperty("note", (double) request.getAttribute("note"));
+        } else {
+            jo.addProperty("session", false);
+        }
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+
+    public void executeEnregistreContactPrivilegie(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        jo.addProperty("saved", (boolean) request.getAttribute("saved"));
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
         out.close();
     }
 }

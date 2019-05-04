@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,7 +31,7 @@ public class ActionGetAdsByPerson extends Action {
         
         Services services = new Services();
         Person person = services.getPersonById(idPerson);
-        HashMap<Service, ArrayList<Reservation>> ads = services.getAdsByIdPerson(person);
+        HashMap<Service, List<Reservation>> ads = services.getAdsByPerson(person);
         
         request.setAttribute("ads", ads);
     }
