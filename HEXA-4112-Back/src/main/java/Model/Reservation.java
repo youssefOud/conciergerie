@@ -56,8 +56,8 @@ public class Reservation implements Serializable{
         
     }
     
-    public Reservation(Person serviceOwner, Person reservationOwner, Service service, Date reservationStartingDate, int reservationDuration, String durationUnit, Date reservationRequestDate){
-        this.serviceOwner = serviceOwner;
+    public Reservation(Person reservationOwner, Service service, Date reservationStartingDate, int reservationDuration, String durationUnit, Date reservationRequestDate){
+        if (service != null) this.serviceOwner = service.getPerson();
         this.reservationOwner = reservationOwner;
         this.service = service;
         this.reservationStartingDate = reservationStartingDate;
@@ -88,7 +88,7 @@ public class Reservation implements Serializable{
             nbPtsInMinutes = nbPts/(60*24);
         }
         else if (priceUnit.equals("heures")){
-            nbPtsInMinutes = nbPts/(60*24);
+            nbPtsInMinutes = nbPts/(60);
         }
         else{
             nbPtsInMinutes = nbPts;
