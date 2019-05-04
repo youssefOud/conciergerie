@@ -199,9 +199,29 @@ public class SerialisationJSON {
         if ((boolean) request.getAttribute("session")) {
             jo.addProperty("session", true);
             jo.addProperty("prenom", (String) request.getAttribute("prenom"));
+            jo.addProperty("nom", (String) request.getAttribute("nom"));
+            jo.addProperty("nbPoint", (double) request.getAttribute("nbPoint"));
+            jo.addProperty("email", (String) request.getAttribute("email"));
+            jo.addProperty("numTel", (String) request.getAttribute("numTel"));
+            jo.addProperty("contactPrefere", (String) request.getAttribute("contactPrefere"));
+            jo.addProperty("note", (double) request.getAttribute("note"));
         } else {
             jo.addProperty("session", false);
         }
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+
+    public void executeEnregistreContactPrivilegie(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        jo.addProperty("saved", (boolean) request.getAttribute("saved"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
