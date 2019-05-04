@@ -37,22 +37,25 @@ public class Main {
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("01/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
-        
+
         System.out.println(s.createPerson(person1));
         System.out.println(s.createPerson(person2));
         System.out.println(s.createDemand(demand));
         System.out.println(s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
+        
+        s.createReservation(person1.getId(), person2.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person1.getId(), person2.getId(), offer2.getId(), "04/05/2019", "00:00", 5, "minutes");
+        
+        
     
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         
-        HashMap<Service, List<Reservation>> listS = s.getAdsByPerson(person1);
+        HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
         System.out.println();
 
-       
-       
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
        // System.out.println("--------------------------------"+emailSent+"-------------------");
 

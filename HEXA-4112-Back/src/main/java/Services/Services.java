@@ -1,4 +1,3 @@
-
 package Services;
 
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ public class Services {
     final private PersonDAO personDAO;
     final private ServiceDAO serviceDAO;
     final private VerificationTokenDAO verificationTokenDAO;
+    final private ReservationDAO reservationDAO;
     
     public Services(){
         this.demandDAO = new DemandDAO();
@@ -38,6 +38,7 @@ public class Services {
         this.personDAO = new PersonDAO();
         this.serviceDAO = new ServiceDAO();
         this.verificationTokenDAO = new VerificationTokenDAO();
+        this.reservationDAO = new ReservationDAO();
     }
     
     
@@ -352,13 +353,39 @@ public class Services {
         return true;
     }
     
-    public boolean createReservation(Long idServiceOwner, Long idReservationOwner, Long idService, String reservationStartingDate, int reservationDuration, String durationUnit){
+    public boolean createReservation(Long idServiceOwner, Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
         JpaUtil.createEntityManager();
         Person serviceOwner = personDAO.findById(idServiceOwner);
         Person reservationOwner = personDAO.findById(idReservationOwner);
         Service service = serviceDAO.findById(idService);
-        // Date reservationRequestDate
-        //Passer en accepted si ca a été accepté
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date reservationStartingDate;
+        try{
+        reservationStartingDate = dateFormat.parse(date + " " + time);
+        }
+        catch (Exception e){
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        Date reservationRequestDate = new Date();
+        if(serviceOwner != null && reservationOwner != null && service != null){
+            try {
+                JpaUtil.openTransaction();
+                Reservation reservation = new Reservation(serviceOwner, reservationOwner, service, reservationStartingDate, reservationDuration, durationUnit, reservationRequestDate);
+                reservationDAO.persist(reservation);
+                JpaUtil.validateTransaction();
+            }
+            catch(Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        }
+        else{
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
         return false;
     }
     
@@ -396,18 +423,9 @@ public class Services {
         List<Service> services = serviceDAO.findAllServicesByPerson(person);
         HashMap<Service,List<Reservation>> hm = new HashMap<>();
         for (Service serv :services) {
-             // DAO : findReservationByService(Service service)
             updateServiceState(serv);
-            
-//             public List<Reservation> findAllReservationsByService(Service service){
-//        EntityManager em = JpaUtil.getEntityManager();
-//        String request = "select r from Reservation r where r.service = :service ";         
-//        Query query = em.createQuery(request).setParameter("service", service);
-//        List<Reservation> reservations = (List<Reservation>)query.getResultList();
-//        
-//        System.out.println("services: " + reservations.size());
-//        return reservations; 
-//    }
+            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
+            hm.put(serv,reservations);
         }
         JpaUtil.closeEntityManager();       
         return hm;
