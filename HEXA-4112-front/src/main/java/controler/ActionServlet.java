@@ -10,11 +10,11 @@ import Model.Person;
 import actions.ActionCheckEmail;
 import actions.ActionConnection;
 import actions.ActionCreation;
+import actions.ActionGetAdsByPerson;
 import actions.ActionDeconnection;
 import actions.ActionGetInformationPerson;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
-import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -148,6 +148,24 @@ public class ActionServlet extends HttpServlet {
                 
                 } else {
                     request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "getAnnoncesPersonne":
+                if (session.getAttribute("idPerson") != null){
+                    ActionGetAdsByPerson agabp = new ActionGetAdsByPerson();
+
+                    try {
+                        agabp.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeGetAnnoncesPersonne(request, response);
+                
+                } else {
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
                 

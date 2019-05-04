@@ -1,3 +1,4 @@
+
 package Model;
 
 import java.io.Serializable;
@@ -223,8 +224,6 @@ public abstract class Service implements Serializable{
         }
         return personDemanding;
     }
-    
-    
     
     @Override
     public String toString() {

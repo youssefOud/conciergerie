@@ -56,8 +56,8 @@ public class Reservation implements Serializable{
         
     }
     
-    public Reservation(Person reservationOwner, Service service, Date reservationStartingDate, int reservationDuration, String durationUnit, Date reservationRequestDate){
-        if (service != null) this.serviceOwner = service.getPerson();
+    public Reservation(Person serviceOwner, Person reservationOwner, Service service, Date reservationStartingDate, int reservationDuration, String durationUnit, Date reservationRequestDate){
+        this.serviceOwner = serviceOwner;
         this.reservationOwner = reservationOwner;
         this.service = service;
         this.reservationStartingDate = reservationStartingDate;
@@ -88,7 +88,7 @@ public class Reservation implements Serializable{
             nbPtsInMinutes = nbPts/(60*24);
         }
         else if (priceUnit.equals("heures")){
-            nbPtsInMinutes = nbPts/(60);
+            nbPtsInMinutes = nbPts/(60*24);
         }
         else{
             nbPtsInMinutes = nbPts;
@@ -98,36 +98,76 @@ public class Reservation implements Serializable{
         
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Person getServiceOwner() {
         return serviceOwner;
+    }
+
+    public void setServiceOwner(Person serviceOwner) {
+        this.serviceOwner = serviceOwner;
     }
 
     public Person getReservationOwner() {
         return reservationOwner;
     }
 
+    public void setReservationOwner(Person reservationOwner) {
+        this.reservationOwner = reservationOwner;
+    }
+
     public Service getService() {
         return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
     }
 
     public Date getReservationStartingDate() {
         return reservationStartingDate;
     }
 
+    public void setReservationStartingDate(Date reservationStartingDate) {
+        this.reservationStartingDate = reservationStartingDate;
+    }
+
     public int getReservationDuration() {
         return reservationDuration;
+    }
+
+    public void setReservationDuration(int reservationDuration) {
+        this.reservationDuration = reservationDuration;
     }
 
     public String getDurationUnit() {
         return durationUnit;
     }
 
+    public void setDurationUnit(String durationUnit) {
+        this.durationUnit = durationUnit;
+    }
+
     public Date getReservationEndingDate() {
         return reservationEndingDate;
     }
 
+    public void setReservationEndingDate(Date reservationEndingDate) {
+        this.reservationEndingDate = reservationEndingDate;
+    }
+
     public Date getReservationRequestDate() {
         return reservationRequestDate;
+    }
+
+    public void setReservationRequestDate(Date reservationRequestDate) {
+        this.reservationRequestDate = reservationRequestDate;
     }
 
     public int getServiceOwnerRating() {
@@ -146,34 +186,6 @@ public class Reservation implements Serializable{
         return state;
     }
 
-    public void setServiceOwner(Person serviceOwner) {
-        this.serviceOwner = serviceOwner;
-    }
-
-    public void setReservationOwner(Person reservationOwner) {
-        this.reservationOwner = reservationOwner;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
-    }
-
-    public void setReservationDuration(int reservationDuration) {
-        this.reservationDuration = reservationDuration;
-    }
-
-    public void setDurationUnit(String durationUnit) {
-        this.durationUnit = durationUnit;
-    }
-
-    public void setReservationEndingDate(Date reservationEndingDate) {
-        this.reservationEndingDate = reservationEndingDate;
-    }
-
-    public void setReservationRequestDate(Date reservationRequestDate) {
-        this.reservationRequestDate = reservationRequestDate;
-    }
-
     public void setServiceOwnerRating(int serviceOwnerRating) {
         this.serviceOwnerRating = serviceOwnerRating;
     }
@@ -182,9 +194,11 @@ public class Reservation implements Serializable{
         this.reservationOwnerRating = reservationOwnerRating;
     }
 
+
     public void setReservationPrice(int reservationPrice) {
         this.reservationPrice = reservationPrice;
     }
+
 
     public void setState(int state) {
         this.state = state;
