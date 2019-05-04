@@ -153,17 +153,26 @@
                 new_sel = $(radio).data('title');
                 var tel = document.getElementById("telephone-cont");
                 if (new_sel == "TELEPHONE" && last_sel == "EMAIL" ) {
-                    tel.innerHTML += '<div class="col-md-6"><label>Numéro de téléphone</label></div>';
-                    tel.innerHTML += '<div class="col-md-6"><input type="phone" class="form-control" id="tel" placeholder="Numéro de téléphone"></div></div>';
-                    console.log(last_sel);
-                    console.log(new_sel);
+                    tel.innerHTML += '<div class="col-md-4"><label>Numéro de téléphone</label></div>';
+                    tel.innerHTML += '<div class="col-md-4"><input type="phone" class="form-control" id="tel" placeholder="Numéro de téléphone"></div>';
+                    tel.innerHTML += '<div class="col-md-4"><button type="button" class="btn btn-primary" onclick="OnChangeRadio(this)">Valider</button></div></div>';
                 }else if (new_sel == "EMAIL" && last_sel == "TELEPHONE" ){
                     tel.innerHTML ="";
-                    console.log(last_sel);
-                    console.log(new_sel);
                 }
                 last_sel = $(radio).data('title');
-                
+            }
+            
+            function onValidateTel() {
+                new_sel = $(radio).data('title');
+                var tel = document.getElementById("telephone-cont");
+                if (new_sel == "TELEPHONE" && last_sel == "EMAIL" ) {
+                    tel.innerHTML += '<div class="col-md-4"><label>Numéro de téléphone</label></div>';
+                    tel.innerHTML += '<div class="col-md-4"><input type="phone" class="form-control" id="tel" placeholder="Numéro de téléphone"></div>';
+                    tel.innerHTML += '<div class="col-md-4"><button type="button" class="btn btn-primary" onclick="OnChangeRadio(this)">Valider</button></div></div>';
+                }else if (new_sel == "EMAIL" && last_sel == "TELEPHONE" ){
+                    tel.innerHTML ="";
+                }
+                last_sel = $(radio).data('title');
             }
         </script>
     </body>
