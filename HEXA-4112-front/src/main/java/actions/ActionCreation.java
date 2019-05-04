@@ -33,20 +33,11 @@ public class ActionCreation extends Action {
         Services services = new Services();
         Person person = services.getPersonById(idPerson);
         
-        /*String picturesArray = request.getParameter("pictures");
-        JsonParser jsonParser = new JsonParser();
-        JsonArray picturesFromString = jsonParser.parse(picturesArray).getAsJsonArray();
-        Iterator it = picturesFromString.iterator();
-        while(it.hasNext())
-        {
-            Object indexPicture = (String) it.next(); // get key
-            Object o = picturesFromString.get(indexPicture); // get value
-            System.out.println(indexPicture + " : " +  o); // print the key and value
-        }*/
-        
+        String pictures = request.getParameter("pictures");
+
         // On recupere le parametre du bouton radio pour savoir
         // si c'est une demande ou une offre
-        String typeService = request.getParameter("type");
+        String typeAnnonce = request.getParameter("type");
         
         String category = request.getParameter("categorie");
         String nameObject = request.getParameter("objet");
@@ -74,12 +65,14 @@ public class ActionCreation extends Action {
         String durationUnit = request.getParameter("uniteDuree");
         
         boolean created = false;
-        if (typeService.equals("demande")) {
-            Demand demand = new Demand(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+
+        if (typeAnnonce.equals("demande")) {
+            Demand demand = new Demand(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
             System.out.println("Value de la demande : " + demand);
-        } else if (typeService.equals("offre")) {
-            Offer offer = new Offer(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+        } else if (typeAnnonce.equals("offre")) {
+            Offer offer = new Offer(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+
             created = services.createOffer(offer);
             System.out.println("Value de l'offre : " + offer);
         }

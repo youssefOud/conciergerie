@@ -3,6 +3,7 @@ package Model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -45,6 +46,7 @@ public abstract class Service implements Serializable{
     
     protected int duration;
     
+    @javax.persistence.Lob
     protected String pictures;
     
     protected String priceUnit;
@@ -214,7 +216,6 @@ public abstract class Service implements Serializable{
     public void setState(String state) {
         this.state = state;
     }
-    
     
     
     @Override

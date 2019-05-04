@@ -11,6 +11,8 @@ import actions.ActionCheckEmail;
 import actions.ActionConnection;
 import actions.ActionCreation;
 import actions.ActionGetAdsByPerson;
+import actions.ActionDeconnection;
+import actions.ActionGetInformationPerson;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
 import javax.servlet.ServletException;
@@ -34,7 +36,6 @@ public class ActionServlet extends HttpServlet {
             throws ServletException, IOException {
         
         String todo = request.getParameter("todo");
-        
         
         HttpSession session = request.getSession(true); 
         SerialisationJSON serialisationJSON = new SerialisationJSON();
@@ -62,7 +63,10 @@ public class ActionServlet extends HttpServlet {
                 
                 Person personRegistered = (Person) request.getAttribute("person");
                 if (personRegistered != null){
+                    request.setAttribute("registered", true);
                     session.setAttribute("idPerson", personRegistered.getId());
+                } else {
+                    request.setAttribute("registered", false);
                 }
                 
                 serialisationJSON.executeInscription(request, response);
@@ -79,7 +83,10 @@ public class ActionServlet extends HttpServlet {
                 
                 Person personConnected = (Person) request.getAttribute("person");
                 if (personConnected != null){
+                    request.setAttribute("connected", true);
                     session.setAttribute("idPerson", personConnected.getId());
+                } else {
+                    request.setAttribute("connected", false);
                 }
                 
                 serialisationJSON.executeConnexion(request,response);
@@ -87,6 +94,7 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "deposerAnnonce":
+                System.out.println("idPerson : " + session.getAttribute("idPerson"));
                 if (session.getAttribute("idPerson") != null){
                     ActionCreation actionCreation = new ActionCreation();
 
@@ -101,11 +109,31 @@ public class ActionServlet extends HttpServlet {
                     serialisationJSON.executeDeposerAnnonce(request, response);
                     
                 } else {
+                    request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
 
                 break;
             
+            case "recupererInfoPersonne":
+                if (session.getAttribute("idPerson") != null){
+                    ActionGetInformationPerson agip = new ActionGetInformationPerson();
+
+                    try {
+                        agip.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeRecupererInfoPersonne(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
             case "afficherFilActualite":
                 if (session.getAttribute("idPerson") != null){
                     ActionShowTimeline astl = new ActionShowTimeline();
@@ -119,6 +147,7 @@ public class ActionServlet extends HttpServlet {
                     serialisationJSON.executeShowTimeline(request, response);
                 
                 } else {
+                    request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
                 
@@ -143,11 +172,23 @@ public class ActionServlet extends HttpServlet {
                 break;
             
             case "seDeconnecter":
-                if (session.getAttribute("idPerson") != null){
+                if (session.getAttribute("idPerson") != null) {
+                    ActionDeconnection ad = new ActionDeconnection();
                     
-                } else {
+                    try {
+                        ad.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    serialisationJSON.executeSeDeconnecter(request, response);
+                }
+                else {
+                    request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
+                
+                break;
             }
     }
     

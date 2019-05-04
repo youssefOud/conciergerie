@@ -33,7 +33,7 @@ public class PersonDAO {
     
     public Person verifyPersonAccount(String mail, String password) {
         EntityManager em = JpaUtil.getEntityManager();
-        Query query = em.createQuery("select u from Person u where u.login=:mailToVerify"
+        Query query = em.createQuery("select u from Person u where u.mail=:mailToVerify"
                 + " AND u.password=:passwordToVerify");
         query.setParameter("mailToVerify", mail);
         query.setParameter("passwordToVerify", password);

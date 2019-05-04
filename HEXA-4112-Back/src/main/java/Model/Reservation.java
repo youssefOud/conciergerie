@@ -174,29 +174,31 @@ public class Reservation implements Serializable{
         return serviceOwnerRating;
     }
 
-    public void setServiceOwnerRating(int serviceOwnerRating) {
-        this.serviceOwnerRating = serviceOwnerRating;
-    }
-
     public int getReservationOwnerRating() {
         return reservationOwnerRating;
-    }
-
-    public void setReservationOwnerRating(int reservationOwnerRating) {
-        this.reservationOwnerRating = reservationOwnerRating;
     }
 
     public int getReservationPrice() {
         return reservationPrice;
     }
 
+    public int getState() {
+        return state;
+    }
+
+    public void setServiceOwnerRating(int serviceOwnerRating) {
+        this.serviceOwnerRating = serviceOwnerRating;
+    }
+
+    public void setReservationOwnerRating(int reservationOwnerRating) {
+        this.reservationOwnerRating = reservationOwnerRating;
+    }
+
+
     public void setReservationPrice(int reservationPrice) {
         this.reservationPrice = reservationPrice;
     }
 
-    public int getState() {
-        return state;
-    }
 
     public void setState(int state) {
         this.state = state;

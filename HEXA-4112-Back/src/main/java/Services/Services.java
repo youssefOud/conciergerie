@@ -1,4 +1,3 @@
-
 package Services;
 
 import java.util.ArrayList;
@@ -369,10 +368,16 @@ public class Services {
             return false;
         }
         Date reservationRequestDate = new Date();
+        
         if(serviceOwner != null && reservationOwner != null && service != null){
             try {
                 JpaUtil.openTransaction();
                 Reservation reservation = new Reservation(serviceOwner, reservationOwner, service, reservationStartingDate, reservationDuration, durationUnit, reservationRequestDate);
+                if(reservation.getReservationStartingDate().getTime() < service.getAvailabilityDate().getTime() || reservation.getReservationEndingDate().getTime() > service.getEndOfAvailabilityDate().getTime()){
+                    JpaUtil.validateTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
                 reservationDAO.persist(reservation);
                 JpaUtil.validateTransaction();
             }
@@ -387,7 +392,7 @@ public class Services {
             return false;
         }
         JpaUtil.closeEntityManager();
-        return false;
+        return true;
     }
     
     public List<Reservation> getReservationByPersonId(Long personId){
@@ -396,6 +401,7 @@ public class Services {
     }
 
     public boolean updateServiceState(Service service) {
+        JpaUtil.createEntityManager();
         if (service == null) return false;
         Date now  = new Date();
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
@@ -414,20 +420,37 @@ public class Services {
         return true;
     }
     
-    public HashMap<Service, ArrayList<Reservation>> getAdsByIdPerson(Person person) {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        //Person person = getPersonById(idPerson);
+    public HashMap<Service, List<Reservation>> getAdsByPerson(Person person) {
         if (person == null) return null;
         
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+                
         List<Service> services = serviceDAO.findAllServicesByPerson(person);
+        HashMap<Service,List<Reservation>> hm = new HashMap<>();
         for (Service serv :services) {
-             // DAO : findReservationByServiceId(Long idService)
-        
-        // updateServiceState -> expire
+            updateServiceState(serv);
+            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
+            hm.put(serv,reservations);
         }
         JpaUtil.closeEntityManager();       
-        return null;
+        return hm;
+    }
+    
+    public boolean deleteService(Long serviceId){
+        JpaUtil.createEntityManager();
+        try {
+            JpaUtil.openTransaction();
+            Service serviceToRemove = serviceDAO.findById(serviceId);
+            serviceDAO.remove(serviceToRemove);
+            JpaUtil.validateTransaction();
+        }
+        catch(Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
     }
 }

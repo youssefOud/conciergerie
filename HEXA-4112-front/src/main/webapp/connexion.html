@@ -123,12 +123,12 @@
                     if (send) {
                         //Validation
                         
-                        
+                        console.log(answers);
                             $.ajax({
                                 type: 'POST',
                                 url: './ActionServlet',
                                 data: answers,
-                                timeout: 3000,
+//                                timeout: 3000,
                                 dataType:'json',
                                 success: function (data) {
                                     console.log(data);                                
@@ -141,7 +141,8 @@
                                         $("#erreur").modal();
                                     }
                                 },
-                                error: function () {
+                                error: function (data) {
+                                console.log(data);
                                     $("#erreur").modal();
                                 }
                             });
