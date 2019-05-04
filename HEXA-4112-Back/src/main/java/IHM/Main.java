@@ -51,7 +51,7 @@ public class Main {
 */
        
        
-        boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
+        boolean emailSent = s.sendVerificationEmail("youssef.oudghiri5@gmail.com");
         System.out.println("--------------------------------"+emailSent+"-------------------");
 
         

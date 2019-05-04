@@ -9,6 +9,7 @@ import DAO.*;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Reservation;
 import Model.Service;
 import Model.VerificationToken;
 import Utils.EmailSenderService;
@@ -226,10 +227,8 @@ public class Services {
     
     public Person getPersonById(Long idPerson) {
         JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        Person person = personDAO.findById(idPerson);
-        
+        JpaUtil.openTransaction();     
+        Person person = personDAO.findById(idPerson);      
         JpaUtil.closeEntityManager();
         return person;
     }
@@ -258,5 +257,20 @@ public class Services {
         }
         JpaUtil.closeEntityManager();
         return true;
+    }
+    
+    public boolean createReservation(Long idServiceOwner, Long idReservationOwner, Long idService, String reservationStartingDate, int reservationDuration, String durationUnit){
+        JpaUtil.createEntityManager();
+        Person serviceOwner = personDAO.findById(idServiceOwner);
+        Person reservationOwner = personDAO.findById(idReservationOwner);
+        Service service = serviceDAO.findById(idService);
+        // Date reservationRequestDate
+        //Passer en accepted si ca a été accepté
+        return false;
+    }
+    
+    public List<Reservation> getReservationByPersonId(Long personId){
+        //todo
+        return null;
     }
 }
