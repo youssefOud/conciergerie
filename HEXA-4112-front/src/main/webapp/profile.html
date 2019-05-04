@@ -126,6 +126,8 @@
                                 </div>
                                 <br>
                                 <div class="row" id="telephone-cont"></div>
+                                <br>
+                                <div class="col-md-4"><button type="button" class="btn btn-primary" onclick="OnChangeRadio(this)">Valider</button></div></div>
                             </div>
                         </div>
                     </div>
@@ -143,8 +145,25 @@
                     $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
                     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
                 });
-
+                
+                var filtres = new Object();
+                filtres.todo = "recupererInfoPersonne";
+                $.ajax({
+                    type: 'GET',
+                    url: './ActionServlet',
+                    data: filtres,
+                    timeout: 3000,
+                    dataType:'json',
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        alert("Le changement n'a pu être réalisé, veuillez réessayer plus tard");
+                    }
+                });
             });
+
             
             var last_sel = "EMAIL";
             var new_sel;
@@ -163,7 +182,10 @@
                     console.log(new_sel);
                 }
                 last_sel = $(radio).data('title');
-                
+            }
+            
+            function onValidateChange() {
+                new_sel = $(radio).data('title');
             }
         </script>
     </body>

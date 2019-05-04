@@ -258,12 +258,12 @@
                         </div>-->
         </div>
 
-        <script>
+            <script>
         
         $(document).ready(function () {
 
             if (window.location.href.indexOf('annonce') > - 1){
-            $('#popup').append(' <div class="alert alert-dismissible alert-primary" id="popup"><button type="button" class="close" data-dismiss="alert">&times;</button> <a class="alert-link">Votre annonce a bien été publiée.</div>');
+                $('#popup').append(' <div class="alert alert-dismissible alert-primary" id="popup"><button type="button" class="close" data-dismiss="alert">&times;</button> <a class="alert-link">Votre annonce a bien été publiée.</div>');
         }
         
         
@@ -303,7 +303,7 @@
             filtres.type = "demande";
             if ($('#offre').is(':checked')) {
             filtres.type = "offre";
-                }
+            }
             //Catégorie
             filtres.categorie = document.getElementById('categories').value;
                 //Nom objet
@@ -322,8 +322,8 @@
                     send = false;
             document.getElementById("date").classList.add("is-invalid");
             document.getElementById("time").classList.add("is-invalid");
-                            }
-                            
+                                }
+                                
                                 
                                 } else if(document.getElementById("date").value == "" && document.getElementById("time").value != ""){
                     send = false;
@@ -402,9 +402,9 @@
                             <div id="collapse'+i+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordion'+i+'">';
                                 if(data.Annonces[i].description!=undefined){
                                     annonce += '<div class="card-body">' + data.Annonces[i].description + '</div>';
-                                                               }
-                                                               
-                                                               annonce +='<ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+data.Annonces[i].date+' '+data.Annonces[i].time+'</li>\n\
+                                                                                        }
+                                                                                        
+                                                                                        annonce +='<ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : '+data.Annonces[i].date+' '+data.Annonces[i].time+'</li>\n\
                             <li class="list-group-item">Durée de disponibilité : '+data.Annonces[i].duree+' '+data.Annonces[i].uniteDuree+'</li>\n\
                                 <li class="list-group-item">Prix : '+data.Annonces[i].nbPts+' points par '+data.Annonces[i].unitePrix+ '</li>\n\
                                     <li class="list-group-item">Localisation : '+ data.Annonces[i].localisation+'</li>\n\
@@ -459,23 +459,23 @@
                     annonce += '<span style="color:#007bff" >OFFRE</span>';
                     }
                     else if (data.Annonces[i].typeAnnonce == "demande"){
-                        annonce += '<span style="color:#f47d42" >DEMANDE</span>';
+                    annonce += '<span style="color:#f47d42" >DEMANDE</span>';
                     }
 
                     annonce += ' - Prêt - ' + data.Annonces[i].nomObjet + '<div class="text-right">\n\
                                                            <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
                                                             <div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
-                    if (data.Annonces[i].images!=undefined && data.Annonces[i].images.length != 0){
-                        annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
+                    if (data.Annonces[i].images != undefined && data.Annonces[i].images.length != 0){
+                    annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
                                         <div class="carousel-inner">\n\
                                         <div class="carousel-item active">\n\
                                     <img class="d-block w-100 center"  style="max-width:50%;max-height:20%" src="' + data.Annonces[i].images[0] + '" alt="First slide"></div>';
-                        for (var j = 1; j < data.Annonces[i].images.length; j++){
-                            annonce += '<div class="carousel-item">\n\
+                    for (var j = 1; j < data.Annonces[i].images.length; j++){
+                    annonce += '<div class="carousel-item">\n\
                                                    <img class="d-block w-100 center" style="max-width:50%;max-height:20%" src="' + data.Annonces[i].images[j] + '" alt="Second slide">\n\
                                                    </div>';
-                        }
-                        annonce += '</div>\n\
+                    }
+                    annonce += '</div>\n\
                             <a class="carousel-control-prev" href="#carousel' + i + '" role="button" data-slide="prev">\n\
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>\n\
                                 <span class="sr-only">Previous</span>\n\
