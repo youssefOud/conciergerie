@@ -97,7 +97,4 @@ public class Reservation implements Serializable{
         reservationPrice = (int)Math.ceil(durationInMinutes * nbPtsInMinutes);
         
     }
-    
-    
-
 }
