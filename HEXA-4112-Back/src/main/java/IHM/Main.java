@@ -9,6 +9,7 @@ import DAO.JpaUtil;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Reservation;
 import Model.Service;
 import Model.VerificationToken;
 import Services.Services;
@@ -30,28 +31,31 @@ public class Main {
         Services s = new Services();
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        //EmailSenderService.sendVerificationEmail("oliviacaraiman@gmail.com");
-       /* Person person = new Person("12345","+12345","fifi@gmail.com","fifi","/url/img.png","Residence A");
-                
-        
-        
-        Offer offer = new Offer(person, "Bricolage", null, "marteau",  formatDate.parse("09/05/2019 00:00")
-                ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
-        Demand demand = new Demand(person, "Bricolage",null, "marteau", formatDate.parse("12/05/2019 19:00")
-                ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
-        Offer offer2 = new Offer(person, "Bricolage", null, "four",  formatDate.parse("09/05/2019 00:00")
-                ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
-        
-        System.out.println(s.createPerson(person));
-        System.out.println(s.createDemand(demand));
-        System.out.println(s.createOffer(offer2));
-        System.out.println(s.createOffer(offer));
-    
-        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
-       // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
-        //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
+//        
+//        //EmailSenderService.sendVerificationEmail("oliviacaraiman@gmail.com");
+//        Person person1 = new Person("John","Smith","123","+1234", "fifi@gmail.com");
+//        Person person2 = new Person("Paul","Cartney","123","+1234", "paulc@gmail.com");
+//                
+//        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("09/05/2019 00:00")
+//                ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
+//        Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("12/05/2019 19:00")
+//                ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
+//        Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("09/05/2019 00:00")
+//                ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
+//        
+//        System.out.println(s.createPerson(person1));
+//        System.out.println(s.createPerson(person2));
+//        System.out.println(s.createDemand(demand));
+//        System.out.println(s.createOffer(offer2));
+//        System.out.println(s.createOffer(offer));
+//    
+//        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+//       // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
+//        //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
+//        
+//        HashMap<Service, ArrayList<Reservation>> listS = s.getAdsByIdPerson(person1);
         System.out.println();
-*/
+
        
        
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
@@ -64,23 +68,23 @@ public class Main {
  
  
  // NOT WORKING
-        VerificationToken t1 = new VerificationToken("e1","123");
-        t1.setDate(formatDate.parse("02/04/2019 12:00"));
-        VerificationToken t2 = new VerificationToken("e2","123");
-        t2.setDate(formatDate.parse("01/05/2019 12:00"));
-        VerificationToken t3 = new VerificationToken("e2","123");
-        t3.setDate(formatDate.parse("03/05/2019 12:00"));
-        
-        s.createToken(t1);
-        s.createToken(t2);
-        s.createToken(t3);
-        
-        
-        Task task = new Task("delete_token",s);
- 
-        //Task te2=new TimerExample("Task2");
-        Timer t=new Timer();
-        t.scheduleAtFixedRate(task, 15*1000, 60*1000);
+//        VerificationToken t1 = new VerificationToken("e1","123");
+//        t1.setDate(formatDate.parse("02/04/2019 12:00"));
+//        VerificationToken t2 = new VerificationToken("e2","123");
+//        t2.setDate(formatDate.parse("01/05/2019 12:00"));
+//        VerificationToken t3 = new VerificationToken("e2","123");
+//        t3.setDate(formatDate.parse("03/05/2019 12:00"));
+//        
+//        s.createToken(t1);
+//        s.createToken(t2);
+//        s.createToken(t3);
+//        
+//        
+//        Task task = new Task("delete_token",s);
+// 
+//        //Task te2=new TimerExample("Task2");
+//        Timer t=new Timer();
+//        t.scheduleAtFixedRate(task, 15*1000, 60*1000);
         
 ////////////////
 

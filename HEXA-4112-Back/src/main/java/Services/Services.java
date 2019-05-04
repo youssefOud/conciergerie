@@ -10,6 +10,7 @@ import DAO.*;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Reservation;
 import Model.Service;
 import Model.VerificationToken;
 import Utils.EmailSenderService;
@@ -17,6 +18,7 @@ import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  *
@@ -34,8 +36,8 @@ public class Services {
         this.demandDAO = new DemandDAO();
         this.offerDAO = new OfferDAO();
         this.personDAO = new PersonDAO();
-        this.serviceDAO = new ServiceDAO();   
-        this.verificationTokenDAO = new VerificationTokenDAO();   
+        this.serviceDAO = new ServiceDAO();
+        this.verificationTokenDAO = new VerificationTokenDAO();
     }
     
     
@@ -103,6 +105,24 @@ public class Services {
         return true;
     }
     
+    //FOR TEST PURPOSES
+      public boolean createPerson(Person p) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        personDAO.persist(p);
+        
+        try {
+            JpaUtil.validateTransaction();
+        } catch (RollbackException e) {
+            JpaUtil.cancelTransaction();
+            return false;
+        }
+        
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
     // TODO : A completer : Dans l'ActionServlet, le bouton radio
     // permet de savoir si c'est une demande ou une offre
     public boolean createDemand (Demand demand) {
@@ -162,7 +182,7 @@ public class Services {
         
         boolean tokenExists = verificationTokenDAO.verificationTokenExists(mail, verificationCode);
         
-        if( !tokenExists || personDAO.personExists(mail) ){ 
+        if( !tokenExists || personDAO.personExists(mail) ){
             JpaUtil.closeEntityManager();
             return null;
         }
@@ -173,10 +193,10 @@ public class Services {
                 JpaUtil.openTransaction();
                 //Create person plutot que de le prendre en paramètre
                 personDAO.persist(p);
-                JpaUtil.validateTransaction();  
+                JpaUtil.validateTransaction();
             }
-
-             catch (Exception e) {
+            
+            catch (Exception e) {
                 JpaUtil.cancelTransaction();
                 JpaUtil.closeEntityManager();
                 return null;
@@ -184,7 +204,7 @@ public class Services {
             
             JpaUtil.closeEntityManager();
             return p;
-            }
+        }
     }
     
     // TODO : A completer : permet de retourner toutes les demandes
@@ -203,14 +223,14 @@ public class Services {
     // comparaison
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
-
+    
     public List<Service> findAllServicesWithFilter(String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
         
         Date today = new Date();
-        SimpleDateFormat formatNormal = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy"); 
-        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm"); 
+        SimpleDateFormat formatNormal = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
         Date startingDate;
         
         if (!date.isEmpty()) {
@@ -218,7 +238,7 @@ public class Services {
                 if (date.equals(formatDate.format(today))) time = formatTime.format(today);
                 else  time="00:00";
                 
-            startingDate = formatNormal.parse(date + " " + time);
+                startingDate = formatNormal.parse(date + " " + time);
             }
             else{
                 startingDate = formatNormal.parse(date + " " + time);
@@ -229,7 +249,7 @@ public class Services {
             startingDate = null;
         }
         
-
+        
         Long durationInMillis = 0L;
         if (!duration.isEmpty()) {
             durationInMillis = Long.valueOf(duration);
@@ -252,7 +272,7 @@ public class Services {
         else{
             endingDate = formatNormal.parse( formatNormal.format(today.getTime() + durationInMillis) );
         }
-              
+        
         List<Service> listServices = serviceDAO.findAllServicesWithFilter(object, category, location, startingDate, endingDate, nbPts, paymentUnit, serviceType);
         
         JpaUtil.closeEntityManager();
@@ -308,7 +328,7 @@ public class Services {
         JpaUtil.closeEntityManager();
         return service;
     }
-
+    
     public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
         // TODO : to implement : persist la personne en base de données
         return new Person();
@@ -319,7 +339,7 @@ public class Services {
         // Voir comment faire cela
         return false;
     }
-
+    
     public boolean deleteOldTokens(Long delay) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
@@ -333,5 +353,43 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-
+    
+    public boolean updateServiceState(Service service) {
+        if (service == null) return false;
+        Date now  = new Date();
+        if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
+            try {
+                JpaUtil.openTransaction();
+                service.setState("expired");
+                serviceDAO.merge(service);
+                JpaUtil.validateTransaction();
+            }
+            catch(Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public HashMap<Service, ArrayList<Reservation>> getAdsByIdPerson(Person person) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        //Person person = getPersonById(idPerson);
+        if (person == null) return null;
+        
+        List<Service> services = serviceDAO.findAllServicesByPerson(person);
+        for (Service serv :services) {
+             // DAO : findReservationByServiceId(Long idService)
+        
+        // updateServiceState -> expire
+        }
+        JpaUtil.closeEntityManager();       
+        return null;
+    }
+    
+    
+    
 }

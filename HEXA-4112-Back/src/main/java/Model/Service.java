@@ -52,6 +52,8 @@ public abstract class Service implements Serializable{
     
     protected String durationUnit;
     
+    protected String state; // valid or expired
+    
     public Service() {
         
     }
@@ -72,6 +74,7 @@ public abstract class Service implements Serializable{
         this.durationUnit = durationUnit;
         this.duration = duration;
         this.publicationDate = new Date();
+        this.state = "valid";
         
         Long durationInMillis = Long.valueOf(duration);
         if (durationUnit.equals("jours")) {
@@ -204,6 +207,16 @@ public abstract class Service implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    
+    
     
     @Override
     public String toString() {
