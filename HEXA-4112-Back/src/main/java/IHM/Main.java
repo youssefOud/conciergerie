@@ -6,12 +6,7 @@
 package IHM;
 
 import DAO.JpaUtil;
-import Model.Demand;
-import Model.Offer;
-import Model.Person;
-import Model.Reservation;
-import Model.Service;
-import Model.VerificationToken;
+import Model.*;
 import Services.Services;
 import Utils.EmailSenderService;
 import java.text.ParseException;
@@ -53,7 +48,7 @@ public class Main {
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         
-        HashMap<Service, ArrayList<Reservation>> listS = s.getAdsByPerson(person1);
+        HashMap<Service, List<Reservation>> listS = s.getAdsByPerson(person1);
         System.out.println();
 
        

@@ -368,6 +368,7 @@ public class Services {
     }
 
     public boolean updateServiceState(Service service) {
+        JpaUtil.createEntityManager();
         if (service == null) return false;
         Date now  = new Date();
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
@@ -386,20 +387,29 @@ public class Services {
         return true;
     }
     
-    public HashMap<Service, ArrayList<Reservation>> getAdsByIdPerson(Person person) {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        //Person person = getPersonById(idPerson);
+    public HashMap<Service, List<Reservation>> getAdsByPerson(Person person) {
         if (person == null) return null;
         
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+                
         List<Service> services = serviceDAO.findAllServicesByPerson(person);
+        HashMap<Service,List<Reservation>> hm = new HashMap<>();
         for (Service serv :services) {
-             // DAO : findReservationByServiceId(Long idService)
-        
-        // updateServiceState -> expire
+             // DAO : findReservationByService(Service service)
+            updateServiceState(serv);
+            
+//             public List<Reservation> findAllReservationsByService(Service service){
+//        EntityManager em = JpaUtil.getEntityManager();
+//        String request = "select r from Reservation r where r.service = :service ";         
+//        Query query = em.createQuery(request).setParameter("service", service);
+//        List<Reservation> reservations = (List<Reservation>)query.getResultList();
+//        
+//        System.out.println("services: " + reservations.size());
+//        return reservations; 
+//    }
         }
         JpaUtil.closeEntityManager();       
-        return null;
+        return hm;
     }
 }
