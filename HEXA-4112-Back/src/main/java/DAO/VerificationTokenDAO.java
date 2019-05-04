@@ -3,8 +3,10 @@ package DAO;
 import javax.persistence.EntityManager;
 
 import Model.VerificationToken;
+import java.sql.Date;
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 public class VerificationTokenDAO {
     
@@ -30,8 +32,10 @@ public class VerificationTokenDAO {
     
     public void removeOldTokens(Long delay){
         EntityManager em = JpaUtil.getEntityManager();
-        
-        Query query = em.createQuery("DELETE FROM VerificationToken u where (datediff('ms',CURRENT_TIMESTAMP, u.date)) >= :delay").setParameter("delay",delay);
+        long currentDateTime = System.currentTimeMillis()-delay;
+        Date date = new Date(currentDateTime);
+        System.out.println("date: " + date);
+        Query query = em.createQuery("DELETE FROM VerificationToken u where :date > u.date").setParameter("date",date,TemporalType.TIMESTAMP);
         query.executeUpdate();
     }
     

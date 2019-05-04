@@ -1,3 +1,4 @@
+
 package Services;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class Services {
     }
     
     
+    // TODO : compléter
     public Person connectPerson (String mail, String mdp) {
         JpaUtil.createEntityManager();
         Person person = personDAO.verifyPersonAccount(mail, mdp);
@@ -121,6 +123,22 @@ public class Services {
         return true;
     }
     
+    public boolean createToken (VerificationToken vt) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        verificationTokenDAO.persist(vt);
+        
+        try {
+            JpaUtil.validateTransaction();
+        } catch (RollbackException e) {
+            JpaUtil.cancelTransaction();
+            return false;
+        }
+        
+        JpaUtil.closeEntityManager();
+        return true;
+    }
     
     public boolean createOffer (Offer offer) {
         JpaUtil.createEntityManager();
@@ -169,6 +187,23 @@ public class Services {
             return p;
             }
     }
+    
+    // TODO : A completer : permet de retourner toutes les demandes
+    // en cours
+    public List<Demand> findAllDemands() {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Demand> listDemand = new ArrayList<>();
+        
+        JpaUtil.closeEntityManager();
+        return listDemand;
+    }
+    
+    // Ajouter en parametre tous les critères des filtres afin de faire nos
+    // comparaison
+    // TODO : A completer : permet de retourner toutes les demandes
+    // en cours avec les filtres mis
 
     public List<Service> findAllServicesWithFilter(String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
@@ -225,6 +260,36 @@ public class Services {
         return listServices;
     }
     
+    // TODO : A completer : permet de retourner toutes les offres
+    // en cours
+    public List<Offer> findAllOffers() {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Offer> listOffer = new ArrayList<>();
+        
+        
+        
+        JpaUtil.closeEntityManager();
+        return listOffer;
+    }
+    
+    // Ajouter en parametre tous les critères des filtres afin de faire nos
+    // comparaison
+    // TODO : A completer : permet de retourner toutes les offres
+    // en cours avec les filtres mis
+    public List<Offer> findAllOffersWithFilters(/*Add Filter*/) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Offer> listOffer = new ArrayList<>();
+        
+        
+        
+        JpaUtil.closeEntityManager();
+        return listOffer;
+    }
+    
     public Person getPersonById(Long idPerson) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();     
@@ -243,7 +308,16 @@ public class Services {
         return service;
     }
 
-
+    public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
+        // TODO : to implement : persist la personne en base de données
+        return new Person();
+    }
+    
+    public boolean verifyEmailAdress(String mail) {
+        // TODO : to implement : envoyer un mail et attendre la validation de celui-ci
+        // Voir comment faire cela
+        return false;
+    }
 
     public boolean deleteOldTokens(Long delay) {
         JpaUtil.createEntityManager();
