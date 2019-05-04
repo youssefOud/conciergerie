@@ -28,8 +28,14 @@ public class ActionGetInformationPerson extends Action {
         Person person = services.getPersonById(idPerson);
         
         if (person != null) {
-            request.setAttribute("prenom", person.getFirstName());
             request.setAttribute("session", true);
+            request.setAttribute("prenom", person.getFirstName());
+            request.setAttribute("nom", person.getLastName());
+            request.setAttribute("nbPoint", person.getPointBalance());
+            request.setAttribute("email", person.getMail());
+            request.setAttribute("numTel", person.getCellNumber());
+            request.setAttribute("contactPrefere", person.getPrivilegedContact());
+            request.setAttribute("note", person.getRating());
         } else {
             request.setAttribute("session", false);
         }
