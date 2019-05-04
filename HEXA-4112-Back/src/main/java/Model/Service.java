@@ -1,3 +1,4 @@
+
 package Model;
 
 import java.io.Serializable;
@@ -217,6 +218,12 @@ public abstract class Service implements Serializable{
         this.state = state;
     }
     
+    public Person getPerson(){
+        if(personOffering != null){
+            return personOffering;
+        }
+        return personDemanding;
+    }
     
     @Override
     public String toString() {
