@@ -208,18 +208,6 @@ public class Services {
         }
     }
     
-    // TODO : A completer : permet de retourner toutes les demandes
-    // en cours
-    public List<Demand> findAllDemands() {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Demand> listDemand = new ArrayList<>();
-        
-        JpaUtil.closeEntityManager();
-        return listDemand;
-    }
-    
     // Ajouter en parametre tous les critères des filtres afin de faire nos
     // comparaison
     // TODO : A completer : permet de retourner toutes les demandes
@@ -280,35 +268,6 @@ public class Services {
         return listServices;
     }
     
-    // TODO : A completer : permet de retourner toutes les offres
-    // en cours
-    public List<Offer> findAllOffers() {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Offer> listOffer = new ArrayList<>();
-        
-        
-        
-        JpaUtil.closeEntityManager();
-        return listOffer;
-    }
-    
-    // Ajouter en parametre tous les critères des filtres afin de faire nos
-    // comparaison
-    // TODO : A completer : permet de retourner toutes les offres
-    // en cours avec les filtres mis
-    public List<Offer> findAllOffersWithFilters(/*Add Filter*/) {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Offer> listOffer = new ArrayList<>();
-        
-        
-        
-        JpaUtil.closeEntityManager();
-        return listOffer;
-    }
     
     public Person getPersonById(Long idPerson) {
         JpaUtil.createEntityManager();
@@ -328,16 +287,6 @@ public class Services {
         return service;
     }
     
-    public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
-        // TODO : to implement : persist la personne en base de données
-        return new Person();
-    }
-    
-    public boolean verifyEmailAdress(String mail) {
-        // TODO : to implement : envoyer un mail et attendre la validation de celui-ci
-        // Voir comment faire cela
-        return false;
-    }
     
     public boolean deleteOldTokens(Long delay) {
         JpaUtil.createEntityManager();
