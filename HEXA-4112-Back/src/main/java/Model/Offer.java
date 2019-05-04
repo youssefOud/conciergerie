@@ -14,7 +14,7 @@ public class Offer extends Service{
     }
     
     
-    public Offer(Person personOffering, String category, List<String> pictures, String nameObject, Date availabilityDate,
+    public Offer(Person personOffering, String category, String pictures, String nameObject, Date availabilityDate,
             String localisation, String type, int nbPointMin, String description, String priceUnit, String durationUnit, int duration) {
         super(personOffering, null, category, pictures, nameObject, availabilityDate, localisation, type, description, priceUnit, durationUnit, duration);
         this.nbPointMin = nbPointMin;

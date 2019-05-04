@@ -24,7 +24,7 @@ public class ActionShowTimeline extends Action {
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
 
         String objectName = request.getParameter("objet");
-        String priceUnit = request.getParameter("uniteePrix"); 
+        String priceUnit = request.getParameter("unitePrix"); 
         String category = request.getParameter("categorie");
         String location = request.getParameter("localisation");
         String availabilityDate = request.getParameter("date");
