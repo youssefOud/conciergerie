@@ -2,7 +2,9 @@ package DAO;
 
 import javax.persistence.EntityManager;
 
-import Model.Reservation;
+import Model.*;
+import java.util.List;
+import javax.persistence.Query;
 
 public class ReservationDAO {
     
@@ -24,6 +26,14 @@ public class ReservationDAO {
     public void remove(Reservation reservation){
         EntityManager em = JpaUtil.getEntityManager();
         em.remove(reservation);
+    }
+    
+    public List<Reservation> findAllReservationsByService(Service service){
+        EntityManager em = JpaUtil.getEntityManager();
+        String request = "select r from Reservation r where r.service = :service ";         
+        Query query = em.createQuery(request).setParameter("service", service);
+        List<Reservation> reservations = (List<Reservation>)query.getResultList();
+        return reservations; 
     }
    
     

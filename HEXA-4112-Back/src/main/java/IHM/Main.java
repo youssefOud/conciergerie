@@ -6,12 +6,7 @@
 package IHM;
 
 import DAO.JpaUtil;
-import Model.Demand;
-import Model.Offer;
-import Model.Person;
-import Model.Reservation;
-import Model.Service;
-import Model.VerificationToken;
+import Model.*;
 import Services.Services;
 import Utils.EmailSenderService;
 import java.text.ParseException;
@@ -30,34 +25,37 @@ public class Main {
         JpaUtil.init();
         Services s = new Services();
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+       
         
-//        
-//        //EmailSenderService.sendVerificationEmail("oliviacaraiman@gmail.com");
-//        Person person1 = new Person("John","Smith","123","+1234", "fifi@gmail.com");
-//        Person person2 = new Person("Paul","Cartney","123","+1234", "paulc@gmail.com");
-//                
-//        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("09/05/2019 00:00")
-//                ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
-//        Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("12/05/2019 19:00")
-//                ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
-//        Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("09/05/2019 00:00")
-//                ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
-//        
-//        System.out.println(s.createPerson(person1));
-//        System.out.println(s.createPerson(person2));
-//        System.out.println(s.createDemand(demand));
-//        System.out.println(s.createOffer(offer2));
-//        System.out.println(s.createOffer(offer));
-//    
-//        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
-//       // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
-//        //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
-//        
-//        HashMap<Service, ArrayList<Reservation>> listS = s.getAdsByIdPerson(person1);
+        //EmailSenderService.sendVerificationEmail("oliviacaraiman@gmail.com");
+        Person person1 = new Person("John","Smith","123","+1234", "fifi@gmail.com");
+        Person person2 = new Person("Paul","Cartney","123","+1234", "paulc@gmail.com");
+                
+        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("01/05/2019 00:00")
+                ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
+        Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("01/05/2019 19:00")
+                ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
+        Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("01/05/2019 00:00")
+                ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
+
+        System.out.println(s.createPerson(person1));
+        System.out.println(s.createPerson(person2));
+        System.out.println(s.createDemand(demand));
+        System.out.println(s.createOffer(offer2));
+        System.out.println(s.createOffer(offer));
+        
+        s.createReservation(person1.getId(), person2.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person1.getId(), person2.getId(), offer2.getId(), "04/05/2019", "00:00", 5, "minutes");
+        
+        
+    
+        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+       // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
+        //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
+        
+        HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
         System.out.println();
 
-       
-       
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
        // System.out.println("--------------------------------"+emailSent+"-------------------");
 

@@ -1,4 +1,3 @@
-
 package Services;
 
 import java.util.ArrayList;
@@ -402,6 +401,7 @@ public class Services {
     }
 
     public boolean updateServiceState(Service service) {
+        JpaUtil.createEntityManager();
         if (service == null) return false;
         Date now  = new Date();
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
@@ -420,21 +420,21 @@ public class Services {
         return true;
     }
     
-    public HashMap<Service, ArrayList<Reservation>> getAdsByIdPerson(Person person) {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        //Person person = getPersonById(idPerson);
+    public HashMap<Service, List<Reservation>> getAdsByPerson(Person person) {
         if (person == null) return null;
         
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+                
         List<Service> services = serviceDAO.findAllServicesByPerson(person);
+        HashMap<Service,List<Reservation>> hm = new HashMap<>();
         for (Service serv :services) {
-             // DAO : findReservationByServiceId(Long idService)
-        
-        // updateServiceState -> expire
+            updateServiceState(serv);
+            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
+            hm.put(serv,reservations);
         }
         JpaUtil.closeEntityManager();       
-        return null;
+        return hm;
     }
     
     public boolean deleteService(Long serviceId){
