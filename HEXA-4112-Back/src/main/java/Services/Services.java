@@ -355,6 +355,7 @@ public class Services {
     }
     
     public boolean updateServiceState(Service service) {
+        JpaUtil.createEntityManager();
         if (service == null) return false;
         Date now  = new Date();
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
@@ -373,23 +374,18 @@ public class Services {
         return true;
     }
     
-    public HashMap<Service, ArrayList<Reservation>> getAdsByIdPerson(Person person) {
+    public HashMap<Service, ArrayList<Reservation>> getAdsByPerson(Person person) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
-        
-        //Person person = getPersonById(idPerson);
         if (person == null) return null;
         
         List<Service> services = serviceDAO.findAllServicesByPerson(person);
         for (Service serv :services) {
              // DAO : findReservationByServiceId(Long idService)
-        
-        // updateServiceState -> expire
+            updateServiceState(serv);
         }
         JpaUtil.closeEntityManager();       
         return null;
     }
-    
-    
-    
+
 }
