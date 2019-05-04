@@ -33,7 +33,6 @@ public class ActionCreation extends Action {
         Services services = new Services();
         Person person = services.getPersonById(idPerson);
         
-        List<String> pictures = new ArrayList<>();
         /*String picturesArray = request.getParameter("pictures");
         JsonParser jsonParser = new JsonParser();
         JsonArray picturesFromString = jsonParser.parse(picturesArray).getAsJsonArray();
@@ -76,11 +75,11 @@ public class ActionCreation extends Action {
         
         boolean created = false;
         if (typeService.equals("demande")) {
-            Demand demand = new Demand(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+            Demand demand = new Demand(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
             System.out.println("Value de la demande : " + demand);
         } else if (typeService.equals("offre")) {
-            Offer offer = new Offer(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+            Offer offer = new Offer(person, category, "", nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createOffer(offer);
             System.out.println("Value de l'offre : " + offer);
         }

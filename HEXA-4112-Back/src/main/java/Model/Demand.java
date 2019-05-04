@@ -14,7 +14,7 @@ public class Demand extends Service {
         
     }
     
-    public Demand(Person personDemanding, String category, List<String> pictures, String nameObject, Date availabilityDate,
+    public Demand(Person personDemanding, String category, String pictures, String nameObject, Date availabilityDate,
             String localisation, String type, int nbPointMax, String description, String priceUnit, String durationUnit, int duration) {
         // TODO A implementer
         super(null, personDemanding, category, pictures, nameObject, availabilityDate, localisation, type, description, priceUnit, durationUnit, duration);
