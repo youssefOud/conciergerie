@@ -10,6 +10,9 @@ import Model.Demand;
 import Model.Offer;
 import Model.Person;
 import Model.Service;
+import Model.VerificationToken;
+import Utils.EmailSenderService;
+import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,22 +27,78 @@ public class Services {
     final private OfferDAO offerDAO;
     final private PersonDAO personDAO;
     final private ServiceDAO serviceDAO;
+    final private VerificationTokenDAO verificationTokenDAO;
     
     public Services(){
         this.demandDAO = new DemandDAO();
         this.offerDAO = new OfferDAO();
         this.personDAO = new PersonDAO();
         this.serviceDAO = new ServiceDAO();   
+        this.verificationTokenDAO = new VerificationTokenDAO();   
     }
     
     
     // TODO : compléter
-    public Person connexion (String mail, String mdp) {
+    public Person connectPerson (String mail, String mdp) {
         JpaUtil.createEntityManager();
         Person person = personDAO.verifyPersonAccount(mail, mdp);
         JpaUtil.closeEntityManager();
         
         return person;
+    }
+    
+    public boolean sendVerificationEmail (String mail){
+        JpaUtil.createEntityManager();
+        
+        if( personDAO.personExists(mail) ){
+            
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        else if (verificationTokenDAO.findByMail(mail) != null){
+            VerificationToken vt = verificationTokenDAO.findByMail(mail);
+            String verifCode = EmailSenderService.sendVerificationEmail(mail);
+            if(!verifCode.isEmpty()){
+                try {
+                    JpaUtil.openTransaction();
+                    vt.setToken(verifCode);
+                    verificationTokenDAO.merge(vt);
+                    JpaUtil.validateTransaction();
+                }
+                catch(Exception e){
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
+            }
+            else{
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        }
+        else{
+            String verifCode = EmailSenderService.sendVerificationEmail(mail);
+            if(!verifCode.isEmpty()){
+                VerificationToken vt = new VerificationToken(verifCode, mail);
+                try {
+                    JpaUtil.openTransaction();
+                    verificationTokenDAO.persist(vt);
+                    JpaUtil.validateTransaction();
+                }
+                catch(Exception e){
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
+            }
+            else{
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+            
+        }
+        JpaUtil.closeEntityManager();
+        return true;
     }
     
     // TODO : A completer : Dans l'ActionServlet, le bouton radio
@@ -62,8 +121,6 @@ public class Services {
     }
     
     
-    
-    // TODO : A completer
     public boolean createOffer (Offer offer) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
@@ -82,39 +139,34 @@ public class Services {
         return true;
     }
     
-    public Person registerPerson (Person person) {
+    public Person registerPerson (String lastName, String firstName, String password, String mail, String cellNumber, String verificationCode) {
         JpaUtil.createEntityManager();
         
-        if((personDAO.personExists(person.getMail()))){
-            
+        boolean tokenExists = verificationTokenDAO.verificationTokenExists(mail, verificationCode);
+        
+        if( !tokenExists || personDAO.personExists(mail) ){ 
             JpaUtil.closeEntityManager();
             return null;
         }
+        
         else{
-        
-        
-        
-        
-        
-        
-        
-        
-        try {
-            JpaUtil.openTransaction();
-            //Create person plutot que de le prendre en paramètre
-            personDAO.persist(person);
-            JpaUtil.validateTransaction();
-        }
+            Person p = new Person(firstName, lastName, password, cellNumber, mail);
+            try {
+                JpaUtil.openTransaction();
+                //Create person plutot que de le prendre en paramètre
+                personDAO.persist(p);
+                JpaUtil.validateTransaction();  
+            }
+
+             catch (Exception e) {
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return null;
+            }
             
-         catch (Exception e) {
-            JpaUtil.cancelTransaction();
             JpaUtil.closeEntityManager();
-            return null;
-        }
-        
-        JpaUtil.closeEntityManager();
-        return person;
-    }
+            return p;
+            }
     }
     
     // TODO : A completer : permet de retourner toutes les demandes
@@ -237,6 +289,17 @@ public class Services {
         
         JpaUtil.closeEntityManager();
         return service;
+    }
+
+    public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
+        // TODO : to implement : persist la personne en base de données
+        return new Person();
+    }
+    
+    public boolean verifyEmailAdress(String mail) {
+        // TODO : to implement : envoyer un mail et attendre la validation de celui-ci
+        // Voir comment faire cela
+        return false;
     }
 
 }
