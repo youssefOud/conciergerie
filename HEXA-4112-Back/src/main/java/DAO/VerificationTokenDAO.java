@@ -51,7 +51,7 @@ public class VerificationTokenDAO {
         EntityManager em = JpaUtil.getEntityManager();
         Query query = em.createQuery("SELECT u FROM VerificationToken u where u.email = :mailToVerify").setParameter("mailToVerify", mail);
         if( !(((List<VerificationToken>) query.getResultList()).isEmpty()) ){
-            return (VerificationToken)query.getResultList().get(0);
+            return ((List<VerificationToken>)query.getResultList()).get(0);
         }
         else{
             return null;
