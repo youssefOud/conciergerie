@@ -134,6 +134,25 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "enregistrerNumeroTelephone":
+                if (session.getAttribute("idPerson") != null){
+                    ActionSaveCellNumber ascn = new ActionGetInformationPerson();
+
+                    try {
+                        ascn.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeRecupererInfoPersonne(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+            
             case "afficherFilActualite":
                 if (session.getAttribute("idPerson") != null){
                     ActionShowTimeline astl = new ActionShowTimeline();

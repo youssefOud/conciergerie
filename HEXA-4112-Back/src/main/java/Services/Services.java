@@ -302,4 +302,29 @@ public class Services {
         return false;
     }
 
+    public boolean savePrivilegedContact(Long idPerson, String privilegedContact, String cellNumber) {
+        JpaUtil.createEntityManager();
+        
+        Person person = personDAO.findById(idPerson);
+        
+        if (!cellNumber.equals("")) {
+            person.setCellNumber(cellNumber);
+        }
+        person.setPrivilegedContact(privilegedContact);
+        
+        try {
+            JpaUtil.openTransaction();
+            personDAO.merge(person);
+            JpaUtil.validateTransaction();
+        }
+        catch(RollbackException e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+
 }
