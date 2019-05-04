@@ -97,4 +97,98 @@ public class Reservation implements Serializable{
         reservationPrice = (int)Math.ceil(durationInMinutes * nbPtsInMinutes);
         
     }
+
+    public Person getServiceOwner() {
+        return serviceOwner;
+    }
+
+    public Person getReservationOwner() {
+        return reservationOwner;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public Date getReservationStartingDate() {
+        return reservationStartingDate;
+    }
+
+    public int getReservationDuration() {
+        return reservationDuration;
+    }
+
+    public String getDurationUnit() {
+        return durationUnit;
+    }
+
+    public Date getReservationEndingDate() {
+        return reservationEndingDate;
+    }
+
+    public Date getReservationRequestDate() {
+        return reservationRequestDate;
+    }
+
+    public int getServiceOwnerRating() {
+        return serviceOwnerRating;
+    }
+
+    public int getReservationOwnerRating() {
+        return reservationOwnerRating;
+    }
+
+    public int getReservationPrice() {
+        return reservationPrice;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setServiceOwner(Person serviceOwner) {
+        this.serviceOwner = serviceOwner;
+    }
+
+    public void setReservationOwner(Person reservationOwner) {
+        this.reservationOwner = reservationOwner;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public void setReservationDuration(int reservationDuration) {
+        this.reservationDuration = reservationDuration;
+    }
+
+    public void setDurationUnit(String durationUnit) {
+        this.durationUnit = durationUnit;
+    }
+
+    public void setReservationEndingDate(Date reservationEndingDate) {
+        this.reservationEndingDate = reservationEndingDate;
+    }
+
+    public void setReservationRequestDate(Date reservationRequestDate) {
+        this.reservationRequestDate = reservationRequestDate;
+    }
+
+    public void setServiceOwnerRating(int serviceOwnerRating) {
+        this.serviceOwnerRating = serviceOwnerRating;
+    }
+
+    public void setReservationOwnerRating(int reservationOwnerRating) {
+        this.reservationOwnerRating = reservationOwnerRating;
+    }
+
+    public void setReservationPrice(int reservationPrice) {
+        this.reservationPrice = reservationPrice;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+    
+    
 }

@@ -369,10 +369,16 @@ public class Services {
             return false;
         }
         Date reservationRequestDate = new Date();
+        
         if(serviceOwner != null && reservationOwner != null && service != null){
             try {
                 JpaUtil.openTransaction();
                 Reservation reservation = new Reservation(serviceOwner, reservationOwner, service, reservationStartingDate, reservationDuration, durationUnit, reservationRequestDate);
+                if(reservation.getReservationStartingDate().getTime() < service.getAvailabilityDate().getTime() || reservation.getReservationEndingDate().getTime() > service.getEndOfAvailabilityDate().getTime()){
+                    JpaUtil.validateTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
                 reservationDAO.persist(reservation);
                 JpaUtil.validateTransaction();
             }
@@ -387,7 +393,7 @@ public class Services {
             return false;
         }
         JpaUtil.closeEntityManager();
-        return false;
+        return true;
     }
     
     public List<Reservation> getReservationByPersonId(Long personId){
@@ -429,5 +435,22 @@ public class Services {
         }
         JpaUtil.closeEntityManager();       
         return null;
+    }
+    
+    public boolean deleteService(Long serviceId){
+        JpaUtil.createEntityManager();
+        try {
+            JpaUtil.openTransaction();
+            Service serviceToRemove = serviceDAO.findById(serviceId);
+            serviceDAO.remove(serviceToRemove);
+            JpaUtil.validateTransaction();
+        }
+        catch(Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
     }
 }
