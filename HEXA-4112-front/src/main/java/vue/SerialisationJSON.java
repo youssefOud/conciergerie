@@ -89,7 +89,7 @@ public class SerialisationJSON {
             
             jo.addProperty("unitePrix", s.getPriceUnit());
             jo.addProperty("uniteDuree", s.getDurationUnit());
-
+            jo.addProperty("idAnnonce", s.getId());
             // TODO : A changer quand l'attribut preferences de contact sera mis en place
             
             if(s.getPersonDemanding() != null){
