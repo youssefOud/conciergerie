@@ -14,9 +14,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
         <!-- JS Files -->
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.min.js">
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -50,18 +48,19 @@
                         </a></li>
                     <li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
                     <li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesAnnonces.html">Mes annonces</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesReponses.html">Mes réponses</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item dropdown"><a
                             class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="true" aria-expanded="true">Bonjour,
-                            Agathe<span class="sr-only">(current)</span></a>
+                            role="button" aria-haspopup="true" aria-expanded="true" id="bonjour"><span class="sr-only">(current)</span></a>
                         <div class="dropdown-menu" x-placement="bottom-start"
                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
                             <a class="dropdown-item" href="profile.html">Paramètres</a> <a
                                 class="dropdown-item" href="contact.html">Contact support</a> <a
-                                class="dropdown-item" href="index.html">Déconnexion</a>
+                                class="dropdown-item" href="#" id="deco">Déconnexion</a>
                         </div></li>
                 </ul>
             </div>
@@ -75,6 +74,81 @@
             <p>contactclient@campusexchange.com</p>
             
         </div>
-    </body>
+        
+        <!-- Pop Up d'erreur -->
+                <div class="modal" id="erreur">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
 
+                            <div class="modal-header">
+                                <h4 class="modal-title">Erreur</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="deposer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+        <script>
+             $(document).ready(function () {
+             var session = new Object();
+            session.todo = "recupererInfoPersonne";
+            $.ajax({
+            type: 'POST',
+                    url: './ActionServlet',
+                    data: session,
+                    timeout: 3000,
+                    dataType:'json',
+                    success: function (data) {
+                    console.log(data);
+                    if (!data.session){
+                    window.location.replace(
+                            "./index.html");
+        }
+        else{
+                document.getElementById("bonjour").innerHTML="Bonjour, "+ data.prenom;
+            }
+                            },
+                        error: function () {
+                                    $("#erreur").modal();
+                }
+                });
+                document.getElementById("deco").addEventListener("click", function () {
+                        var deco=new Object();
+                        deco.todo="seDeconnecter";
+                    $.ajax({
+                    type: 'POST',
+                            url: './ActionServlet',
+                            data: deco,
+                            timeout: 3000,
+                            dataType:'json',
+                            success: function (data) {
+                            console.log(data);
+                            if (data.deconnexion){
+                            window.location.replace(
+                                    "./index.html");
+            }
+            else{
+
+                                    $("#erreur").modal();
+                    }
+                    },
+                    error: function (data) {
+                    console.log(data);
+                                    $("#erreur").modal();
+                }
+                });
+                });
+                });
+            </script>
+    </body>
+    
 </html>

@@ -1,10 +1,7 @@
 package DAO;
 
-import Model.Demand;
-import Model.Offer;
 import javax.persistence.EntityManager;
-
-import Model.Service;
+import Model.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -119,5 +116,15 @@ public class ServiceDAO {
 
         return filteredServices;
     }
-
+    
+     public List<Service> findAllServicesByPerson(Person person) {
+        EntityManager em = JpaUtil.getEntityManager();
+        String request = "select s from Service s where s.personOffering = :person or s.personDemanding = :person";         
+        Query query = em.createQuery(request).setParameter("person", person);
+        List<Service> services = (List<Service>)query.getResultList();
+        
+        System.out.println("services: " + services.size());
+        return services; 
+    } 
+     
 }

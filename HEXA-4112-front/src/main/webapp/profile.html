@@ -41,7 +41,7 @@
                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
                             <a class="dropdown-item" href="profile.html">Paramètres</a> <a
                                 class="dropdown-item" href="contact.html">Contact support</a> <a
-                                class="dropdown-item" href="index.html">Déconnexion</a>
+                                class="dropdown-item" href="#" id="deco">Déconnexion</a>
                         </div></li>
                 </ul>
             </div>
@@ -117,8 +117,8 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div id="radioBtn" class="btn-group">
-                                                <a class="btn btn-primary btn-sm active" data-toggle="happy" id="radio-email" data-title="EMAIL" onclick="OnChangeRadio(this)">EMAIL</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="TELEPHONE" id="radio-tel" onclick="OnChangeRadio(this)">TELEPHONE</a>
+                                                <a class="btn btn-primary btn-sm active" data-toggle="happy" id="radio-email" data-title="email" onclick="OnChangeRadio(this)">EMAIL</a>
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="telephone" id="radio-tel" onclick="OnChangeRadio(this)">TELEPHONE</a>
                                             </div>
                                             <input type="hidden" name="happy" id="happy">
                                         </div>
@@ -127,14 +127,32 @@
                                 <br>
                                 <div class="row" id="telephone-cont"></div>
                                 <br>
-                                <div class="col-md-4"><button type="button" class="btn btn-primary" onclick="OnChangeRadio(this)">Valider</button></div></div>
+                                <div class="col-md-4"><button id="btnValider" type="button" class="btn btn-primary" onclick="onValidateChange()">Valider</button></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </form>           
+            </form>
+            <div class="modal" id="erreur">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Erreur</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="deposer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <script>
             var numTelephone;
+            var contactPrefere;
 
             $(document).ready(function () {
                 $('#radioBtn a').on('click', function () {
@@ -156,21 +174,51 @@
                     timeout: 3000,
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data);
-                        document.getElementById("welcome").innerHTML = "Bonjour "+data.prenom;
-                        document.getElementById("nom").innerHTML = data.nom;
-                        document.getElementById("prenom").innerHTML = data.prenom;
-                        document.getElementById("email").innerHTML = data.email;
-                        document.getElementById("mon_profile").innerHTML = data.prenom + " " + data.nom;
-                        document.getElementById("note").innerHTML = data.note + "/5";
-                        document.getElementById("points").innerHTML = data.nbPoint + " points";
-                        numTelephone = data.numTel;
-                        if (data.contactPrefere == "telephone") {
-                            var radio = document.getElementById("radio-tel");
-                            OnChangeRadio(radio);
-                            document.getElementById("tel").value = data.numTel;
+                        if (!data.session){
+                            window.location.replace("./index.html");
+                        }else{
+                            document.getElementById("deco").addEventListener("click", function () {
+                                var deco=new Object();
+                                deco.todo="seDeconnecter";
+                                $.ajax({
+                                    type: 'POST',
+                                    url: './ActionServlet',
+                                    data: deco,
+                                    timeout: 3000,
+                                    dataType:'json',
+                                    success: function (data) {
+                                        console.log(data);
+                                        if (data.saved){
+                                            window.location.replace("./index.html");
+                                        }else{
+                                            $("#erreur").modal();
+                                        }
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        $("#erreur").modal();
+                                    }
+                                });
+                            });
+                            console.log(data);
+                            document.getElementById("welcome").innerHTML = "Bonjour "+data.prenom;
+                            document.getElementById("nom").innerHTML = data.nom;
+                            document.getElementById("prenom").innerHTML = data.prenom;
+                            document.getElementById("email").innerHTML = data.email;
+                            document.getElementById("mon_profile").innerHTML = data.prenom + " " + data.nom;
+                            document.getElementById("note").innerHTML = data.note + "/5";
+                            document.getElementById("points").innerHTML = data.nbPoint + " points";
+                            numTelephone = data.numTel;
+                            contactPrefere = data.contactPrefere;
+                            if (data.contactPrefere == "cellphone") {
+                                var radio_tel = document.getElementById("radio-tel");
+                                radio_tel.className = "btn btn-primary btn-sm active";
+                                document.getElementById("radio-email").className = "btn btn-primary btn-sm notActive";
+                                OnChangeRadio(radio_tel);
+                                document.getElementById("tel").value = data.numTel;
+                            }
+                            document.getElementById("btnValider").disabled = true;
                         }
-
                     },
                     error: function (data) {
                         console.log(data);
@@ -180,24 +228,57 @@
             });
 
 
-            var last_sel = "EMAIL";
+            var last_sel = "email";
             var new_sel;
 
             function OnChangeRadio(radio) {
                 new_sel = $(radio).data('title');
                 var tel = document.getElementById("telephone-cont");
-                if (new_sel == "TELEPHONE" && last_sel == "EMAIL") {
+                if (new_sel == "telephone" && last_sel == "email") {
                     tel.innerHTML += '<div class="col-md-6"><label>Numéro de téléphone</label></div>';
-                    tel.innerHTML += '<div class="col-md-6"><input type="text" class="form-control bfh-phone" id="tel" placeholder="Numéro de téléphone" data-format="+33 d-dd-dd-dd-dd"></div></div>';
-                    document.getElementById("tel").innerHTML = numTelephone;
-                } else if (new_sel == "EMAIL" && last_sel == "TELEPHONE") {
+                    tel.innerHTML += '<div class="col-md-6"><input type="tel" class="form-control bfh-phone" id="tel" value="'+numTelephone+'"></div></div>';
+                } else if (new_sel == "email" && last_sel == "telephone") {
                     tel.innerHTML = "";
+                }
+                
+                if(new_sel == contactPrefere && contactPrefere == "email"){
+                    document.getElementById("btnValider").disabled = true;
+                }else{
+                    document.getElementById("btnValider").disabled = false;
                 }
                 last_sel = $(radio).data('title');
             }
 
             function onValidateChange() {
-                new_sel = $(radio).data('title');
+                var saveContact = new Object();
+                saveContact.todo = "enregistreContactPrivilegie";
+                saveContact.contactPrivilegie = last_sel;
+                if(last_sel == "email"){
+                    saveContact.numeroTelephone="";
+                }else{
+                    saveContact.numeroTelephone=document.getElementById("tel").value;
+                }
+                console.log(saveContact);
+                $.ajax({
+                    type: 'POST',
+                    url: './ActionServlet',
+                    data: saveContact,
+                    timeout: 3000,
+                    dataType:'json',
+                    success: function (data) {
+                        console.log(data);
+                        if (data.saved){
+                            alert("Changements pris en compte");
+                            window.location.replace("./filActu.html");
+                        }else{
+                            $("#erreur").modal();
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        $("#erreur").modal();
+                    }
+                });
             }
         </script>
     </body>

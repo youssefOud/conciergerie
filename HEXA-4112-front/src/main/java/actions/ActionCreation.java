@@ -34,12 +34,7 @@ public class ActionCreation extends Action {
         Person person = services.getPersonById(idPerson);
         
         String pictures = request.getParameter("pictures");
-//        String[] picts = pictures.split("data:");
-//        System.out.println("reception " + picts.length);
-//        for (int i=0; i<picts.length; i++) {
-//            System.out.println("image " + i + " " + picts[i]);
-//        }
-//        System.out.println("image" " + pictures);
+
         // On recupere le parametre du bouton radio pour savoir
         // si c'est une demande ou une offre
         String typeAnnonce = request.getParameter("type");
@@ -70,12 +65,14 @@ public class ActionCreation extends Action {
         String durationUnit = request.getParameter("uniteDuree");
         
         boolean created = false;
+
         if (typeAnnonce.equals("demande")) {
             Demand demand = new Demand(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
             System.out.println("Value de la demande : " + demand);
         } else if (typeAnnonce.equals("offre")) {
             Offer offer = new Offer(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
+
             created = services.createOffer(offer);
             System.out.println("Value de l'offre : " + offer);
         }
