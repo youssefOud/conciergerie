@@ -49,7 +49,7 @@ public class Reservation implements Serializable{
     
     protected int reservationPrice;
     
-    protected int state; //0 for pending / 1 for accepted / 2 for refused 
+    protected int reservationState; //0 for pending / 1 for accepted / 2 for refused 
     
     
     public Reservation() {
@@ -64,7 +64,7 @@ public class Reservation implements Serializable{
         this.reservationDuration = reservationDuration;
         this.durationUnit = durationUnit;
         this.reservationRequestDate = reservationRequestDate;
-        this.state = 0;
+        this.reservationState = 0;
         
         
          Long durationInMillis = Long.valueOf(reservationDuration);
@@ -182,8 +182,8 @@ public class Reservation implements Serializable{
         return reservationPrice;
     }
 
-    public int getState() {
-        return state;
+    public int getReservationState() {
+        return reservationState;
     }
 
     public void setServiceOwnerRating(int serviceOwnerRating) {
@@ -200,8 +200,8 @@ public class Reservation implements Serializable{
     }
 
 
-    public void setState(int state) {
-        this.state = state;
+    public void setReservationState(int reservationState) {
+        this.reservationState = reservationState;
     }
     
     

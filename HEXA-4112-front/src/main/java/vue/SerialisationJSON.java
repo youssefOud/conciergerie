@@ -68,8 +68,22 @@ public class SerialisationJSON {
             jo.addProperty("description", s.getDescription());
             if (s instanceof Offer) {
                 jo.addProperty("typeAnnonce", "offre");
+                if (s.getPersonOffering() != null) {
+                    if (s.getPersonOffering().getPrivilegedContact().equals("email")) {
+                        jo.addProperty("auteur", s.getPersonOffering().getMail());
+                    } else {
+                        jo.addProperty("auteur", s.getPersonOffering().getCellNumber());
+                    }
+                }
             } else {
                 jo.addProperty("typeAnnonce", "demande");
+                if (s.getPersonDemanding() != null) {
+                    if (s.getPersonDemanding().getPrivilegedContact().equals("email")) {
+                        jo.addProperty("auteur", s.getPersonDemanding().getMail());
+                    } else {
+                        jo.addProperty("auteur", s.getPersonDemanding().getCellNumber());
+                    }
+                }
             }
 
             Date date = s.getAvailabilityDate();
@@ -99,11 +113,6 @@ public class SerialisationJSON {
             jo.addProperty("idAnnonce", s.getId());
             // TODO : A changer quand l'attribut preferences de contact sera mis en place
 
-            if (s.getPersonDemanding() != null) {
-                jo.addProperty("auteur", s.getPersonDemanding().getMail());
-            } else if (s.getPersonOffering() != null) {
-                jo.addProperty("auteur", s.getPersonOffering().getMail());
-            }
             JsonArray jsonListPictures = new JsonArray();
             if (s.getPictures() != null && s.getPictures() != "") {
                 String pictures = s.getPictures();
@@ -196,18 +205,35 @@ public class SerialisationJSON {
             while (it.hasNext()) {
                 JsonObject jo = new JsonObject();
                 Entry<Service, ArrayList<Reservation>> e = it.next();
-
+                jo.addProperty("etat", (String) e.getKey().getServiceState());
                 jo.addProperty("categorie", (String) e.getKey().getCategory());
                 jo.addProperty("description", (String) e.getKey().getDescription());
                 jo.addProperty("duree", (int) e.getKey().getDuration());
                 jo.addProperty("uniteDuree", (String) e.getKey().getDurationUnit());
-                jo.addProperty("nomObjet", (String) e.getKey().getNameObject());
-                jo.addProperty("nbPoints", (int) e.getKey().getNbPoint());
+                jo.addProperty("objet", (String) e.getKey().getNameObject());
+                jo.addProperty("nbPts", (int) e.getKey().getNbPoint());
                 jo.addProperty("unitePrix", (String) e.getKey().getPriceUnit());
+                jo.addProperty("localisation", (String) e.getKey().getLocation());
+                jo.addProperty("typeService", (String) e.getKey().getType());
+                jo.addProperty("idAnnonce", (Long) e.getKey().getId());
                 if (e.getKey() instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
+                    if (e.getKey().getPersonOffering() != null) {
+                        if (e.getKey().getPersonOffering().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", e.getKey().getPersonOffering().getMail());
+                        } else {
+                            jo.addProperty("auteur", e.getKey().getPersonOffering().getCellNumber());
+                        }
+                    }
                 } else {
                     jo.addProperty("typeAnnonce", "demande");
+                    if (e.getKey().getPersonDemanding() != null) {
+                        if (e.getKey().getPersonDemanding().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", e.getKey().getPersonDemanding().getMail());
+                        } else {
+                            jo.addProperty("auteur", e.getKey().getPersonDemanding().getCellNumber());
+                        }
+                    }
                 }
 
                 Date date = e.getKey().getAvailabilityDate();
@@ -235,7 +261,7 @@ public class SerialisationJSON {
                     for (int i = 0; i < picturesArray.length; i++) {
                         jsonListPictures.add(picturesArray[i]);
                     }
-                    jo.add("images", jsonListPictures);
+                    jo.add("pictures", jsonListPictures);
                 }
 
                 JsonArray jsonListReponses = new JsonArray();
@@ -244,29 +270,25 @@ public class SerialisationJSON {
                 if (!reservations.isEmpty() && reservations != null) {
                     for (Reservation r : reservations) {
                         JsonObject joReponse = new JsonObject();
+                        joReponse.addProperty("idReponse", r.getId());
+                        joReponse.addProperty("duree", r.getReservationDuration());
+                        joReponse.addProperty("duree", r.getDurationUnit());
+                        joReponse.addProperty("etat", r.getReservationState());
                         if (r.getReservationOwner() != null) {
-                            joReponse.addProperty("mailPersonneReponse", r.getReservationOwner().getMail());
-                            joReponse.addProperty("contact", r.getReservationOwner().getPrivilegedContact());
+                            if (r.getReservationOwner().getPrivilegedContact().equals("email")) {
+                                jo.addProperty("auteur", r.getReservationOwner().getMail());
+                            } else {
+                                jo.addProperty("auteur", r.getReservationOwner().getCellNumber());
+                            }
                         }
-                        Date dateReservation = r.getReservationRequestDate();
                         Date dateWanted = r.getReservationStartingDate();
-                        String dateReservationAsString = df.format(dateReservation);
                         String dateWantedAsString = df.format(dateWanted);
-
-                        String theDateReservation = dateReservationAsString.substring(0, 11);
-                        String theTimeReservation = dateReservationAsString.substring(11);
-
+                        
                         String theDateWanted = dateWantedAsString.substring(0, 11);
                         String theTimeWanted = dateWantedAsString.substring(11);
-
-                        joReponse.addProperty("dateReponse", theDateReservation);
-                        joReponse.addProperty("timeReponse", theTimeReservation);
-                        joReponse.addProperty("uniteDuree", r.getDurationUnit());
-                        joReponse.addProperty("dureeReservation", r.getReservationDuration());
-                        joReponse.addProperty("dateSouhaitee", theDateWanted);
-                        joReponse.addProperty("timeSouhaite", theTimeWanted);
-                        joReponse.addProperty("prixPropose", r.getReservationPrice());
-                        joReponse.addProperty("notePersonneReponse", r.getReservationOwnerRating());
+                        
+                        joReponse.addProperty("date", theDateWanted);
+                        joReponse.addProperty("time", theTimeWanted);
 
                         jsonListReponses.add(joReponse);
                     }
@@ -309,7 +331,7 @@ public class SerialisationJSON {
             jo.addProperty("session", true);
             jo.addProperty("prenom", (String) request.getAttribute("prenom"));
             jo.addProperty("nom", (String) request.getAttribute("nom"));
-            jo.addProperty("nbPoint", (double) request.getAttribute("nbPoint"));
+            jo.addProperty("nbPoint", (int) request.getAttribute("nbPoint"));
             jo.addProperty("email", (String) request.getAttribute("email"));
             jo.addProperty("numTel", (String) request.getAttribute("numTel"));
             jo.addProperty("contactPrefere", (String) request.getAttribute("contactPrefere"));
@@ -363,6 +385,7 @@ public class SerialisationJSON {
             
             jo.addProperty("annonce", true);
             jo.addProperty("categorie", (String) service.getCategory());
+            jo.addProperty("description", (String) service.getDescription());
             jo.addProperty("duree", (int) service.getDuration());
             jo.addProperty("localisation", (String) service.getLocation());
             jo.addProperty("nbPts", (double) service.getNbPoint());
@@ -391,23 +414,29 @@ public class SerialisationJSON {
             if (service.getPictures() != null && service.getPictures() != "") {
                 String pictures = service.getPictures();
                 String[] picturesArray = pictures.split("-");
-                System.out.println("array string " + picturesArray.length);
                 for (int i = 0; i<picturesArray.length; i++) {
                     jsonListPictures.add(  picturesArray[i]);
-                    System.out.println(i + ": pic" );
                 }
-                jo.add("images", jsonListPictures);
+                jo.add("pictures", jsonListPictures);
             }
             
             if (service instanceof Offer) {
                 jo.addProperty("typeAnnonce", "offre");
                 if (service.getPersonOffering() != null) {
-                    jo.addProperty("auteur", (String) service.getPersonOffering().getPrivilegedContact());
+                    if (service.getPersonOffering().getPrivilegedContact().equals("email")) {
+                        jo.addProperty("auteur", service.getPersonOffering().getMail());
+                    } else {
+                        jo.addProperty("auteur", service.getPersonOffering().getCellNumber());
+                    }
                 }
             } else {
                 jo.addProperty("typeAnnonce", "demande");
                 if (service.getPersonDemanding() != null) {
-                    jo.addProperty("auteur", (String) service.getPersonDemanding().getPrivilegedContact());
+                    if (service.getPersonDemanding().getPrivilegedContact().equals("email")) {
+                        jo.addProperty("auteur", service.getPersonDemanding().getMail());
+                    } else {
+                        jo.addProperty("auteur", service.getPersonDemanding().getCellNumber());
+                    }
                 }
             }
             jo.addProperty("idAnnonce", (String) service.getPersonOffering().getPrivilegedContact());
