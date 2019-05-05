@@ -20,12 +20,8 @@ import java.util.Date;
 import java.util.HashMap;
 import javafx.util.Pair;
 
-/**
- *
- * @author B3427
- */
-
 public class Services {
+    
     final private DemandDAO demandDAO;
     final private OfferDAO offerDAO;
     final private PersonDAO personDAO;
@@ -42,6 +38,88 @@ public class Services {
         this.reservationDAO = new ReservationDAO();
     }
     
+    // TODO : A completer : permet de retourner toutes les demandes
+    // en cours
+    public List<Demand> findAllDemands() {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Demand> listDemand = new ArrayList<>();
+        
+        JpaUtil.closeEntityManager();
+        return listDemand;
+    }
+    
+    // TODO : A completer : permet de retourner toutes les offres
+    // en cours
+    public List<Offer> findAllOffers() {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Offer> listOffer = new ArrayList<>();
+        
+        
+        
+        JpaUtil.closeEntityManager();
+        return listOffer;
+    }
+    
+    // Ajouter en parametre tous les critères des filtres afin de faire nos
+    // comparaison
+    // TODO : A completer : permet de retourner toutes les offres
+    // en cours avec les filtres mis
+    public List<Offer> findAllOffersWithFilters(/*Add Filter*/) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Offer> listOffer = new ArrayList<>();
+        
+        
+        
+        JpaUtil.closeEntityManager();
+        return listOffer;
+    }
+
+    public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
+        // TODO : to implement : persist la personne en base de données
+        return new Person();
+    }
+    
+    public boolean verifyEmailAdress(String mail) {
+        // TODO : to implement : envoyer un mail et attendre la validation de celui-ci
+        // Voir comment faire cela
+        return false;
+    }
+
+    public boolean savePrivilegedContact(Long idPerson, String privilegedContact, String cellNumber) {
+        JpaUtil.createEntityManager();
+        
+        Person person = personDAO.findById(idPerson);
+        
+        if (!cellNumber.equals("")) {
+            person.setCellNumber(cellNumber);
+        }
+        
+        if (privilegedContact.equals("email")) {
+            person.setPrivilegedContact(privilegedContact);
+        } else {
+            person.setPrivilegedContact("cellphone");
+        }
+        
+        try {
+            JpaUtil.openTransaction();
+            personDAO.merge(person);
+            JpaUtil.validateTransaction();
+        }
+        catch(RollbackException e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        
+        JpaUtil.closeEntityManager();
+        return true;
+    }
     
     // TODO : compléter
     public Person connectPerson (String mail, String mdp) {
