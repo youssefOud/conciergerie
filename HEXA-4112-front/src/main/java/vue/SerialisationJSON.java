@@ -73,7 +73,7 @@ public class SerialisationJSON {
 
             Date date = s.getAvailabilityDate();
             Date datePublication = s.getPublicationDate();
-            String pattern = "dd/MM/yyyy HH:mm:ss";
+            String pattern = "dd/MM/yyyy HH:mm";
             DateFormat df = new SimpleDateFormat(pattern);
             String dateAsString = df.format(date);
             String datePublicationAsString = df.format(datePublication);
@@ -210,7 +210,7 @@ public class SerialisationJSON {
 
                 Date date = e.getKey().getAvailabilityDate();
                 Date datePublication = e.getKey().getPublicationDate();
-                String pattern = "dd/MM/yyyy HH:mm:ss";
+                String pattern = "dd/MM/yyyy HH:mm";
                 DateFormat df = new SimpleDateFormat(pattern);
                 String dateAsString = df.format(date);
                 String datePublicationAsString = df.format(datePublication);
@@ -369,7 +369,7 @@ public class SerialisationJSON {
             jo.addProperty("unitePrix", (String) service.getPriceUnit());
             Date date = service.getAvailabilityDate();
             Date datePublication = service.getPublicationDate();
-            String pattern = "MM/dd/yyyy HH:mm:ss";
+            String pattern = "dd/MM/yyyy HH:mm";
             DateFormat df = new SimpleDateFormat(pattern);  
             String dateAsString = df.format(date);
             String datePublicationAsString = df.format(datePublication);
