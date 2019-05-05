@@ -342,7 +342,8 @@ public class SerialisationJSON {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
         
-        jo.addProperty("creationReponse", (boolean) request.getAttribute("created"));
+        jo.addProperty("creationReponse", (Boolean) request.getAttribute("created"));
+        jo.addProperty("messageErreur", (String) request.getAttribute("message"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

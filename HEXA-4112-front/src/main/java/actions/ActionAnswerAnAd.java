@@ -8,6 +8,7 @@ package actions;
 import Services.Services;
 import java.io.IOException;
 import java.text.ParseException;
+import javafx.util.Pair;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,9 +34,10 @@ public class ActionAnswerAnAd extends Action {
         
         Services services = new Services();
 
-        boolean created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit);
+        Pair<Boolean,String> created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit);
         
-        request.setAttribute("created", created);
+        request.setAttribute("created", created.getKey());
+        request.setAttribute("message", created.getValue());
         
     }
     
