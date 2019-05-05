@@ -429,7 +429,7 @@ public class SerialisationJSON {
         // TODO : changer la valeur du boolean quand Youssef aura pris
         // en compte le cas où il n'est pas calculé
         jo.addProperty("calcule", true);
-        jo.addProperty("prix", (boolean) request.getAttribute("price"));
+        jo.addProperty("prix", (int) request.getAttribute("price"));
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
