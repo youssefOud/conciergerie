@@ -21,6 +21,8 @@ public class VerificationToken {
     private Long id;
     private String token;
     private String email;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     
     public VerificationToken(){
     }
@@ -28,6 +30,7 @@ public class VerificationToken {
     public VerificationToken(String token, String email) {
         this.token = token;
         this.email = email;
+        this.date = new Date();
     }
 
     public Long getId() {
@@ -44,6 +47,7 @@ public class VerificationToken {
 
     public void setToken(String token) {
         this.token = token;
+        
     }
 
     public String getEmail() {
@@ -53,5 +57,14 @@ public class VerificationToken {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
  
 }

@@ -6,9 +6,14 @@
 package actions;
 
 import Model.Person;
+import Model.Reservation;
+import Model.Service;
 import Services.Services;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author X
  */
-public class ActionGetInformationPerson extends Action {
+public class ActionGetAdsByPerson extends Action {
 
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
@@ -26,19 +31,9 @@ public class ActionGetInformationPerson extends Action {
         
         Services services = new Services();
         Person person = services.getPersonById(idPerson);
+        HashMap<Service, List<Reservation>> ads = services.getAdsByPerson(person);
         
-        if (person != null) {
-            request.setAttribute("session", true);
-            request.setAttribute("prenom", person.getFirstName());
-            request.setAttribute("nom", person.getLastName());
-            request.setAttribute("nbPoint", person.getPointBalance());
-            request.setAttribute("email", person.getMail());
-            request.setAttribute("numTel", person.getCellNumber());
-            request.setAttribute("contactPrefere", person.getPrivilegedContact());
-            request.setAttribute("note", person.getRating());
-        } else {
-            request.setAttribute("session", false);
-        }
+        request.setAttribute("ads", ads);
     }
     
 }
