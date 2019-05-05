@@ -268,8 +268,7 @@ public class Services {
         JpaUtil.closeEntityManager();
         return listServices;
     }
-    
-    
+   
     public Person getPersonById(Long idPerson) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();     
@@ -522,23 +521,17 @@ public class Services {
         return true;
     }
     
-    public HashMap<Service, List<Reservation>> getAds(Person person) {
+    public List<Service> getInterests(Person person) {
         if (person == null) return null;
-        
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
                 
-        List<Service> services = serviceDAO.findAllServicesByPerson(person);
-        HashMap<Service,List<Reservation>> hm = new HashMap<>();
+        List<Service> services = serviceDAO.findInterestsByPerson(person);
         for (Service serv :services) {
             updateServiceState(serv);
-            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
-            hm.put(serv,reservations);
         }
         JpaUtil.closeEntityManager();       
-        return hm;
+        return services;
     }
-    
-    
     
 }
