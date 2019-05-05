@@ -58,63 +58,65 @@ public class SerialisationJSON {
         List<Service> listOfServices = (List<Service>) request.getAttribute("listOfServices");
 
         for (Service s : listOfServices) {
-            JsonObject jo = new JsonObject();
+            if (!s.getServiceState().equals("expired")) {
+                JsonObject jo = new JsonObject();
 
-            jo.addProperty("categorie", s.getCategory());
-            jo.addProperty("localisation", s.getLocation());
-            jo.addProperty("nomObjet", s.getNameObject());
-            jo.addProperty("nbPts", s.getNbPoint());
-            jo.addProperty("typeService", s.getType());
-            if (s instanceof Offer) {
-                jo.addProperty("typeAnnonce", "offre");
-            } else {
-                jo.addProperty("typeAnnonce", "demande");
-            }
-
-            Date date = s.getAvailabilityDate();
-            Date datePublication = s.getPublicationDate();
-            String pattern = "dd/MM/yyyy HH:mm";
-            DateFormat df = new SimpleDateFormat(pattern);
-            String dateAsString = df.format(date);
-            String datePublicationAsString = df.format(datePublication);
-
-            String theDate = dateAsString.substring(0, 11);
-            String theTime = dateAsString.substring(11);
-
-            String theDateOfPublication = datePublicationAsString.substring(0, 11);
-            String theTimeOfPublication = datePublicationAsString.substring(11);
-
-            jo.addProperty("date", theDate);
-            jo.addProperty("time", theTime);
-            jo.addProperty("datePublication", theDateOfPublication);
-            jo.addProperty("timePublication", theTimeOfPublication);
-
-            int duration = s.getDuration();
-            String theDuration = Integer.toString(duration);
-            jo.addProperty("duree", theDuration);
-
-            jo.addProperty("unitePrix", s.getPriceUnit());
-            jo.addProperty("uniteDuree", s.getDurationUnit());
-            jo.addProperty("idAnnonce", s.getId());
-            // TODO : A changer quand l'attribut preferences de contact sera mis en place
-
-            if (s.getPersonDemanding() != null) {
-                jo.addProperty("auteur", s.getPersonDemanding().getMail());
-            } else if (s.getPersonOffering() != null) {
-                jo.addProperty("auteur", s.getPersonOffering().getMail());
-            }
-            JsonArray jsonListPictures = new JsonArray();
-            if (s.getPictures() != null && s.getPictures() != "") {
-                String pictures = s.getPictures();
-                String[] picturesArray = pictures.split("-");
-                System.out.println("array string " + picturesArray.length);
-                for (int i = 0; i < picturesArray.length; i++) {
-                    jsonListPictures.add(picturesArray[i]);
-                    System.out.println(i + ": pic");
+                jo.addProperty("categorie", s.getCategory());
+                jo.addProperty("localisation", s.getLocation());
+                jo.addProperty("nomObjet", s.getNameObject());
+                jo.addProperty("nbPts", s.getNbPoint());
+                jo.addProperty("typeService", s.getType());
+                if (s instanceof Offer) {
+                    jo.addProperty("typeAnnonce", "offre");
+                } else {
+                    jo.addProperty("typeAnnonce", "demande");
                 }
-                jo.add("images", jsonListPictures);
+
+                Date date = s.getAvailabilityDate();
+                Date datePublication = s.getPublicationDate();
+                String pattern = "dd/MM/yyyy HH:mm";
+                DateFormat df = new SimpleDateFormat(pattern);
+                String dateAsString = df.format(date);
+                String datePublicationAsString = df.format(datePublication);
+
+                String theDate = dateAsString.substring(0, 11);
+                String theTime = dateAsString.substring(11);
+
+                String theDateOfPublication = datePublicationAsString.substring(0, 11);
+                String theTimeOfPublication = datePublicationAsString.substring(11);
+
+                jo.addProperty("date", theDate);
+                jo.addProperty("time", theTime);
+                jo.addProperty("datePublication", theDateOfPublication);
+                jo.addProperty("timePublication", theTimeOfPublication);
+
+                int duration = s.getDuration();
+                String theDuration = Integer.toString(duration);
+                jo.addProperty("duree", theDuration);
+
+                jo.addProperty("unitePrix", s.getPriceUnit());
+                jo.addProperty("uniteDuree", s.getDurationUnit());
+                jo.addProperty("idAnnonce", s.getId());
+                // TODO : A changer quand l'attribut preferences de contact sera mis en place
+
+                if (s.getPersonDemanding() != null) {
+                    jo.addProperty("auteur", s.getPersonDemanding().getMail());
+                } else if (s.getPersonOffering() != null) {
+                    jo.addProperty("auteur", s.getPersonOffering().getMail());
+                }
+                JsonArray jsonListPictures = new JsonArray();
+                if (s.getPictures() != null && s.getPictures() != "") {
+                    String pictures = s.getPictures();
+                    String[] picturesArray = pictures.split("-");
+                    System.out.println("array string " + picturesArray.length);
+                    for (int i = 0; i < picturesArray.length; i++) {
+                        jsonListPictures.add(picturesArray[i]);
+                        System.out.println(i + ": pic");
+                    }
+                    jo.add("images", jsonListPictures);
+                }
+                jsonList.add(jo);
             }
-            jsonList.add(jo);
         }
 
         container.add("Annonces", jsonList);
@@ -358,8 +360,7 @@ public class SerialisationJSON {
         JsonObject jo = new JsonObject();
         
         Service service = (Service) request.getAttribute("service");
-        if (service != null) {
-            
+        if (service != null && !service.getServiceState().equals("expired")) {
             jo.addProperty("annonce", true);
             jo.addProperty("categorie", (String) service.getCategory());
             jo.addProperty("duree", (int) service.getDuration());

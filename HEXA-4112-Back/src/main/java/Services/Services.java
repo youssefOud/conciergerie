@@ -283,6 +283,7 @@ public class Services {
         JpaUtil.openTransaction();
         
         Service service = serviceDAO.findById(idService);
+        updateServiceState(service);
         
         JpaUtil.closeEntityManager();
         return service;
