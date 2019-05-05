@@ -126,7 +126,7 @@ public class Person{
     public void setLocation(String location) {
         this.location = location;
     }
-    
+
     public String getPrivilegedContact() {
         return privilegedContact;
     }
