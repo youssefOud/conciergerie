@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import DAO.JpaUtil;
 import Model.Person;
+import actions.ActionChangePrivilegedContact;
 import actions.ActionCheckEmail;
 import actions.ActionConnection;
 import actions.ActionCreation;
@@ -134,17 +135,17 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
-            case "enregistrerNumeroTelephone":
+            case "enregistreContactPrivilegie":
                 if (session.getAttribute("idPerson") != null){
-                    ActionSaveCellNumber ascn = new ActionGetInformationPerson();
+                    ActionChangePrivilegedContact acpv = new ActionChangePrivilegedContact();
 
                     try {
-                        ascn.executeAction(request);
+                        acpv.executeAction(request);
                     } catch (ParseException ex) {
                         Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    serialisationJSON.executeRecupererInfoPersonne(request, response);
+                    serialisationJSON.executeEnregistreContactPrivilegie(request, response);
                 
                 } else {
                     request.setAttribute("error", false);

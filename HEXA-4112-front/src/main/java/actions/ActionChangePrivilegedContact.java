@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author X
  */
-public class ActionPrivilegedContact extends Action {
+public class ActionChangePrivilegedContact extends Action {
     
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {

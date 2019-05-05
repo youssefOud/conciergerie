@@ -310,7 +310,12 @@ public class Services {
         if (!cellNumber.equals("")) {
             person.setCellNumber(cellNumber);
         }
-        person.setPrivilegedContact(privilegedContact);
+        
+        if (privilegedContact.equals("email")) {
+            person.setPrivilegedContact(privilegedContact);
+        } else {
+            person.setPrivilegedContact("cellphone");
+        }
         
         try {
             JpaUtil.openTransaction();

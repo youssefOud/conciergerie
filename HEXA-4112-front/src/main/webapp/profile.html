@@ -35,8 +35,8 @@
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item dropdown"><a
                             class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="true" aria-expanded="true">Bonjour,
-                            Agathe</a>
+                            role="button" aria-haspopup="true" aria-expanded="true" id="welcome">Bonjour,
+                            utilisateur</a>
                         <div class="dropdown-menu" x-placement="bottom-start"
                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
                             <a class="dropdown-item" href="profile.html">Paramètres</a> <a
@@ -54,20 +54,20 @@
                             <div class="image_outer_container">
                                 <div class="green_icon"></div>
                                 <div class="image_inner_container">
-                                    <img src="img/team/agathe.jpg">
+                                    <img src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/256/user-male-icon.png">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">
-                            <h5>
-                                Agathe Sauvestre
+                            <h5 id="mon_profile">
+                                Chargement en cours...
                             </h5>
                             <h6>
                                 Mon compte utilisateur
                             </h6>
-                            <p class="proile-rating">NOTE : <span>8/10</span></p>
+                            <p class="proile-rating">NOTE : <span id="note"> /5</span></p>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">Détails</a>
@@ -80,7 +80,7 @@
                     <div class="col-md-4">
                         <div class="profile-work">
                             <p>MA PERFORMANCE :</p>
-                            <a>100 points</a><br/>
+                            <a id="points">100 points</a><br/>
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -91,7 +91,7 @@
                                         <label>Nom</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>Sauvestre</p>
+                                        <p id="nom">Chargement en cours...</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -99,7 +99,7 @@
                                         <label>Prénom</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>Agathe</p>
+                                        <p id="prenom">Chargement en cours...</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -107,7 +107,7 @@
                                         <label>Email</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>agathe.sauvestre@insa-lyon.fr</p>
+                                        <p id="email">Chargement en cours...</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -117,8 +117,8 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div id="radioBtn" class="btn-group">
-                                                <a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="EMAIL" onclick="OnChangeRadio(this)">EMAIL</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="TELEPHONE" onclick="OnChangeRadio(this)">TELEPHONE</a>
+                                                <a class="btn btn-primary btn-sm active" data-toggle="happy" id="radio-email" data-title="EMAIL" onclick="OnChangeRadio(this)">EMAIL</a>
+                                                <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="TELEPHONE" id="radio-tel" onclick="OnChangeRadio(this)">TELEPHONE</a>
                                             </div>
                                             <input type="hidden" name="happy" id="happy">
                                         </div>
@@ -128,13 +128,13 @@
                                 <div class="row" id="telephone-cont"></div>
                                 <br>
                                 <div class="col-md-4"><button type="button" class="btn btn-primary" onclick="OnChangeRadio(this)">Valider</button></div></div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </form>           
         </div>
         <script>
+            var numTelephone;
 
             $(document).ready(function () {
                 $('#radioBtn a').on('click', function () {
@@ -145,17 +145,32 @@
                     $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
                     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
                 });
-                
+
                 var filtres = new Object();
+
                 filtres.todo = "recupererInfoPersonne";
                 $.ajax({
                     type: 'GET',
                     url: './ActionServlet',
                     data: filtres,
                     timeout: 3000,
-                    dataType:'json',
+                    dataType: 'json',
                     success: function (data) {
                         console.log(data);
+                        document.getElementById("welcome").innerHTML = "Bonjour "+data.prenom;
+                        document.getElementById("nom").innerHTML = data.nom;
+                        document.getElementById("prenom").innerHTML = data.prenom;
+                        document.getElementById("email").innerHTML = data.email;
+                        document.getElementById("mon_profile").innerHTML = data.prenom + " " + data.nom;
+                        document.getElementById("note").innerHTML = data.note + "/5";
+                        document.getElementById("points").innerHTML = data.nbPoint + " points";
+                        numTelephone = data.numTel;
+                        if (data.contactPrefere == "telephone") {
+                            var radio = document.getElementById("radio-tel");
+                            OnChangeRadio(radio);
+                            document.getElementById("tel").value = data.numTel;
+                        }
+
                     },
                     error: function (data) {
                         console.log(data);
@@ -164,26 +179,23 @@
                 });
             });
 
-            
+
             var last_sel = "EMAIL";
             var new_sel;
-    
+
             function OnChangeRadio(radio) {
                 new_sel = $(radio).data('title');
                 var tel = document.getElementById("telephone-cont");
-                if (new_sel == "TELEPHONE" && last_sel == "EMAIL" ) {
+                if (new_sel == "TELEPHONE" && last_sel == "EMAIL") {
                     tel.innerHTML += '<div class="col-md-6"><label>Numéro de téléphone</label></div>';
-                    tel.innerHTML += '<div class="col-md-6"><input type="phone" class="form-control" id="tel" placeholder="Numéro de téléphone"></div></div>';
-                    console.log(last_sel);
-                    console.log(new_sel);
-                }else if (new_sel == "EMAIL" && last_sel == "TELEPHONE" ){
-                    tel.innerHTML ="";
-                    console.log(last_sel);
-                    console.log(new_sel);
+                    tel.innerHTML += '<div class="col-md-6"><input type="text" class="form-control bfh-phone" id="tel" placeholder="Numéro de téléphone" data-format="+33 d-dd-dd-dd-dd"></div></div>';
+                    document.getElementById("tel").innerHTML = numTelephone;
+                } else if (new_sel == "EMAIL" && last_sel == "TELEPHONE") {
+                    tel.innerHTML = "";
                 }
                 last_sel = $(radio).data('title');
             }
-            
+
             function onValidateChange() {
                 new_sel = $(radio).data('title');
             }
