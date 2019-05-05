@@ -353,6 +353,12 @@ public class Services {
                     return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
                 }
                 
+                String demandOwnerContact = ((demandOwner.getPrivilegedContact().equals("email")) ? demandOwner.getMail() : demandOwner.getCellNumber());
+                String offerOwnerContact = ((offerOwner.getPrivilegedContact().equals("email")) ? offerOwner.getMail() : offerOwner.getCellNumber());
+                
+                EmailSenderService.sendDemandReservationEmail(demandOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), offerOwner.getFirstName(), offerOwnerContact, reservation.getReservationPrice());
+                EmailSenderService.sendOfferReservationEmail(offerOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), demandOwner.getFirstName(), demandOwnerContact, reservation.getReservationPrice());
+                
                 reservationDAO.persist(reservation);
                 JpaUtil.validateTransaction();
             }
@@ -464,11 +470,8 @@ public class Services {
         Reservation reservation = reservationDAO.findById(idReservation);
         try{
             JpaUtil.openTransaction();
-            reservation.setReservationState(1);
-            reservationDAO.merge(reservation);
             
-            //Vérifier que les deux ont un nombre de points suffisants
-            //faire passer les points d'un utilisateur à un autre
+            //Check point balance
             Person offerOwner;
             Person demandOwner;
             if(reservation.getService() instanceof Offer){
@@ -491,7 +494,19 @@ public class Services {
                 return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
             }
             
-            //Envoyer mails de confirmation aux deux personnes
+            reservation.getService().setServiceState("closed");
+            reservation.setReservationState(1);
+            serviceDAO.merge(reservation.getService());
+            reservationDAO.merge(reservation);
+            
+            
+            
+            //Email sending
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            EmailSenderService.sendDemandConfirmationEmail(demandOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()));
+            
+            EmailSenderService.sendOfferConfirmationEmail(offerOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), demandOwner.getFirstName(), demandOwner.getPrivilegedContact());
+            
             
             JpaUtil.validateTransaction(); 
         }
