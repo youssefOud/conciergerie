@@ -30,7 +30,7 @@ public class Person{
     
     private String location;
     
-    private String privilegedContactWay;
+    private String privilegedContact;
     
     public Person() {
         
@@ -44,7 +44,7 @@ public class Person{
         this.mail = mail;
         this.pointBalance = 100;
         this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
-        this.privilegedContactWay = "mail";
+        this.privilegedContact = "email";
     }
 
     public Long getId() {
@@ -127,12 +127,12 @@ public class Person{
         this.location = location;
     }
 
-    public String getPrivilegedContactWay() {
-        return privilegedContactWay;
+    public String getPrivilegedContact() {
+        return privilegedContact;
     }
 
-    public void setPrivilegedContactWay(String privilegedContactWay) {
-        this.privilegedContactWay = privilegedContactWay;
+    public void setPrivilegedContactWay(String privilegedContact) {
+        this.privilegedContact = privilegedContact;
     }
     
     
