@@ -77,7 +77,7 @@ public class Reservation implements Serializable{
         }
         reservationEndingDate = new Date(this.reservationStartingDate.getTime() + durationInMillis);
         
-        Long durationInMinutes = durationInMillis/1000;
+        Long durationInMinutes = durationInMillis/(1000*60);
         
         String priceUnit = service.getPriceUnit();
         
