@@ -180,6 +180,7 @@
                                                 </h5>\n\
                                                     </div>\n\
                                                     <div id="collapse' + i + '" class="collapse" aria-labelledby="headingOne" data-parent="#accordion' + i + '">';
+                                                    
                                             if (data.Annonces[i].description != undefined){
                                             annonce += '<div class="card-body">' + data.Annonces[i].description + '</div>';
                                             }
@@ -188,7 +189,37 @@
                                                 <li class="list-group-item">Durée de disponibilité : ' + data.Annonces[i].duree + ' ' + data.Annonces[i].uniteDuree + '</li>\n\
                                             <li class="list-group-item">Prix : ' + data.Annonces[i].nbPts + ' points par ' + data.Annonces[i].unitePrix + '</li>\n\
                                                 <li class="list-group-item">Localisation : ' + data.Annonces[i].localisation + '</li>\n\
-                                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
+                                                </ul></div></div>';
+                                            
+                                            
+                                            
+                                            
+                                            annonce +='<div><div class="card"><div class="card-header">\n\
+                                            <h5 class="mb-0">\n\
+                                                <button class="btn btn-link" data-toggle="collapse" data-target="#reponses' + i + '" aria-expanded="true" aria-controls="collapse' + i + '" id="parent' + i + '">\n\
+                                            Réponses\n\
+                                            </button>\n\
+                                                </h5>\n\
+                                                    </div>\n\
+                                                    <div id="reponses' + i + '" class="collapse" aria-labelledby="headingOne" data-parent="#parent' + i + '">';
+                                                    
+//                                            if (data.Annonces[i].description != undefined){
+//                                            annonce += '<div class="card-body">' + data.Annonces[i].description + '</div>';
+                                            //}
+//
+//                                            annonce += '<ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : ' + data.Annonces[i].date + ' ' + data.Annonces[i].time + '</li>\n\
+//                                                <li class="list-group-item">Durée de disponibilité : ' + data.Annonces[i].duree + ' ' + data.Annonces[i].uniteDuree + '</li>\n\
+//                                            <li class="list-group-item">Prix : ' + data.Annonces[i].nbPts + ' points par ' + data.Annonces[i].unitePrix + '</li>\n\
+//                                                <li class="list-group-item">Localisation : ' + data.Annonces[i].localisation + '</li>\n\
+//                                                </ul></div></div>
+                                            
+                                            
+                                            
+                    
+                    
+                    
+                    
+                                            annonce += '<div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
                                             $('#fil').append(annonce);
                                     }
                             
