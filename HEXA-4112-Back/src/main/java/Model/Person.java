@@ -95,7 +95,7 @@ public class Person{
         this.mail = mail;
     }
     
-    public double getPointBalance() {
+    public int getPointBalance() {
         return pointBalance;
     }
     
