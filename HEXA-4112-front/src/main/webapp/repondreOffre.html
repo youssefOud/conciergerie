@@ -250,7 +250,10 @@
                                     titre += "<br/> Prêt - " + data.objet;
                                     document.getElementById("titre").innerHTML = titre;
 
-                                    document.getElementById("date").value = data.date;
+                                    document.getElementById("date").value = data.date;    
+                                        $('#date').datepicker('setDate', data.date.replace('/','-'));
+   
+                                    
                                     document.getElementById("duree").value = data.duree;
                                     document.getElementById("time").value = data.time;
                                     if (data.uniteDuree = "heures") {
