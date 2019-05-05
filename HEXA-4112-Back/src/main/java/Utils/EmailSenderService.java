@@ -133,7 +133,7 @@ public class EmailSenderService {
             message.setText("Bonjour,\r\n"
                     +       "Votre prêt de :\r\n"
                     +       object + " du " + startingDate + " au " + endingDate + " à " + firstName + " ( " + privilegedContact + ")" + "\r\n"
-                    +       "a bien été confirmée");
+                    +       "a bien été confirmé");
             //send message
             Transport.send(message);
         } catch (MessagingException e) {throw new RuntimeException(e); }
