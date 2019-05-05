@@ -161,7 +161,6 @@ public class SerialisationJSON {
         out.close();
     }
 
-    // TODO : A voir avec les filles
     public void executeErrorNotConnected(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         
@@ -201,6 +200,90 @@ public class SerialisationJSON {
             jo.addProperty("prenom", (String) request.getAttribute("prenom"));
         } else {
             jo.addProperty("session", false);
+        }
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+
+    public void executeRepondreAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        jo.addProperty("creationReponse", (boolean) request.getAttribute("created"));
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+
+    public void executeDetailsAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        Service service = (Service) request.getAttribute("service");
+        if (service != null) {
+            
+            jo.addProperty("annonce", true);
+            jo.addProperty("categorie", (String) service.getCategory());
+            jo.addProperty("duree", (int) service.getDuration());
+            jo.addProperty("localisation", (String) service.getLocation());
+            jo.addProperty("nbPts", (double) service.getNbPoint());
+            jo.addProperty("objet", (String) service.getNameObject());
+            jo.addProperty("uniteDuree", (String) service.getDurationUnit());
+            jo.addProperty("unitePrix", (String) service.getPriceUnit());
+            Date date = service.getAvailabilityDate();
+            Date datePublication = service.getPublicationDate();
+            String pattern = "MM/dd/yyyy HH:mm:ss";
+            DateFormat df = new SimpleDateFormat(pattern);  
+            String dateAsString = df.format(date);
+            String datePublicationAsString = df.format(datePublication);
+            
+            String theDate = dateAsString.substring(0,11);
+            String theTime = dateAsString.substring(11);
+            
+            String theDateOfPublication = datePublicationAsString.substring(0,11);
+            String theTimeOfPublication = datePublicationAsString.substring(11);
+            
+            jo.addProperty("date", theDate);
+            jo.addProperty("time", theTime);
+            jo.addProperty("datePublication", theDateOfPublication);
+            jo.addProperty("timePublication", theTimeOfPublication);
+            
+            JsonArray jsonListPictures = new JsonArray();
+            if (service.getPictures() != null && service.getPictures() != "") {
+                String pictures = service.getPictures();
+                String[] picturesArray = pictures.split("-");
+                System.out.println("array string " + picturesArray.length);
+                for (int i = 0; i<picturesArray.length; i++) {
+                    jsonListPictures.add(  picturesArray[i]);
+                    System.out.println(i + ": pic" );
+                }
+                jo.add("images", jsonListPictures);
+            }
+            
+            if (service instanceof Offer) {
+                jo.addProperty("typeAnnonce", "offre");
+                if (service.getPersonOffering() != null) {
+                    jo.addProperty("auteur", (String) service.getPersonOffering().getPrivilegedContact());
+                }
+            } else {
+                jo.addProperty("typeAnnonce", "demande");
+                if (service.getPersonDemanding() != null) {
+                    jo.addProperty("auteur", (String) service.getPersonDemanding().getPrivilegedContact());
+                }
+            }
+            jo.addProperty("idAnnonce", (String) service.getPersonOffering().getPrivilegedContact());
+            jo.addProperty("typeService", (String) service.getType());
+        } else {
+            jo.addProperty("annonce", false);
         }
         
         response.setContentType("application/json");

@@ -7,10 +7,12 @@ import java.util.logging.Logger;
 
 import DAO.JpaUtil;
 import Model.Person;
+import actions.ActionAnswerAnAd;
 import actions.ActionCheckEmail;
 import actions.ActionConnection;
 import actions.ActionCreation;
 import actions.ActionDeconnection;
+import actions.ActionGetAdDetails;
 import actions.ActionGetInformationPerson;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
@@ -153,6 +155,45 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
             
+            case "repondreAnnonce":
+                if (session.getAttribute("idPerson") != null){
+                    ActionAnswerAnAd actionAnswerAnAd = new ActionAnswerAnAd();
+
+                    try {
+                        actionAnswerAnAd.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeRepondreAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+            
+            case "detailsAnnonce":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionGetAdDetails actionGetAdDetails = new ActionGetAdDetails();
+
+                    try {
+                        actionGetAdDetails.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeDetailsAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
             case "seDeconnecter":
                 if (session.getAttribute("idPerson") != null) {
                     ActionDeconnection ad = new ActionDeconnection();
