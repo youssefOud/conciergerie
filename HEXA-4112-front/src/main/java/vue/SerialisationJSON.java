@@ -272,15 +272,17 @@ public class SerialisationJSON {
                         JsonObject joReponse = new JsonObject();
                         joReponse.addProperty("idReponse", r.getId());
                         joReponse.addProperty("duree", r.getReservationDuration());
-                        joReponse.addProperty("duree", r.getDurationUnit());
+                        joReponse.addProperty("uniteDuree", r.getDurationUnit());
                         joReponse.addProperty("etat", r.getReservationState());
                         if (r.getReservationOwner() != null) {
                             if (r.getReservationOwner().getPrivilegedContact().equals("email")) {
-                                jo.addProperty("auteur", r.getReservationOwner().getMail());
+                                joReponse.addProperty("auteur", r.getReservationOwner().getMail());
                             } else {
-                                jo.addProperty("auteur", r.getReservationOwner().getCellNumber());
+                                joReponse.addProperty("auteur", r.getReservationOwner().getCellNumber());
                             }
                         }
+                        joReponse.addProperty("prix", r.getReservationPrice());
+                        joReponse.addProperty("note", r.getReservationOwner().getRating());
                         Date dateWanted = r.getReservationStartingDate();
                         String dateWantedAsString = df.format(dateWanted);
                         
@@ -331,7 +333,7 @@ public class SerialisationJSON {
             jo.addProperty("session", true);
             jo.addProperty("prenom", (String) request.getAttribute("prenom"));
             jo.addProperty("nom", (String) request.getAttribute("nom"));
-            jo.addProperty("nbPoint", (int) request.getAttribute("nbPoint"));
+            jo.addProperty("nbPoint", (double) request.getAttribute("nbPoint"));
             jo.addProperty("email", (String) request.getAttribute("email"));
             jo.addProperty("numTel", (String) request.getAttribute("numTel"));
             jo.addProperty("contactPrefere", (String) request.getAttribute("contactPrefere"));
