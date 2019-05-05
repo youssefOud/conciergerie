@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import javafx.util.Pair;
 
 /**
  *
@@ -302,7 +303,7 @@ public class Services {
         return true;
     }
     
-    public boolean createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
+    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
         JpaUtil.createEntityManager();
         Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
         Person reservationOwner = personDAO.findById(idReservationOwner);
@@ -315,7 +316,7 @@ public class Services {
         }
         catch (Exception e){
             JpaUtil.closeEntityManager();
-            return false;
+            return new Pair<>(false, "Erreur : uen erreure s'est produite lors de l'opération");
         }
         Date reservationRequestDate = new Date();
         
@@ -323,26 +324,50 @@ public class Services {
             try {
                 JpaUtil.openTransaction();
                 Reservation reservation = new Reservation(reservationOwner, service, reservationStartingDate, reservationDuration, durationUnit, reservationRequestDate);
+                //Dates validity checking
                 if(reservation.getReservationStartingDate().getTime() < service.getAvailabilityDate().getTime() || reservation.getReservationEndingDate().getTime() > service.getEndOfAvailabilityDate().getTime()){
                     JpaUtil.validateTransaction();
                     JpaUtil.closeEntityManager();
-                    return false;
+                    return new Pair<>(false, "Erreur : les dates saisies ne sont pas valides");
                 }
+                
+                //Point balance checking
+                Person offerOwner;
+                Person demandOwner;
+                if(reservation.getService() instanceof Offer){
+                    offerOwner = reservation.getService().getPerson();
+                    demandOwner = reservation.getReservationOwner();
+                }
+                else{
+                    offerOwner = reservation.getReservationOwner();
+                    demandOwner = reservation.getService().getPerson();
+                }
+
+                if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
+                    offerOwner.setPointBalance(offerOwner.getPointBalance() +  reservation.getReservationPrice());
+                    demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
+                }
+                else{
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
+                }
+                
                 reservationDAO.persist(reservation);
                 JpaUtil.validateTransaction();
             }
             catch(Exception e){
                 JpaUtil.cancelTransaction();
                 JpaUtil.closeEntityManager();
-                return false;
+                return new Pair<>(false, "Erreur : une erreure s'est produite lors de l'opération");
             }
         }
         else{
             JpaUtil.closeEntityManager();
-            return false;
+            return new Pair<>(false, "Erreur : une erreure s'est produite lors de l'opération");
         }
         JpaUtil.closeEntityManager();
-        return true;
+        return new Pair<>(true, "Votre demande a bien été prise en compte");
     }
     
     public List<Reservation> getReservationByPersonId(Long personId){
@@ -357,7 +382,7 @@ public class Services {
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
             try {
                 JpaUtil.openTransaction();
-                service.setState("expired");
+                service.setServiceState("expired");
                 serviceDAO.merge(service);
                 JpaUtil.validateTransaction();
             }
@@ -391,6 +416,7 @@ public class Services {
         JpaUtil.createEntityManager();
         try {
             JpaUtil.openTransaction();
+            ///////////////////////////////////////  Supprimer aussi toutes les réservations qui sont en lien avec le service
             Service serviceToRemove = serviceDAO.findById(serviceId);
             serviceDAO.remove(serviceToRemove);
             JpaUtil.validateTransaction();
@@ -432,6 +458,87 @@ public class Services {
         
         return (int)Math.ceil(durationInMinutes * nbPtsInMinutes);
     }
+    
+    public Pair<Boolean, String> confirmReservation(Long idReservation){ //On retourne le message d'erreur ou de confirmation
+        JpaUtil.createEntityManager();
+        Reservation reservation = reservationDAO.findById(idReservation);
+        try{
+            JpaUtil.openTransaction();
+            reservation.setReservationState(1);
+            reservationDAO.merge(reservation);
+            
+            //Vérifier que les deux ont un nombre de points suffisants
+            //faire passer les points d'un utilisateur à un autre
+            Person offerOwner;
+            Person demandOwner;
+            if(reservation.getService() instanceof Offer){
+                offerOwner = reservation.getService().getPerson();
+                demandOwner = reservation.getReservationOwner();
+                
+            }
+            else{
+                offerOwner = reservation.getReservationOwner();
+                demandOwner = reservation.getService().getPerson();
+            }
+        
+            if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
+                offerOwner.setPointBalance(offerOwner.getPointBalance() +  reservation.getReservationPrice());
+                demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
+            }
+            else{
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
+            }
+            
+            //Envoyer mails de confirmation aux deux personnes
+            
+            JpaUtil.validateTransaction(); 
+        }
+        catch (Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return new Pair<> (false,"Erreur : Une erreure s'est produite");
+        }
+        JpaUtil.closeEntityManager();
+        return new Pair<> (true,"Demande validée !");
+    }
+    
+    public boolean declineReservation(Long idReservation){
+        JpaUtil.createEntityManager();
+        Reservation reservation = reservationDAO.findById(idReservation);
+        try{
+            JpaUtil.openTransaction();
+            reservation.setReservationState(2);
+            reservationDAO.merge(reservation);
+            JpaUtil.validateTransaction(); 
+        }
+        catch (Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
+    public HashMap<Service, List<Reservation>> getAds(Person person) {
+        if (person == null) return null;
+        
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+                
+        List<Service> services = serviceDAO.findAllServicesByPerson(person);
+        HashMap<Service,List<Reservation>> hm = new HashMap<>();
+        for (Service serv :services) {
+            updateServiceState(serv);
+            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
+            hm.put(serv,reservations);
+        }
+        JpaUtil.closeEntityManager();       
+        return hm;
+    }
+    
     
     
 }
