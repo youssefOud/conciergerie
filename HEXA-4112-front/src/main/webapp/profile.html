@@ -3,12 +3,30 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="UTF-8">
         <!--  CSS Files -->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous" />
+        <link rel="stylesheet" href="css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="css/datepicker.css"></link>
+        <link rel="stylesheet" href="css/clockpicker.css"></link>
+        <link rel="stylesheet" href="css/style.css"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+        <!-- JS Files -->
 
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.min.js">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/clockpicker.js"></script>
 
+        <link rel="shortcut icon" type="images/png" href="img/favicon.png"/>
         <title>Profil</title>
 
     </head>
@@ -25,18 +43,19 @@
 
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item "><a class="nav-link" href="deposerAnnonce.html">D&eacute;poser
-                            une annonce <span class="sr-only">(current)</span>
+                    <li class="nav-item"><a class="nav-link" href="deposerAnnonce.html">D&eacute;poser
+                            une annonce
                         </a></li>
                     <li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
                     <li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesAnnonces.html">Mes annonces</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesReponses.html">Mes réponses</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item dropdown"><a
                             class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="true" aria-expanded="true" id="welcome">Bonjour,
-                            utilisateur</a>
+                            role="button" aria-haspopup="true" aria-expanded="true" id="welcome"><span class="sr-only">(current)</span></a>
                         <div class="dropdown-menu" x-placement="bottom-start"
                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
                             <a class="dropdown-item" href="profile.html">Paramètres</a> <a
@@ -165,8 +184,8 @@
                 });
 
                 var filtres = new Object();
-
                 filtres.todo = "recupererInfoPersonne";
+                
                 $.ajax({
                     type: 'GET',
                     url: './ActionServlet',
@@ -188,7 +207,7 @@
                                     dataType:'json',
                                     success: function (data) {
                                         console.log(data);
-                                        if (data.saved){
+                                        if (!data.error){
                                             window.location.replace("./index.html");
                                         }else{
                                             $("#erreur").modal();
@@ -206,7 +225,12 @@
                             document.getElementById("prenom").innerHTML = data.prenom;
                             document.getElementById("email").innerHTML = data.email;
                             document.getElementById("mon_profile").innerHTML = data.prenom + " " + data.nom;
-                            document.getElementById("note").innerHTML = data.note + "/5";
+                            if(data.note != -1){
+                                document.getElementById("note").innerHTML = data.note + "/5";
+                            }
+                            else{
+                                document.getElementById("note").innerHTML = "Non noté";
+                            }
                             document.getElementById("points").innerHTML = data.nbPoint + " points";
                             numTelephone = data.numTel;
                             contactPrefere = data.contactPrefere;
