@@ -3,8 +3,10 @@ package DAO;
 import javax.persistence.EntityManager;
 
 import Model.VerificationToken;
+import java.sql.Date;
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 public class VerificationTokenDAO {
     
@@ -28,6 +30,15 @@ public class VerificationTokenDAO {
         em.remove(verificationToken);
     }
     
+    public void removeOldTokens(Long delay){
+        EntityManager em = JpaUtil.getEntityManager();
+        long currentDateTime = System.currentTimeMillis()-delay;
+        Date date = new Date(currentDateTime);
+        System.out.println("date: " + date);
+        Query query = em.createQuery("DELETE FROM VerificationToken u where :date > u.date").setParameter("date",date,TemporalType.TIMESTAMP);
+        query.executeUpdate();
+    }
+    
     public boolean verificationTokenExists(String mail, String token){
         EntityManager em = JpaUtil.getEntityManager();
         Query query = em.createQuery("SELECT u FROM VerificationToken u where u.email = :mailToVerify and u.token = :tokenToVerify");
@@ -40,7 +51,7 @@ public class VerificationTokenDAO {
         EntityManager em = JpaUtil.getEntityManager();
         Query query = em.createQuery("SELECT u FROM VerificationToken u where u.email = :mailToVerify").setParameter("mailToVerify", mail);
         if( !(((List<VerificationToken>) query.getResultList()).isEmpty()) ){
-            return (VerificationToken)query.getResultList().get(0);
+            return ((List<VerificationToken>)query.getResultList()).get(0);
         }
         else{
             return null;
