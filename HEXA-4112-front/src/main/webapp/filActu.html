@@ -49,6 +49,8 @@
                         </a></li>
                     <li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
                     <li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesAnnonces.html">Mes annonces</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesReponses.html">Mes réponses</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav ml-auto">
@@ -242,45 +244,6 @@
                         </div>
                     </div>
                 </div>
-            <!--            <div class="card mb-3">
-            
-                            <h3 class="card-header"><span style="color:#007bff" >OFFRE</span> - Prêt - Four 
-                                <div class="text-right"><button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>
-                            <div class="card-body">
-                                <h6 class="card-subtitle text-muted">Electroménager</h6>
-                                <div class ="center"> <img class="img-responsive" src="img/favicon.png" ></div>
-                            </div>
-                            <div id="accordion">
-                                <div class="card">
-                                    <div class="card-header" id="headingOne">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                Détails
-                                            </button>
-                                        </h5>
-                                    </div>
-            
-                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                                        <div class="card-body">
-                                            Mon four est un Moulinex super fort.
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">Date de disponibilité : 20/02/2019 03:10</li>
-                                            <li class="list-group-item">Durée de disponibilité : 5 jours</li>
-                                            <li class="list-group-item">Prix : 3 points par jour</li>
-                                            <li class="list-group-item">Localisation : Résidence A</li>
-                                        </ul>
-                                    </div>
-                                </div>
-            
-            
-                                <div class="card-footer text-muted">
-                                    Le 10/02/2019 à 12:39
-                                </div>
-                            </div>
-            
-            
-                        </div>-->
         </div>
 
             <script>
@@ -298,7 +261,7 @@
                     console.log(data);
                     if (!data.session){
                     window.location.replace(
-                            "http://localhost:8080/HEXA-4112-front/index.html");
+                            "./index.html");
             }
             else{
                          document.getElementById("bonjour").innerHTML="Bonjour, "+ data.prenom;
@@ -315,7 +278,7 @@
                             console.log(data);
                             if (data.deconnexion){
                             window.location.replace(
-                                    "http://localhost:8080/HEXA-4112-front/index.html");
+                                    "./index.html");
             }
             else{
 
@@ -329,7 +292,11 @@
                 });
                 });
                             if (window.location.href.indexOf('annonce') > - 1){
-                    $('#popup').append(' <div class="alert alert-dismissible alert-primary" id="popup"><button type="button" class="close" data-dismiss="alert">&times;</button> <a class="alert-link">Votre annonce a bien été publiée.</div>');
+                    $('#popup').append(' <div class="alert alert-dismissible alert-primary" ><button type="button" class="close" data-dismiss="alert">&times;</button> <a class="alert-link">Votre annonce a bien été publiée.</div>');
+        }
+        
+        if (window.location.href.indexOf('reponse') > - 1){
+                    $('#popup').append(' <div class="alert alert-dismissible alert-primary"><button type="button" class="close" data-dismiss="alert">&times;</button> <a class="alert-link">Votre réponse a bien été transmise.</div>');
         }
         
         
@@ -467,8 +434,15 @@
                             }
 
                             annonce += ' - Prêt - ' + data.Annonces[i].nomObjet + '<div class="text-right">\n\
-                                                           <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
-                                                            <div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
+                                                           <button type="button" class="btn btn-outline-warning" onclick="window.location.href =';
+                            if (data.Annonces[i].typeAnnonce == "offre"){
+                            annonce += "'./repondreOffre.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div></h3>';
+                            }
+                            else if (data.Annonces[i].typeAnnonce == "demande"){
+                            annonce += "'./repondreDemande.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div></h3>';
+                            }
+            
+                                         annonce += '<div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
                             if (data.Annonces[i].images != undefined && data.Annonces[i].images.length != 0){
                             annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
                                         <div class="carousel-inner">\n\
@@ -569,8 +543,15 @@
                             }
 
                             annonce += ' - Prêt - ' + data.Annonces[i].nomObjet + '<div class="text-right">\n\
-                                                           <button type="button" class="btn btn-outline-warning">Répondre</button></div></h3>\n\
-                                                            <div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
+                                                           <button type="button" class="btn btn-outline-warning" onclick="window.location.href =';
+                            if (data.Annonces[i].typeAnnonce == "offre"){
+                            annonce += "'./repondreOffre.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div></h3>';
+                            }
+                            else if (data.Annonces[i].typeAnnonce == "demande"){
+                            annonce += "'./repondreDemande.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div></h3>';
+                            }
+            
+                                         annonce += '<div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
                             if (data.Annonces[i].images != undefined && data.Annonces[i].images.length != 0){
                             annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
                                         <div class="carousel-inner">\n\
