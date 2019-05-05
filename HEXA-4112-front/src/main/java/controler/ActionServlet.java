@@ -9,6 +9,7 @@ import DAO.JpaUtil;
 import Model.Person;
 import actions.ActionAnswerAnAd;
 import actions.ActionCheckEmail;
+import actions.ActionComputePrice;
 import actions.ActionConnection;
 import actions.ActionCreation;
 import actions.ActionGetAdsByPerson;
@@ -184,6 +185,25 @@ public class ActionServlet extends HttpServlet {
                     }
 
                     serialisationJSON.executeRepondreAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "calculPrix":
+                if (session.getAttribute("idPerson") != null){
+                    ActionComputePrice actionComputePrice = new ActionComputePrice();
+
+                    try {
+                        actionComputePrice.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeCalculPrix(request, response);
                 
                 } else {
                     request.setAttribute("error", false);

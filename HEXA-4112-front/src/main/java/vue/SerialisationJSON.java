@@ -419,4 +419,21 @@ public class SerialisationJSON {
         out.println(gson.toJson(jo));
         out.close();
     }
+
+    public void executeCalculPrix(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        // TODO : changer la valeur du boolean quand Youssef aura pris
+        // en compte le cas où il n'est pas calculé
+        jo.addProperty("calcule", true);
+        jo.addProperty("prix", (boolean) request.getAttribute("price"));
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
 }
