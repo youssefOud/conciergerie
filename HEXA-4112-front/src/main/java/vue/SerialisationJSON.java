@@ -309,7 +309,7 @@ public class SerialisationJSON {
             jo.addProperty("session", true);
             jo.addProperty("prenom", (String) request.getAttribute("prenom"));
             jo.addProperty("nom", (String) request.getAttribute("nom"));
-            jo.addProperty("nbPoint", (double) request.getAttribute("nbPoint"));
+            jo.addProperty("nbPoint", (int) request.getAttribute("nbPoint"));
             jo.addProperty("email", (String) request.getAttribute("email"));
             jo.addProperty("numTel", (String) request.getAttribute("numTel"));
             jo.addProperty("contactPrefere", (String) request.getAttribute("contactPrefere"));

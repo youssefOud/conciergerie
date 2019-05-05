@@ -317,7 +317,7 @@ public class Services {
         }
         catch (Exception e){
             JpaUtil.closeEntityManager();
-            return new Pair<>(false, "Erreur : uen erreure s'est produite lors de l'opération");
+            return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
         }
         Date reservationRequestDate = new Date();
         
@@ -329,7 +329,7 @@ public class Services {
                 if(reservation.getReservationStartingDate().getTime() < service.getAvailabilityDate().getTime() || reservation.getReservationEndingDate().getTime() > service.getEndOfAvailabilityDate().getTime()){
                     JpaUtil.validateTransaction();
                     JpaUtil.closeEntityManager();
-                    return new Pair<>(false, "Erreur : les dates saisies ne sont pas valides");
+                    return new Pair<>(false, "Les dates saisies ne sont pas valides. Veuillez réessayer.");
                 }
                 
                 //Point balance checking
@@ -351,7 +351,7 @@ public class Services {
                 else{
                     JpaUtil.cancelTransaction();
                     JpaUtil.closeEntityManager();
-                    return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
+                    return new Pair<> (true,"Votre solde est insuffisant pour réaliser cette opération.");
                 }
                 
                 reservationDAO.persist(reservation);
@@ -360,12 +360,12 @@ public class Services {
             catch(Exception e){
                 JpaUtil.cancelTransaction();
                 JpaUtil.closeEntityManager();
-                return new Pair<>(false, "Erreur : une erreure s'est produite lors de l'opération");
+                return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
             }
         }
         else{
             JpaUtil.closeEntityManager();
-            return new Pair<>(false, "Erreur : une erreure s'est produite lors de l'opération");
+            return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
         }
         JpaUtil.closeEntityManager();
         return new Pair<>(true, "Votre demande a bien été prise en compte");
