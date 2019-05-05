@@ -95,7 +95,7 @@ public class Person{
         this.mail = mail;
     }
     
-    public double getPointBalance() {
+    public int getPointBalance() {
         return pointBalance;
     }
     
@@ -126,7 +126,7 @@ public class Person{
     public void setLocation(String location) {
         this.location = location;
     }
-    
+
     public String getPrivilegedContact() {
         return privilegedContact;
     }
