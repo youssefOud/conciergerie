@@ -65,6 +65,7 @@ public class SerialisationJSON {
             jo.addProperty("nomObjet", s.getNameObject());
             jo.addProperty("nbPts", s.getNbPoint());
             jo.addProperty("typeService", s.getType());
+            jo.addProperty("description", s.getDescription());
             if (s instanceof Offer) {
                 jo.addProperty("typeAnnonce", "offre");
             } else {
@@ -197,6 +198,7 @@ public class SerialisationJSON {
                 Entry<Service, ArrayList<Reservation>> e = it.next();
 
                 jo.addProperty("categorie", (String) e.getKey().getCategory());
+                jo.addProperty("description", (String) e.getKey().getDescription());
                 jo.addProperty("duree", (int) e.getKey().getDuration());
                 jo.addProperty("uniteDuree", (String) e.getKey().getDurationUnit());
                 jo.addProperty("nomObjet", (String) e.getKey().getNameObject());
