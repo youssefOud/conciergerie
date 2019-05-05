@@ -357,7 +357,7 @@ public class Services {
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
             try {
                 JpaUtil.openTransaction();
-                service.setState("expired");
+                service.setServiceState("expired");
                 serviceDAO.merge(service);
                 JpaUtil.validateTransaction();
             }
