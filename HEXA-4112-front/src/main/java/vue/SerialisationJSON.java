@@ -197,17 +197,35 @@ public class SerialisationJSON {
             while (it.hasNext()) {
                 JsonObject jo = new JsonObject();
                 Entry<Service, ArrayList<Reservation>> e = it.next();
-
+                jo.addProperty("etat", (int) e.getKey().getServiceState());
                 jo.addProperty("categorie", (String) e.getKey().getCategory());
+                jo.addProperty("description", (String) e.getKey().getDescription());
                 jo.addProperty("duree", (int) e.getKey().getDuration());
                 jo.addProperty("uniteDuree", (String) e.getKey().getDurationUnit());
-                jo.addProperty("nomObjet", (String) e.getKey().getNameObject());
-                jo.addProperty("nbPoints", (int) e.getKey().getNbPoint());
+                jo.addProperty("objet", (String) e.getKey().getNameObject());
+                jo.addProperty("nbPts", (int) e.getKey().getNbPoint());
                 jo.addProperty("unitePrix", (String) e.getKey().getPriceUnit());
+                jo.addProperty("localisation", (String) e.getKey().getLocation());
+                jo.addProperty("typeService", (String) e.getKey().getType());
+                jo.addProperty("idAnnonce", (Long) e.getKey().getId());
                 if (e.getKey() instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
+                    if (e.getKey().getPersonOffering() != null) {
+                        if (e.getKey().getPersonOffering().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", e.getKey().getPersonOffering().getMail());
+                        } else {
+                            jo.addProperty("auteur", e.getKey().getPersonOffering().getCellNumber());
+                        }
+                    }
                 } else {
                     jo.addProperty("typeAnnonce", "demande");
+                    if (e.getKey().getPersonDemanding() != null) {
+                        if (e.getKey().getPersonDemanding().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", e.getKey().getPersonDemanding().getMail());
+                        } else {
+                            jo.addProperty("auteur", e.getKey().getPersonDemanding().getCellNumber());
+                        }
+                    }
                 }
 
                 Date date = e.getKey().getAvailabilityDate();
@@ -235,7 +253,7 @@ public class SerialisationJSON {
                     for (int i = 0; i < picturesArray.length; i++) {
                         jsonListPictures.add(picturesArray[i]);
                     }
-                    jo.add("images", jsonListPictures);
+                    jo.add("pictures", jsonListPictures);
                 }
 
                 JsonArray jsonListReponses = new JsonArray();
@@ -244,32 +262,32 @@ public class SerialisationJSON {
                 if (!reservations.isEmpty() && reservations != null) {
                     for (Reservation r : reservations) {
                         JsonObject joReponse = new JsonObject();
+                        joReponse.addProperty("idReponse", r.getId());
+                        joReponse.addProperty("duree", r.getReservationDuration());
+                        joReponse.addProperty("uniteDuree", r.getDurationUnit());
+                        joReponse.addProperty("etat", r.getReservationState());
                         if (r.getReservationOwner() != null) {
-                            joReponse.addProperty("mailPersonneReponse", r.getReservationOwner().getMail());
-                            joReponse.addProperty("contact", r.getReservationOwner().getPrivilegedContact());
+                            if (r.getReservationOwner().getPrivilegedContact().equals("email")) {
+                                joReponse.addProperty("auteur", r.getReservationOwner().getMail());
+                            } else {
+                                joReponse.addProperty("auteur", r.getReservationOwner().getCellNumber());
+                            }
                         }
-                        Date dateReservation = r.getReservationRequestDate();
+                        joReponse.addProperty("prix", r.getReservationPrice());
+                        joReponse.addProperty("note", r.getReservationOwner().getRating());
                         Date dateWanted = r.getReservationStartingDate();
-                        String dateReservationAsString = df.format(dateReservation);
                         String dateWantedAsString = df.format(dateWanted);
-
-                        String theDateReservation = dateReservationAsString.substring(0, 11);
-                        String theTimeReservation = dateReservationAsString.substring(11);
-
+                        
                         String theDateWanted = dateWantedAsString.substring(0, 11);
                         String theTimeWanted = dateWantedAsString.substring(11);
-
-                        joReponse.addProperty("dateReponse", theDateReservation);
-                        joReponse.addProperty("timeReponse", theTimeReservation);
-                        joReponse.addProperty("uniteDuree", r.getDurationUnit());
-                        joReponse.addProperty("dureeReservation", r.getReservationDuration());
-                        joReponse.addProperty("dateSouhaitee", theDateWanted);
-                        joReponse.addProperty("timeSouhaite", theTimeWanted);
-                        joReponse.addProperty("prixPropose", r.getReservationPrice());
-                        joReponse.addProperty("notePersonneReponse", r.getReservationOwnerRating());
+                        
+                        joReponse.addProperty("date", theDateWanted);
+                        joReponse.addProperty("time", theTimeWanted);
 
                         jsonListReponses.add(joReponse);
                     }
+                    jo.add("reponses", jsonListReponses);
+                } else {
                     jo.add("reponses", jsonListReponses);
                 }
                 jsonList.add(jo);

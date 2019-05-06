@@ -220,6 +220,8 @@ public class Services {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
+        // TODO : checker mot obscene
+        
         demandDAO.persist(demand);
         
         try {
