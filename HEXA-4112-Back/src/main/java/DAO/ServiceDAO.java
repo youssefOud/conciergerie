@@ -125,11 +125,11 @@ public class ServiceDAO {
         return services; 
     } 
      
-    public List<Service> findInterestsByPerson(Person person){
+    public List<Object[]> findInterestsByPerson(Person person){
         EntityManager em = JpaUtil.getEntityManager();
-        String request = "select r.service from Reservation r where r.reservationOwner = :person";      
+        String request = "select r,r.service from Reservation r where r.reservationOwner = :person order by r.reservationRequestDate desc";      
         Query query = em.createQuery(request).setParameter("person", person);
-        List<Service> services = (List<Service>)query.getResultList();
+        List<Object[]> services = (List<Object[]>)query.getResultList();
         
         System.out.println("services: " + services.size());
         return services; 

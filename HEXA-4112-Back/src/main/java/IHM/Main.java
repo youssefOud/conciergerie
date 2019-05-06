@@ -32,7 +32,7 @@ public class Main {
         Person person2 = new Person("Paul","Cartney","123","+1234", "paulc@gmail.com");
                 
 
-        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("06/05/2019 00:00")
+        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("05/05/2019 00:00")
                 ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
         Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("06/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
@@ -47,18 +47,15 @@ public class Main {
         System.out.println(s.createOffer(offer));
         
 
-        s.createReservation(person2.getId(), offer.getId(), "06/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person2.getId(), offer.getId(), "05/05/2019", "00:00", 5, "minutes");
         s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
-        
-        s.deleteInterest(6L);
-
-    
+            
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         
         HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
-        List<Service> interests = s.getInterests(person2);
+        HashMap<Service,Reservation> interests = s.getInterests(person2);
         System.out.println();
 
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
