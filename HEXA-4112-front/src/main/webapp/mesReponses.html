@@ -32,7 +32,7 @@
 
         <link rel="shortcut icon" type="images/png" href="img/favicon.png"/>
 
-        <title>Mes annonces</title>
+        <title>Mes réponses</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -52,8 +52,8 @@
                         </a></li>
                     <li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
                     <li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="mesAnnonces.html">Mes annonces</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mesReponses.html">Mes réponses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesAnnonces.html">Mes annonces</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="mesReponses.html">Mes réponses</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav ml-auto">
@@ -163,7 +163,7 @@
                 });
                 
                 var essai = new Object();
-                    essai.todo="getAnnoncesPersonne";
+                    essai.todo="getInteretsPersonne";
                     $.ajax({
                             type: 'POST',
                                     url: './ActionServlet',
@@ -179,11 +179,7 @@
                                         for (var i in data.Annonces)
                                         {
                                             var annonce = '<div class="card mb-3"><h3 class="card-header">'
-                                            if(data.Annonces[i].etat != "closed"){
-                                                annonce+='<button class="btn"\n\
-                                                onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'supprimerAnnonce', idAnnonce :"+data.Annonces[i].idAnnonce+"},dataType:'json',success: function (data) {console.log(data);if (data.supprime){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
-                                                annonce+='><i class="fa fa-trash-o fa-2x" style="color:black" ></i></button>';
-                                            }
+                                            
                                             
                                             if (data.Annonces[i].typeAnnonce == "offre"){
                                                 annonce += '<span style="color:#007bff" >OFFRE</span>';
@@ -195,10 +191,10 @@
                                             if (data.Annonces[i].etat == 0){
                                                 annonce += '<span style="color:#4da026" >EN COURS</span>';
                                             }
-                                            else if (data.Annonces[i].etat == 1){
+                                            else if (data.Annonces[i].etat == 2){
                                                 annonce += '<span style="color:#9b2699" >FERMEE</span>';
                                             }
-                                            else if (data.Annonces[i].etat == 2){
+                                            else if (data.Annonces[i].etat == 1){
                                                 annonce += '<span style="color:#f44253" >EXPIREE</span>';
                                             }
                                             annonce += '</div></h3><div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
@@ -257,66 +253,48 @@
                                                     </div>\n\
                                                     <div id="rep' + i + '" class="collapse" aria-labelledby="headingOne" data-parent="#parent' + i + '">';
                                                     
-                                            if (data.Annonces[i].reponses != undefined ){
-                                                annonce+='<br/><table id="reponses'+i+'" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">\n\
-                                                            <thead>\n\
-                                                              <tr>\n\
-                                                                <th class="th-sm">Action</th>\n\
-                                                                <th class="th-sm">Contact\n\
-                                                                </th>\n\
-                                                                <th class="th-sm">Date\n\
-                                                                </th>\n\
-                                                                <th class="th-sm">Durée\n\
-                                                                </th>\n\
-                                                                <th class="th-sm">Prix\n\
-                                                                </th>\n\
-                                                                <th class="th-sm">Note\n\
-                                                                </th>\n\
-                                                              </tr>\n\
-                                                            </thead>\n\
-                                                            <tbody>';
-                                                for (var j in data.Annonces[i].reponses){
-                                                    
-                                                    if(data.Annonces[i].reponses[j].etat == 0){
-                                                        var answers = new Object();
-                                                        answers.todo="validerReponseAnnonce";
-                                                        answers.idReservation=data.Annonces[i].reponses[j].idReponse;
-                                                        annonce+='<tr><td><button class="btn"\n\
-                                                            onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'validerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.confirmationDone){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
-                                                            annonce+='><i class="fa fa-check"></i></button><button class="btn"\n\
-                                                            onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'declinerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.declined){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
-                                                            annonce+=' ><i class="fa fa-times"></i></button></td>';
-                                                    }
-                                                    else if(data.Annonces[i].reponses[j].etat == 1){
-                                                        annonce+='<tr class="table-success"><td></td>';
-                                                    }
-                                                    else if(data.Annonces[i].reponses[j].etat == 2){
-                                                        annonce+='<tr class="table-danger"><td></td>';
-                                                    }
-                                                                
-                                                    annonce+='<td>'+data.Annonces[i].reponses[j].auteur+'</td>\n\
-                                                                <td>'+data.Annonces[i].reponses[j].date+' '+data.Annonces[i].reponses[j].time+'</td>\n\
-                                                                <td>'+data.Annonces[i].reponses[j].duree+' '+data.Annonces[i].reponses[j].uniteDuree+'</td>\n\
-                                                                <td>'+data.Annonces[i].reponses[j].prix+' points</td>';
-                                                    if(data.Annonces[i].reponses[j].note != -1){
-                                                        annonce+='<td>'+data.Annonces[i].reponses[j].note+'/5 </td>';
-                                                    }
-                                                    else{
-                                                        annonce+='<td>Non noté</td>';
-                                                    }
-                                                                
-                                                    annonce+='</tr>';
-                                                            
-                                                }
-                                                annonce+='</tbody></table><br/>';
-                                            
+                                            annonce+='<br/><table id="reponses'+i+'" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">\n\
+                                                        <thead>\n\
+                                                          <tr>\n\
+                                                            <th class="th-sm">Action</th>\n\
+                                                            <th class="th-sm">Date\n\
+                                                            </th>\n\
+                                                            <th class="th-sm">Durée\n\
+                                                            </th>\n\
+                                                            <th class="th-sm">Prix\n\
+                                                            </th>\n\
+                                                          </tr>\n\
+                                                        </thead>\n\
+                                                        <tbody>';
+
+                                            if(data.Annonces[i].etatReponse == 0){
+                                                annonce+='<tr><td><button class="btn"\n\
+                                                onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'supprimerInteret', idReservation :"+data.Annonces[i].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.deleted){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                annonce+='><i class="fa fa-trash-o" style="color:black" ></i></button></td>';
                                             }
+                                            else if(data.Annonces[i].etatReponse == 1){
+                                                annonce+='<tr class="table-success"><td></td>';
+                                            }
+                                            else if(data.Annonces[i].etatReponse == 2){
+                                                annonce+='<tr class="table-danger"><td></td>';
+                                            }
+
+                                            annonce+='<td>'+data.Annonces[i].dateReponse+' '+data.Annonces[i].timeReponse+'</td>\n\
+                                                        <td>'+data.Annonces[i].dureeReponse+' '+data.Annonces[i].uniteDureeReponse+'</td>\n\
+                                                        <td>'+data.Annonces[i].prixPropose+' points</td>';
+                                            
+
+                                            annonce+='</tr>';
+
+                                            annonce+='</tbody></table><br/>';
+                                            
+                                            
                                             annonce += '</div></div>';
+                                            var noteAuteur;
+                                            if(data.Annonces[i].noteMoyenneAuteur != -1){noteAuteur = data.Annonces[i].noteMoyenneAuteur }else{noteAuteur='Non noté'}
                     
                     
-                    
-                    
-                                            annonce += '<div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
+                                            annonce += '<div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Note : '+noteAuteur+'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
                                             $('#fil').append(annonce);
                                             console.log('#reponses'+i)
                                             $('#reponses'+i).DataTable({"language": 
