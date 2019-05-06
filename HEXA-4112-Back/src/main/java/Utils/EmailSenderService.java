@@ -23,7 +23,7 @@ public class EmailSenderService {
     
     private static final String email = "hexa4112@gmail.com";
     private static final String password = "test_Conciergerie";
-    private static final String msg = "Bonjour,\nPour finir votre inscription veuillez saisir le code ci-dessous : \n";
+    private static final String msg = "Bonjour,\nPour finaliser votre inscription veuillez saisir le code ci-dessous : \n";
     //sendMail("oliviacaraiman@gmail.com","RegistTest", "TEST SUCCESSFUL");
     private static String generateCode() {
         int leftLimit = '0';
@@ -96,7 +96,7 @@ public class EmailSenderService {
             message.setSubject("Confirmation de demande : "+ object);
             code = generateCode();
             message.setText("Bonjour,\r\n"
-                    +       "Votre réservation pour :\r\n"
+                    +       "Votre réponse pour :\r\n"
                     +       object + " du " + startingDate + " au " + endingDate + "\r\n"
                     +       "a bien été confirmée");
             //send message
@@ -167,7 +167,7 @@ public class EmailSenderService {
             code = generateCode();
             message.setText("Bonjour,\r\n"
                     +       "Vous avez proposé l'offre suivante pour l'annonce de : " + firstName + " ( " + privilegedContact + ") :" + "\r\n"
-                    +       object + " du " + startingDate + " au " + endingDate + " pour " + reservationPrice +" euros \r\n");
+                    +       object + " du " + startingDate + " au " + endingDate + " pour " + reservationPrice +" points \r\n");
             //send message
             Transport.send(message);
         } catch (MessagingException e) {throw new RuntimeException(e); }
@@ -201,7 +201,7 @@ public class EmailSenderService {
             code = generateCode();
             message.setText("Bonjour,\r\n"
                     +       "Votre offre  de : " + object + " a reçu une nouvelle demande de " + firstName + " ( " + privilegedContact + ") :" + "\r\n"
-                    +       object + " du " + startingDate + " au " + endingDate + " pour " + reservationPrice +" euros \r\n");
+                    +       object + " du " + startingDate + " au " + endingDate + " pour " + reservationPrice +" points \r\n");
             //send message
             Transport.send(message);
         } catch (MessagingException e) {throw new RuntimeException(e); }
