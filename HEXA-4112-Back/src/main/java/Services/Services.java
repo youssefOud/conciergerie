@@ -652,8 +652,10 @@ public class Services {
         List<Object[]> interests = serviceDAO.findInterestsByPerson(person);
         HashMap<Service,Reservation> hm= new HashMap<Service, Reservation>();
         for (Object[] i :interests) {
+             updateServiceState((Service)i[1]);
+        }
+         for (Object[] i :interests) {
             hm.put((Service)i[1], (Reservation)i[0]);
-            updateServiceState((Service)i[1]);
         }
         JpaUtil.closeEntityManager();       
         return hm;
