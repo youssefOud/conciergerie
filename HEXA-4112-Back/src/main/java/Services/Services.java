@@ -536,8 +536,6 @@ public class Services {
             JpaUtil.closeEntityManager();
             return false;
         }
-
-        
         JpaUtil.closeEntityManager();
         return true;
     }
