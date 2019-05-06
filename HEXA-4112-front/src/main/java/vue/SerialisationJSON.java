@@ -292,6 +292,8 @@ public class SerialisationJSON {
                         jsonListReponses.add(joReponse);
                     }
                     jo.add("reponses", jsonListReponses);
+                } else {
+                    jo.add("reponses", jsonListReponses);
                 }
                 jsonList.add(jo);
             }
