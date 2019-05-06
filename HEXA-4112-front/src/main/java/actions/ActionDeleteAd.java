@@ -8,27 +8,25 @@ package actions;
 import Services.Services;
 import java.io.IOException;
 import java.text.ParseException;
-import javafx.util.Pair;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author X
  */
-public class ActionDeclineAnswerAd extends Action {
+public class ActionDeleteAd extends Action {
 
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
         
-        String idReservation = request.getParameter("idReservation");
-        Long idReservationLong = Long.valueOf(idReservation);
+        String idAnnonce  = request.getParameter("idAnnonce");
+        Long idAnnonceLong = Long.valueOf(idAnnonce);
         
         Services services = new Services();
-        boolean declineReservation = services.declineReservation(idReservationLong);
+        boolean deleted = services.deleteService(idAnnonceLong);
         
-        request.setAttribute("declined", declineReservation);
+        request.setAttribute("deleted", deleted);
     }
     
 }

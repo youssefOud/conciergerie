@@ -495,4 +495,18 @@ public class SerialisationJSON {
         out.println(gson.toJson(jo));
         out.close();
     }
+
+    public void executeSupprimerAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        jo.addProperty("supprime", (boolean) request.getAttribute("deleted"));
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
 }
