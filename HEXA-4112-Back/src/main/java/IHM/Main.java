@@ -33,7 +33,7 @@ public class Main {
 
         Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("04/05/2019 00:00")
                 ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
-        Demand demand = new Demand(person1, "Bricolage",null, "marteau", formatDate.parse("03/05/2019 19:00")
+        Demand demand = new Demand(person1, "Bricolage",null, "marteau FDP", formatDate.parse("03/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
@@ -52,8 +52,11 @@ public class Main {
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         
-        HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
-        HashMap<Service,Reservation> interests = s.getInterests(person2);
+      //  HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
+      //  HashMap<Service,Reservation> interests = s.getInterests(person2);
+        
+        s.rateReservationByReservationOwner(7L, 5);
+        s.rateReservationByReservationOwner(7L, 4);
         System.out.println();
 
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
