@@ -54,7 +54,7 @@ public abstract class Service implements Serializable{
     
     protected String durationUnit;
     
-    protected String serviceState; // valid or expired
+    protected String serviceState; // valid or expired or closed
     
     public Service() {
         
