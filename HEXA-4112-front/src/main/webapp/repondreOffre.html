@@ -170,7 +170,7 @@
                     </div>
                 </div>
                 
-                <!-- Pop Up d'erreur -->
+                <!-- Pop Up d'erreur réseau -->
                 <div class="modal" id="erreur">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -221,7 +221,6 @@
                                 type: 'POST',
                                 url: './ActionServlet',
                                 data: deco,
-                                timeout: 3000,
                                 dataType: 'json',
                                 success: function(data) {
                                     console.log(data);
@@ -272,7 +271,10 @@
                                     titre += "<br/> Prêt - " + data.objet;
                                     document.getElementById("titre").innerHTML = titre;
 
-                                    document.getElementById("date").value = data.date;
+                                    document.getElementById("date").value = data.date;    
+                                        $('#date').datepicker('setDate', data.date.replace('/','-'));
+   
+                                    
                                     document.getElementById("duree").value = data.duree;
                                     document.getElementById("time").value = data.time;
                                     if (data.uniteDuree = "heures") {
@@ -394,7 +396,6 @@
                                         type: 'POST',
                                         url: './ActionServlet',
                                         data: answers,
-                                        timeout: 3000,
                                         dataType: 'json',
                                         success: function(data) {
                                             console.log(data);
@@ -407,8 +408,9 @@
                                             }
                                         },
                                         error: function(data) {
-                                            console.log(data);
-                                            $("#erreur").modal();
+                                            console.log(data)
+                                            document.getElementById("messageErreur").innerHTML= data.messageErreur;
+                                                $("#erreurSpecifique").modal();
                                         }
                                     });
                                 });
