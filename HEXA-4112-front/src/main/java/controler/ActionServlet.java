@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import DAO.JpaUtil;
 import Model.Person;
+import actions.ActionChangePrivilegedContact;
 import actions.ActionAnswerAnAd;
 import actions.ActionCheckEmail;
 import actions.ActionComputePrice;
@@ -137,6 +138,25 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "enregistreContactPrivilegie":
+                if (session.getAttribute("idPerson") != null){
+                    ActionChangePrivilegedContact acpv = new ActionChangePrivilegedContact();
+
+                    try {
+                        acpv.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeEnregistreContactPrivilegie(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+            
             case "afficherFilActualite":
                 if (session.getAttribute("idPerson") != null){
                     ActionShowTimeline astl = new ActionShowTimeline();

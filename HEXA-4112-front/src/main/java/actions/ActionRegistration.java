@@ -24,12 +24,11 @@ public class ActionRegistration extends Action {
         String firstName = request.getParameter("prenom");
         String password = request.getParameter("motDePasse");
         String mail = request.getParameter("mail");
-        String cellNumber = request.getParameter("numeroTel");
         String verificationCode = request.getParameter("code");
         
         Services services = new Services();
         
-        Person person = services.registerPerson(name, firstName, password, mail, cellNumber, verificationCode);
+        Person person = services.registerPerson(name, firstName, password, mail, "", verificationCode);
         
         request.setAttribute("person", person);
     }
