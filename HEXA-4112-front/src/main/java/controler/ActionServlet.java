@@ -25,6 +25,7 @@ import actions.ActionGetInterestsPerson;
 import actions.ActionRateBeneficiary;
 import actions.ActionRateBidder;
 import actions.ActionRegistration;
+import actions.ActionReportAd;
 import actions.ActionShowTimeline;
 import actions.ActionValidateAnswerAd;
 import javax.servlet.ServletException;
@@ -427,7 +428,7 @@ public class ActionServlet extends HttpServlet {
                         Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    serialisationJSON.executeNoterOffrant(request, response);
+                    serialisationJSON.executeSignalerAnnonce(request, response);
                 
                 } else {
                     request.setAttribute("error", false);
