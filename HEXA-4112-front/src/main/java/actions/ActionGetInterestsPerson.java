@@ -30,9 +30,9 @@ public class ActionGetInterestsPerson extends Action {
         
         Services services = new Services();
         Person person = services.getPersonById(idPerson);
-        HashMap<Service, List<Reservation>> ads = services.getAdsByPerson(person);
+        HashMap<Service, Reservation> listOfServices = (HashMap<Service, Reservation>) services.getInterests(person);
         
-        request.setAttribute("ads", ads);
+        request.setAttribute("listOfServices", listOfServices);
     }
     
 }
