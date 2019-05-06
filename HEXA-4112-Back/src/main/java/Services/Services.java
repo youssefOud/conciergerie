@@ -522,23 +522,24 @@ public class Services {
         return true;
     }
     
-    public HashMap<Service, List<Reservation>> getAds(Person person) {
-        if (person == null) return null;
-        
+    public boolean deleteInterest(Long idReservation) {
         JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-                
-        List<Service> services = serviceDAO.findAllServicesByPerson(person);
-        HashMap<Service,List<Reservation>> hm = new HashMap<>();
-        for (Service serv :services) {
-            updateServiceState(serv);
-            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
-            hm.put(serv,reservations);
+        Reservation reservation = reservationDAO.findById(idReservation);
+        if (reservation == null) return false;
+         try{
+            JpaUtil.openTransaction();
+            reservationDAO.remove(reservation);
+            JpaUtil.validateTransaction(); 
         }
-        JpaUtil.closeEntityManager();       
-        return hm;
+        catch (Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+
+        
+        JpaUtil.closeEntityManager();
+        return true;
     }
-    
-    
     
 }

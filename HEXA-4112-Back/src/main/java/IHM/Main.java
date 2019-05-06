@@ -31,11 +31,11 @@ public class Main {
         Person person1 = new Person("John","Smith","123","+1234", "fifi@gmail.com");
         Person person2 = new Person("Paul","Cartney","123","+1234", "paulc@gmail.com");
                 
-        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("01/05/2019 00:00")
+        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
-        Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("01/05/2019 19:00")
+        Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("06/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
-        Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("01/05/2019 00:00")
+        Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
 
         System.out.println(s.createPerson(person1));
@@ -44,10 +44,10 @@ public class Main {
         System.out.println(s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
-        s.createReservation(person2.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
-        s.createReservation(person2.getId(), offer2.getId(), "04/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person2.getId(), offer.getId(), "06/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
         
-        
+        s.deleteInterest(6L);
     
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
