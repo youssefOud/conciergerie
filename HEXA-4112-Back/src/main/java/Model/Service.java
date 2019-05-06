@@ -1,4 +1,3 @@
-
 package Model;
 
 import java.io.Serializable;
@@ -221,6 +220,7 @@ public abstract class Service implements Serializable{
         this.serviceState = serviceState;
     }
     
+    
     public Person getPerson(){
         if(personOffering != null){
             return personOffering;
@@ -247,4 +247,3 @@ public abstract class Service implements Serializable{
     public abstract int getNbPoint();
     public abstract int getNbPointPerDay();
 }
-

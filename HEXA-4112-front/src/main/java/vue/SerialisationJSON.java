@@ -101,8 +101,10 @@ public class SerialisationJSON {
 
                 if (s.getPersonDemanding() != null) {
                     jo.addProperty("auteur", s.getPersonDemanding().getMail());
+                    jo.addProperty("noteMoyenneAuteur", s.getPersonDemanding().getRating());
                 } else if (s.getPersonOffering() != null) {
                     jo.addProperty("auteur", s.getPersonOffering().getMail());
+                    jo.addProperty("noteMoyenneAuteur", s.getPersonOffering().getRating());
                 }
                 JsonArray jsonListPictures = new JsonArray();
                 if (s.getPictures() != null && s.getPictures() != "") {
@@ -358,13 +360,13 @@ public class SerialisationJSON {
 
     public void executeRepondreAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-        
+
         jo.addProperty("creationReponse", (Boolean) request.getAttribute("created"));
         jo.addProperty("messageErreur", (String) request.getAttribute("message"));
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
@@ -373,10 +375,10 @@ public class SerialisationJSON {
 
     public void executeDetailsAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-        
+
         Service service = (Service) request.getAttribute("service");
         if (service != null && service.getServiceState() == 0) {
             jo.addProperty("annonce", true);
@@ -390,33 +392,33 @@ public class SerialisationJSON {
             Date date = service.getAvailabilityDate();
             Date datePublication = service.getPublicationDate();
             String pattern = "dd/MM/yyyy HH:mm";
-            DateFormat df = new SimpleDateFormat(pattern);  
+            DateFormat df = new SimpleDateFormat(pattern);
             String dateAsString = df.format(date);
             String datePublicationAsString = df.format(datePublication);
-            
-            String theDate = dateAsString.substring(0,11);
+
+            String theDate = dateAsString.substring(0, 11);
             String theTime = dateAsString.substring(11);
-            
-            String theDateOfPublication = datePublicationAsString.substring(0,11);
+
+            String theDateOfPublication = datePublicationAsString.substring(0, 11);
             String theTimeOfPublication = datePublicationAsString.substring(11);
-            
+
             jo.addProperty("date", theDate);
             jo.addProperty("time", theTime);
             jo.addProperty("datePublication", theDateOfPublication);
             jo.addProperty("timePublication", theTimeOfPublication);
-            
+
             JsonArray jsonListPictures = new JsonArray();
             if (service.getPictures() != null && service.getPictures() != "") {
                 String pictures = service.getPictures();
                 String[] picturesArray = pictures.split("-");
                 System.out.println("array string " + picturesArray.length);
-                for (int i = 0; i<picturesArray.length; i++) {
-                    jsonListPictures.add(  picturesArray[i]);
-                    System.out.println(i + ": pic" );
+                for (int i = 0; i < picturesArray.length; i++) {
+                    jsonListPictures.add(picturesArray[i]);
+                    System.out.println(i + ": pic");
                 }
                 jo.add("images", jsonListPictures);
             }
-            
+
             if (service instanceof Offer) {
                 jo.addProperty("typeAnnonce", "offre");
                 if (service.getPersonOffering() != null) {
@@ -433,7 +435,7 @@ public class SerialisationJSON {
         } else {
             jo.addProperty("annonce", false);
         }
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
@@ -442,15 +444,15 @@ public class SerialisationJSON {
 
     public void executeCalculPrix(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-        
+
         // TODO : changer la valeur du boolean quand Youssef aura pris
         // en compte le cas où il n'est pas calculé
         jo.addProperty("calcule", true);
         jo.addProperty("prix", (int) request.getAttribute("price"));
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
@@ -485,6 +487,7 @@ public class SerialisationJSON {
                 if (e.getKey() instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
                     if (e.getKey().getPersonOffering() != null) {
+                        jo.addProperty("noteMoyenneAuteur", e.getKey().getPersonOffering().getRating());
                         if (e.getKey().getPersonOffering().getPrivilegedContact().equals("email")) {
                             jo.addProperty("auteur", e.getKey().getPersonOffering().getMail());
                         } else {
@@ -494,6 +497,7 @@ public class SerialisationJSON {
                 } else {
                     jo.addProperty("typeAnnonce", "demande");
                     if (e.getKey().getPersonDemanding() != null) {
+                        jo.addProperty("noteMoyenneAuteur", e.getKey().getPersonDemanding().getRating());
                         if (e.getKey().getPersonDemanding().getPrivilegedContact().equals("email")) {
                             jo.addProperty("auteur", e.getKey().getPersonDemanding().getMail());
                         } else {
@@ -519,6 +523,7 @@ public class SerialisationJSON {
                 jo.addProperty("time", theTime);
                 jo.addProperty("datePublication", theDateOfPublication);
                 jo.addProperty("timePublication", theTimeOfPublication);
+                
 
                 JsonArray jsonListPictures = new JsonArray();
                 if (e.getKey().getPictures() != null && e.getKey().getPictures() != "") {
@@ -552,6 +557,10 @@ public class SerialisationJSON {
 
                     jo.addProperty("dateReponse", theDateWanted);
                     jo.addProperty("timeReponse", theTimeWanted);
+                    jo.addProperty("prixPropose", reservation.getReservationPrice());
+                    jo.addProperty("noteAuteurAnnonce", reservation.getServiceOwnerRating());
+                    jo.addProperty("noteReponseAnnonce", reservation.getReservationOwnerRating());
+                    
                 }
                 jsonList.add(jo);
             }
@@ -568,12 +577,12 @@ public class SerialisationJSON {
 
     public void executeSupprimerInteret(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-        
+
         jo.addProperty("deleted", (boolean) request.getAttribute("deleted"));
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
@@ -587,7 +596,7 @@ public class SerialisationJSON {
         JsonObject jo = new JsonObject();
         
         jo.addProperty("deleted", (boolean) request.getAttribute("deleted"));
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
@@ -596,13 +605,13 @@ public class SerialisationJSON {
 
     public void executeValiderReponseAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-        
+
         jo.addProperty("confirmationDone", (boolean) request.getAttribute("confirmed"));
         jo.addProperty("message", (String) request.getAttribute("message"));
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
@@ -611,12 +620,12 @@ public class SerialisationJSON {
 
     public void executeDeclinerReponseAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-        
+
         jo.addProperty("declined", (boolean) request.getAttribute("declined"));
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
@@ -625,12 +634,40 @@ public class SerialisationJSON {
 
     public void executeSupprimerAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-        
+
         jo.addProperty("supprime", (boolean) request.getAttribute("deleted"));
-        
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+
+    public void executeNoterBeneficiaire(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+
+        jo.addProperty("note", (boolean) request.getAttribute("rated"));
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
+
+    public void executeNoterOffrant(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+
+        jo.addProperty("note", (boolean) request.getAttribute("rated"));
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
