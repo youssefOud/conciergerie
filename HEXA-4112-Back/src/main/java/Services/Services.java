@@ -717,4 +717,76 @@ public class Services {
         return true;
     }
     
+    public boolean rateReservationByServiceOwner(Long reservationId, int rating) {
+        JpaUtil.createEntityManager();
+        
+        try {
+            Reservation r = getReservationById(reservationId);
+            JpaUtil.openTransaction();
+            r.setServiceOwnerRating(rating);
+            reservationDAO.merge(r);
+            //update reservation owner's rating
+            Person reservationOwner = r.getReservationOwner();
+            int nbRatings = reservationOwner.getNbRatings();
+            double avg;
+            if ((int)reservationOwner.getRating() == -1)
+                avg = (rating)/(double)(nbRatings + 1);
+            else
+                avg = (nbRatings*reservationOwner.getRating()+rating)/(double)(nbRatings + 1);
+            reservationOwner.setRating(avg);
+            reservationOwner.setNbRatings(nbRatings + 1);
+            personDAO.merge(reservationOwner);
+            JpaUtil.validateTransaction();
+        }
+        catch(Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
+    public Reservation getReservationById(Long id) {
+       // JpaUtil.createEntityManager();
+        Reservation res = reservationDAO.findById(id);
+        //JpaUtil.closeEntityManager();
+        return res;
+    }
+    
+    public boolean rateReservationByReservationOwner(Long reservationId, int rating) {
+        JpaUtil.createEntityManager();
+        Reservation r = getReservationById(reservationId);
+        Person serviceOwner = r.getServiceOwner();
+        
+        if (r != null && serviceOwner != null ){
+            r.setReservationOwnerRating(rating);
+            int nbRatings = serviceOwner.getNbRatings();
+            double avg;
+            if ((int)serviceOwner.getRating() == -1)
+                avg = (rating)/(double)(nbRatings + 1);
+            else
+                avg = (nbRatings*serviceOwner.getRating()+rating)/(double)(nbRatings + 1);
+            serviceOwner.setRating(avg);
+            serviceOwner.setNbRatings(nbRatings + 1);
+            try {
+                System.out.println("reDa" + r);
+                JpaUtil.openTransaction();
+                System.out.println();
+                reservationDAO.merge(r);
+//                JpaUtil.validateTransaction();
+//                JpaUtil.openTransaction();
+                personDAO.merge(serviceOwner);
+                JpaUtil.validateTransaction();
+            }
+            catch(Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        }
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
 }
