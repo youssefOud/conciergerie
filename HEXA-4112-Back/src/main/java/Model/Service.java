@@ -1,4 +1,3 @@
-
 package Model;
 
 import java.io.Serializable;
@@ -248,4 +247,3 @@ public abstract class Service implements Serializable{
     public abstract int getNbPoint();
     public abstract int getNbPointPerDay();
 }
-

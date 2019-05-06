@@ -34,9 +34,9 @@ public class ServiceDAO {
         EntityManager em = JpaUtil.getEntityManager();
         String request;
         if (startingDate == null) {
-            request = "select s from Service s where s.endOfAvailabilityDate >= :endingDate ";
+            request = "select s from Service s where s.endOfAvailabilityDate >= :endingDate and s.serviceState = :validState ";
         } else {
-            request = "select s from Service s where s.availabilityDate <= :startingDate and s.endOfAvailabilityDate >= :endingDate ";
+            request = "select s from Service s where s.availabilityDate <= :startingDate and s.endOfAvailabilityDate >= :endingDate and s.serviceState = :validState ";
         }
 
         if (!object.isEmpty()) {
@@ -68,6 +68,8 @@ public class ServiceDAO {
             query.setParameter("startingDate", startingDate, TemporalType.TIMESTAMP);
         }
         query.setParameter("endingDate", endingDate, TemporalType.TIMESTAMP);
+        query.setParameter("validState", 0);
+        
 
         if (!object.isEmpty()) {
             query.setParameter("object", object.toLowerCase());
