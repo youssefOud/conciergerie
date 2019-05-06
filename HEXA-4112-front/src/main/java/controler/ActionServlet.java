@@ -252,6 +252,26 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "validerReponseAnnonce":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionValidateAnswerAd actionValidateAnswerAd = new ActionValidateAnswerAd();
+
+                    try {
+                        ActionValidateAnswerAd.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeValiderReponseAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
             case "seDeconnecter":
                 if (session.getAttribute("idPerson") != null) {
                     ActionDeconnection ad = new ActionDeconnection();
