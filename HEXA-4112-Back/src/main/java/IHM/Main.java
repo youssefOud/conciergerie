@@ -33,7 +33,7 @@ public class Main {
 
         Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("04/05/2019 00:00")
                 ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
-        Demand demand = new Demand(person1, "Bricolage",null, "marteau", formatDate.parse("03/05/2019 19:00")
+        Demand demand = new Demand(person1, "Bricolage",null, "marteau FDP", formatDate.parse("03/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);

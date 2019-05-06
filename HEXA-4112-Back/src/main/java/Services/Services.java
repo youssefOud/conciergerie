@@ -13,6 +13,7 @@ import Model.Reservation;
 import Model.Service;
 import Model.VerificationToken;
 import Utils.EmailSenderService;
+import Utils.Moderation;
 import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -221,13 +222,20 @@ public class Services {
         JpaUtil.openTransaction();
         
         // TODO : checker mot obscene
-        
-        demandDAO.persist(demand);
+        String word = Moderation.checkObsceneWords(demand);
+        if (word.equals("")) {
+            demandDAO.persist(demand);
+        } else {
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
         
         try {
             JpaUtil.validateTransaction();
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
             return false;
         }
         
