@@ -58,7 +58,7 @@ public class SerialisationJSON {
         List<Service> listOfServices = (List<Service>) request.getAttribute("listOfServices");
 
         for (Service s : listOfServices) {
-            if (!s.getServiceState().equals("expired")) {
+            if (s.getServiceState() == 0) {
                 JsonObject jo = new JsonObject();
 
                 jo.addProperty("categorie", s.getCategory());
@@ -360,7 +360,7 @@ public class SerialisationJSON {
         JsonObject jo = new JsonObject();
         
         Service service = (Service) request.getAttribute("service");
-        if (service != null && !service.getServiceState().equals("expired")) {
+        if (service != null && service.getServiceState() == 0) {
             jo.addProperty("annonce", true);
             jo.addProperty("categorie", (String) service.getCategory());
             jo.addProperty("duree", (int) service.getDuration());
@@ -453,7 +453,7 @@ public class SerialisationJSON {
             while (it.hasNext()) {
                 JsonObject jo = new JsonObject();
                 Entry<Service, Reservation> e = it.next();
-                jo.addProperty("etat", (String) e.getKey().getServiceState());
+                jo.addProperty("etat", (int) e.getKey().getServiceState());
                 jo.addProperty("categorie", (String) e.getKey().getCategory());
                 jo.addProperty("description", (String) e.getKey().getDescription());
                 jo.addProperty("duree", (int) e.getKey().getDuration());
@@ -545,6 +545,20 @@ public class SerialisationJSON {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(container));
+        out.close();
+    }
+
+    public void executeSupprimerInteret(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+        
+        jo.addProperty("deleted", (boolean) request.getAttribute("deleted"));
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
         out.close();
     }
 }
