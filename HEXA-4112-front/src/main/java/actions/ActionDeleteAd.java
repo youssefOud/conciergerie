@@ -5,7 +5,6 @@
  */
 package actions;
 
-import Model.Person;
 import Services.Services;
 import java.io.IOException;
 import java.text.ParseException;
@@ -16,22 +15,18 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author X
  */
-public class ActionRegistration extends Action {
+public class ActionDeleteAd extends Action {
 
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
-        String name = request.getParameter("nom");
-        String firstName = request.getParameter("prenom");
-        String password = request.getParameter("motDePasse");
-        String mail = request.getParameter("mail");
-        String verificationCode = request.getParameter("code");
+        
+        String idAnnonce  = request.getParameter("idAnnonce");
+        Long idAnnonceLong = Long.valueOf(idAnnonce);
         
         Services services = new Services();
+        boolean deleted = services.deleteService(idAnnonceLong);
         
-        Person person = services.registerPerson(name, firstName, password, mail, "", verificationCode);
-        
-        request.setAttribute("person", person);
+        request.setAttribute("deleted", deleted);
     }
-    
     
 }
