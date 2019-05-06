@@ -670,4 +670,49 @@ public class Services {
 
     }
     
+    public boolean deletePerson(Long idPerson){
+        JpaUtil.createEntityManager();
+        try{
+            JpaUtil.openTransaction();
+            
+            //Creer utilisateur supprimé si existe pas déjà 
+            Person deletedPerson;
+            if(!personDAO.personExists("Utilisateur de Campus Exchange")){
+                deletedPerson = new Person("", "", "", "", "Utilisateur de Campus Exchange");
+                personDAO.persist(deletedPerson);
+            }
+            else{
+                deletedPerson = personDAO.findByMail("Utilisateur de Campus Exchange");
+            }
+            
+            //Pour toutes les annonces remplacer l'ancien utilisateur par le nouveau (qui correspon à un compte supprimé)
+            List<Service> services = serviceDAO.findAllServicesByPerson(personDAO.findById(idPerson));
+            for(Service s : services){
+                s.setPerson(deletedPerson);
+                serviceDAO.merge(s);
+            }
+            
+            List<Reservation> reservations = reservationDAO.findAllReservationsByReservationOwner(personDAO.findById(idPerson));
+            for(Reservation r : reservations){
+                if(r.getServiceOwner().getId().equals(idPerson)){
+                    r.setServiceOwner(deletedPerson);
+                }
+                else{
+                    r.setReservationOwner(deletedPerson);
+                }
+                reservationDAO.merge(r);
+            }
+            
+            personDAO.remove(personDAO.findById(idPerson));
+            JpaUtil.validateTransaction();
+        }
+        catch (Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
 }

@@ -49,7 +49,7 @@ public class Reservation implements Serializable{
     
     protected int reservationPrice;
     
-    protected int reservationState; //0 for pending / 1 for accepted / 2 for refused 
+    protected int reservationState; //0 for pending / 1 for accepted / 2 for refused / 3 for ended / 4 for evaluated
     
     
     public Reservation() {

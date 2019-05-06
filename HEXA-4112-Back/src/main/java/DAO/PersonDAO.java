@@ -44,4 +44,15 @@ public class PersonDAO {
         return ((List<Person>) query.getResultList()).get(0); 
     }
     
+    public Person findByMail(String mail) {
+        EntityManager em = JpaUtil.getEntityManager();
+        Query query = em.createQuery("select u from Person u where u.mail=:mailToVerify");
+        query.setParameter("mailToVerify", mail);
+        
+        if(((List<Person>) query.getResultList()).isEmpty()){
+            return null;
+        }
+        return ((List<Person>) query.getResultList()).get(0); 
+    }
+    
 }
