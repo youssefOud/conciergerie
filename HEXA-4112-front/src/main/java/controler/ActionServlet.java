@@ -22,6 +22,7 @@ import actions.ActionDeleteAd;
 import actions.ActionGetAdDetails;
 import actions.ActionGetInformationPerson;
 import actions.ActionGetInterestsPerson;
+import actions.ActionRateBeneficiary;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
 import actions.ActionValidateAnswerAd;
@@ -367,6 +368,26 @@ public class ActionServlet extends HttpServlet {
                     }
                   
                     serialisationJSON.executeSupprimerAnnonce(request, response);
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "noterBeneficiaire":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionRateBeneficiary actionRateBeneficiary = new ActionRateBeneficiary();
+
+                    try {
+                        actionRateBeneficiary.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeNoterBeneficiaire(request, response);
+                
                 } else {
                     request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);

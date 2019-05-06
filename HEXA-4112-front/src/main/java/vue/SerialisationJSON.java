@@ -645,4 +645,18 @@ public class SerialisationJSON {
         out.println(gson.toJson(jo));
         out.close();
     }
+
+    public void executeNoterBeneficiaire(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jo = new JsonObject();
+
+        jo.addProperty("note", (boolean) request.getAttribute("rated"));
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(jo));
+        out.close();
+    }
 }
