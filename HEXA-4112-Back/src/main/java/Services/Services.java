@@ -16,6 +16,8 @@ import Utils.EmailSenderService;
 import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import javafx.util.Pair;
@@ -28,6 +30,15 @@ public class Services {
     final private ServiceDAO serviceDAO;
     final private VerificationTokenDAO verificationTokenDAO;
     final private ReservationDAO reservationDAO;
+    
+     Comparator<Service> compareByServiceState = new Comparator<Service>() {
+        @Override
+        public int compare(Service s1, Service s2) {
+            return s1.getServiceState().compareTo(s2.getServiceState());
+//            if (s1.getServiceState()>s2.getServiceState()) return s2.getServiceState();
+//            return s1.getServiceState();
+        }
+    };
     
     public Services(){
         this.demandDAO = new DemandDAO();
@@ -466,7 +477,7 @@ public class Services {
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
             try {
                 JpaUtil.openTransaction();
-                service.setServiceState("expired");
+                service.setServiceState(1);
                 serviceDAO.merge(service);
                 JpaUtil.validateTransaction();
             }
@@ -478,6 +489,7 @@ public class Services {
         }
         return true;
     }
+
     
     public HashMap<Service, List<Reservation>> getAdsByPerson(Person person) {
         if (person == null) return null;
@@ -489,6 +501,9 @@ public class Services {
         HashMap<Service,List<Reservation>> hm = new HashMap<>();
         for (Service serv :services) {
             updateServiceState(serv);
+        }
+        Collections.sort(services,compareByServiceState);
+        for (Service serv :services) {
             List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
             hm.put(serv,reservations);
         }
@@ -579,20 +594,16 @@ public class Services {
                 return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
             }
             
-            reservation.getService().setServiceState("closed");
+            reservation.getService().setServiceState(2);
             reservation.setReservationState(1);
             serviceDAO.merge(reservation.getService());
             reservationDAO.merge(reservation);
-            
-            
-            
+           
             //Email sending
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             EmailSenderService.sendDemandConfirmationEmail(demandOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()));
             
             EmailSenderService.sendOfferConfirmationEmail(offerOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), demandOwner.getFirstName(), demandOwner.getPrivilegedContact());
-            
-            
             JpaUtil.validateTransaction(); 
         }
         catch (Exception e){
@@ -623,17 +634,40 @@ public class Services {
         return true;
     }
     
-    public List<Service> getInterests(Person person) {
+    public boolean deleteInterest(Long idReservation) {
+        JpaUtil.createEntityManager();
+        Reservation reservation = reservationDAO.findById(idReservation);
+        if (reservation == null) return false;
+         try{
+            JpaUtil.openTransaction();
+            reservationDAO.remove(reservation);
+            JpaUtil.validateTransaction(); 
+        }
+        catch (Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
+    public HashMap<Service,Reservation> getInterests(Person person) {
         if (person == null) return null;
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
                 
-        List<Service> services = serviceDAO.findInterestsByPerson(person);
-        for (Service serv :services) {
-            updateServiceState(serv);
+        List<Object[]> interests = serviceDAO.findInterestsByPerson(person);
+        HashMap<Service,Reservation> hm= new HashMap<Service, Reservation>();
+        for (Object[] i :interests) {
+             updateServiceState((Service)i[1]);
+        }
+         for (Object[] i :interests) {
+            hm.put((Service)i[1], (Reservation)i[0]);
         }
         JpaUtil.closeEntityManager();       
-        return services;
+        return hm;
+
     }
     
 }

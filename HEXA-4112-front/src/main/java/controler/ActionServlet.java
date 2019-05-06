@@ -16,9 +16,12 @@ import actions.ActionCreation;
 import actions.ActionDeclineAnswerAd;
 import actions.ActionGetAdsByPerson;
 import actions.ActionDeconnection;
+import actions.ActionDeleteInterest;
+import actions.ActionDeletePerson;
 import actions.ActionDeleteAd;
 import actions.ActionGetAdDetails;
 import actions.ActionGetInformationPerson;
+import actions.ActionGetInterestsPerson;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
 import actions.ActionValidateAnswerAd;
@@ -255,6 +258,25 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "getInteretsPersonne":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionGetInterestsPerson actionGetInterestsPerson = new ActionGetInterestsPerson();
+
+                    try {
+                        actionGetInterestsPerson.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                  
+                    serialisationJSON.executeGetInteretsPersonne(request, response);
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                 
+                break;
+
             case "validerReponseAnnonce":
                 
                 if (session.getAttribute("idPerson") != null){
@@ -265,9 +287,9 @@ public class ActionServlet extends HttpServlet {
                     } catch (ParseException ex) {
                         Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                  
                     serialisationJSON.executeValiderReponseAnnonce(request, response);
-                
+           
                 } else {
                     request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
@@ -275,6 +297,25 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "supprimerInteret":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionDeleteInterest actionDeleteInterest = new ActionDeleteInterest();
+
+                    try {
+                        actionDeleteInterest.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                  
+                    serialisationJSON.executeSupprimerInteret(request, response);
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+            
+                break;
+            
             case "declinerReponseAnnonce":
                 
                 if (session.getAttribute("idPerson") != null){
@@ -295,6 +336,25 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "supprimerPersonne":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionDeletePerson actionDeletePerson = new ActionDeletePerson();
+
+                    try {
+                        actionDeletePerson.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    serialisationJSON.executeSupprimerPersonne(request, response);
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+            
             case "supprimerAnnonce":
                 
                 if (session.getAttribute("idPerson") != null){
@@ -305,9 +365,8 @@ public class ActionServlet extends HttpServlet {
                     } catch (ParseException ex) {
                         Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                  
                     serialisationJSON.executeSupprimerAnnonce(request, response);
-                
                 } else {
                     request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
