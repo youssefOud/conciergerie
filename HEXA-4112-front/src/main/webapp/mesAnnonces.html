@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="css/clockpicker.css"></link>
         <link rel="stylesheet" href="css/style.css"></link>
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- JS Files -->
         <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
         <script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -63,15 +64,13 @@
                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
                             <a class="dropdown-item" href="profile.html">Paramètres</a> <a
                                 class="dropdown-item" href="contact.html">Contact support</a> <a
-                                class="dropdown-item" href="#" id="deco">Déconnexion</a>
+                                class="dropdown-item" href="#" id="deco"> Déconnexion</a>
                         </div></li>
                 </ul>
             </div>
         </nav>
-
-
         <div class='container'>
-            <div id="fil"></div>
+        <div id="fil"></div>
             
         </div>
 
@@ -185,7 +184,7 @@
                                                     </div>\n\
                                                     <div id="collapse' + i + '" class="collapse" aria-labelledby="headingOne" data-parent="#accordion' + i + '">';
                                                     
-                                            if (data.Annonces[i].description != undefined){
+                                            if (data.Annonces[i].description != undefined && data.Annonces[i].description != ""){
                                             annonce += '<div class="card-body">' + data.Annonces[i].description + '</div>';
                                             }
 
@@ -211,6 +210,7 @@
                                                 annonce+='<br/><table id="reponses'+i+'" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">\n\
                                                             <thead>\n\
                                                               <tr>\n\
+                                                                <th class="th-sm">Action</th>\n\
                                                                 <th class="th-sm">Contact\n\
                                                                 </th>\n\
                                                                 <th class="th-sm">Date\n\
@@ -225,8 +225,19 @@
                                                             </thead>\n\
                                                             <tbody>';
                                                 for (var j in data.Annonces[i].reponses){
-                                                    annonce+='<tr>\n\
-                                                                <td>'+data.Annonces[i].reponses[j].auteur+'</td>\n\
+                                                    
+                                                    if(data.Annonces[i].reponses[j].etat == 0){
+                                                        annonce+='<tr><td><button class="btn"><i class="fa fa-check"></i></button><button class="btn"><i class="fa fa-times"></i></button></td>';
+                                                        object.addEventListener("click", myScript);
+                                                    }
+                                                    else if(data.Annonces[i].reponses[j].etat == 1){
+                                                        annonce+='<tr class="table-success">';
+                                                    }
+                                                    else if(data.Annonces[i].reponses[j].etat == 2){
+                                                        annonce+='<tr class="table-danger">';
+                                                    }
+                                                                
+                                                    annonce+='<td>'+data.Annonces[i].reponses[j].auteur+'</td>\n\
                                                                 <td>'+data.Annonces[i].reponses[j].date+' '+data.Annonces[i].reponses[j].time+'</td>\n\
                                                                 <td>'+data.Annonces[i].reponses[j].duree+' '+data.Annonces[i].reponses[j].uniteDuree+'</td>\n\
                                                                 <td>'+data.Annonces[i].reponses[j].prix+' points</td>';
