@@ -416,6 +416,26 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "signalerAnnonce":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionReportAd actionReportAd = new ActionReportAd();
+
+                    try {
+                        actionReportAd.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeNoterOffrant(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
             case "seDeconnecter":
                 if (session.getAttribute("idPerson") != null) {
                     ActionDeconnection ad = new ActionDeconnection();

@@ -714,5 +714,12 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
+
+    public boolean reportAd(Long idAd) {
+        
+        boolean reported = EmailSenderService.sendEmailModeratorReportAd();
+        
+        return reported;
+    }
     
 }
