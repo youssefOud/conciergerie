@@ -26,11 +26,11 @@ public class ActionValidateAnswerAd extends Action {
 
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
-        HttpSession session = request.getSession();
-        Long idPerson = (Long) session.getAttribute("idPerson");
+        String idReservation = request.getParameter("idReservation");
+        Long idReservationLong = Long.valueOf(idReservation);
         
         Services services = new Services();
-        Pair<Boolean, String> confirmReservation = services.confirmReservation(idPerson);
+        Pair<Boolean, String> confirmReservation = services.confirmReservation(idReservationLong);
         
         request.setAttribute("confirmed", confirmReservation.getKey());
         request.setAttribute("message", confirmReservation.getValue());

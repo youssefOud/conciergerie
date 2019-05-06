@@ -71,7 +71,49 @@
         </nav>
         <div class='container'>
         <div id="fil"></div>
-            
+            <!-- Pop Up d'erreur -->
+                <div class="modal" id="erreurSpecifique">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Erreur</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body" id="messageErreur">
+                                
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="deposer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pop Up d'erreur Réseau -->
+                <div class="modal" id="erreur">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Erreur</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body" >La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.
+                                
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="deposer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
         </div>
 
             <script>
@@ -136,7 +178,13 @@
                                         }
                                         for (var i in data.Annonces)
                                         {
-                                            var annonce = '<div class="card mb-3"><h3 class="card-header">';
+                                            var annonce = '<div class="card mb-3"><h3 class="card-header">'
+                                            if(data.Annonces[i].etat != "closed"){
+                                                annonce+='<button class="btn"\n\
+                                                onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'supprimerAnnonce', idAnnonce :"+data.Annonces[i].idAnnonce+"},dataType:'json',success: function (data) {console.log(data);if (data.supprime){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                annonce+='><i class="fa fa-trash-o fa-2x" style="color:black" ></i></button>';
+                                            }
+                                            
                                             if (data.Annonces[i].typeAnnonce == "offre"){
                                                 annonce += '<span style="color:#007bff" >OFFRE</span>';
                                             }
@@ -147,18 +195,21 @@
                                             if (data.Annonces[i].etat == "valid"){
                                                 annonce += '<span style="color:#4da026" >EN COURS</span>';
                                             }
+                                            else if (data.Annonces[i].etat == "closed"){
+                                                annonce += '<span style="color:#9b2699" >FERMEE</span>';
+                                            }
                                             else if (data.Annonces[i].etat == "expired"){
                                                 annonce += '<span style="color:#f44253" >EXPIREE</span>';
                                             }
                                             annonce += '</div></h3><div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
-                                            if (data.Annonces[i].images != undefined && data.Annonces[i].images.length != 0){
+                                            if (data.Annonces[i].pictures != undefined && data.Annonces[i].pictures.length != 0){
                                                 annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
                                                             <div class="carousel-inner">\n\
                                                             <div class="carousel-item active">\n\
-                                                        <img class="d-block w-100 center"  style="max-width:50%;max-height:20%" src="' + data.Annonces[i].images[0] + '" alt="First slide"></div>';
-                                                for (var j = 1; j < data.Annonces[i].images.length; j++){
+                                                        <img class="d-block w-100 center"  style="max-width:50%;max-height:20%" src="' + data.Annonces[i].pictures[0] + '" alt="First slide"></div>';
+                                                for (var j = 1; j < data.Annonces[i].pictures.length; j++){
                                                     annonce += '<div class="carousel-item">\n\
-                                                    <img class="d-block w-100 center" style="max-width:50%;max-height:20%" src="' + data.Annonces[i].images[j] + '" alt="Second slide">\n\
+                                                    <img class="d-block w-100 center" style="max-width:50%;max-height:20%" src="' + data.Annonces[i].pictures[j] + '" alt="Second slide">\n\
                                                     </div>';
                                                 }
                                                 annonce += '</div>\n\
@@ -227,14 +278,20 @@
                                                 for (var j in data.Annonces[i].reponses){
                                                     
                                                     if(data.Annonces[i].reponses[j].etat == 0){
-                                                        annonce+='<tr><td><button class="btn"><i class="fa fa-check"></i></button><button class="btn"><i class="fa fa-times"></i></button></td>';
-                                                        object.addEventListener("click", myScript);
+                                                        var answers = new Object();
+                                                        answers.todo="validerReponseAnnonce";
+                                                        answers.idReservation=data.Annonces[i].reponses[j].idReponse;
+                                                        annonce+='<tr><td><button class="btn"\n\
+                                                            onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'validerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.confirmationDone){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                            annonce+='><i class="fa fa-check"></i></button><button class="btn"\n\
+                                                            onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'declinerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.declined){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                            annonce+=' ><i class="fa fa-times"></i></button></td>';
                                                     }
                                                     else if(data.Annonces[i].reponses[j].etat == 1){
-                                                        annonce+='<tr class="table-success">';
+                                                        annonce+='<tr class="table-success"><td></td>';
                                                     }
                                                     else if(data.Annonces[i].reponses[j].etat == 2){
-                                                        annonce+='<tr class="table-danger">';
+                                                        annonce+='<tr class="table-danger"><td></td>';
                                                     }
                                                                 
                                                     annonce+='<td>'+data.Annonces[i].reponses[j].auteur+'</td>\n\

@@ -428,7 +428,7 @@ public class Services {
                 else{
                     JpaUtil.cancelTransaction();
                     JpaUtil.closeEntityManager();
-                    return new Pair<> (true,"Votre solde est insuffisant pour réaliser cette opération.");
+                    return new Pair<> (false,"Votre solde est insuffisant pour réaliser cette opération.");
                 }
                 
                 String demandOwnerContact = ((demandOwner.getPrivilegedContact().equals("email")) ? demandOwner.getMail() : demandOwner.getCellNumber());
@@ -501,6 +501,13 @@ public class Services {
         try {
             JpaUtil.openTransaction();
             ///////////////////////////////////////  Supprimer aussi toutes les réservations qui sont en lien avec le service
+            
+            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serviceDAO.findById(serviceId));
+            
+            for(Reservation r: reservations){
+                reservationDAO.remove(r);
+            }
+            
             Service serviceToRemove = serviceDAO.findById(serviceId);
             serviceDAO.remove(serviceToRemove);
             JpaUtil.validateTransaction();
@@ -589,6 +596,7 @@ public class Services {
             JpaUtil.validateTransaction(); 
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             JpaUtil.cancelTransaction();
             JpaUtil.closeEntityManager();
             return new Pair<> (false,"Erreur : Une erreure s'est produite");

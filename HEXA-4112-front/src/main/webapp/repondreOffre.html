@@ -170,7 +170,7 @@
                     </div>
                 </div>
                 
-                <!-- Pop Up d'erreur -->
+                <!-- Pop Up d'erreur réseau -->
                 <div class="modal" id="erreur">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -221,7 +221,6 @@
                                 type: 'POST',
                                 url: './ActionServlet',
                                 data: deco,
-                                timeout: 3000,
                                 dataType: 'json',
                                 success: function(data) {
                                     console.log(data);
@@ -397,7 +396,6 @@
                                         type: 'POST',
                                         url: './ActionServlet',
                                         data: answers,
-                                        timeout: 3000,
                                         dataType: 'json',
                                         success: function(data) {
                                             console.log(data);
@@ -410,8 +408,9 @@
                                             }
                                         },
                                         error: function(data) {
-                                            console.log(data);
-                                            $("#erreur").modal();
+                                            console.log(data)
+                                            document.getElementById("messageErreur").innerHTML= data.messageErreur;
+                                                $("#erreurSpecifique").modal();
                                         }
                                     });
                                 });
