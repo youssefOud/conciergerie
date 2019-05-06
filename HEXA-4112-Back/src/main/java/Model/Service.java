@@ -221,7 +221,6 @@ public abstract class Service implements Serializable{
         this.serviceState = serviceState;
     }
     
-    
     public Person getPerson(){
         if(personOffering != null){
             return personOffering;
