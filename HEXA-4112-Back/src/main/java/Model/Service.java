@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -55,6 +57,9 @@ public abstract class Service implements Serializable{
     protected String durationUnit;
     
     protected String serviceState; // valid or expired
+    
+    @OneToMany (mappedBy = "service")
+    protected List<Reservation> reservations;
     
     public Service() {
         
@@ -217,12 +222,30 @@ public abstract class Service implements Serializable{
     public void setServiceState(String serviceState) {
         this.serviceState = serviceState;
     }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+    
     
     public Person getPerson(){
         if(personOffering != null){
             return personOffering;
         }
         return personDemanding;
+    }
+    
+    public void setPerson(Person p){
+        if(personOffering != null){
+            this.personOffering = p;
+        }
+        else{
+            this.personDemanding = p;
+        }
     }
     
     @Override
