@@ -668,10 +668,15 @@ public class Services {
             JpaUtil.openTransaction();
             
             //Creer utilisateur supprimé si existe pas déjà 
+            Person deletedPerson;
             if(!personDAO.personExists("Utilisateur de Campus Exchange")){
-                this.createPerson(new Person("", "", "", "", "Utilisateur de Campus Exchange"));
+                deletedPerson = new Person("", "", "", "", "Utilisateur de Campus Exchange");
+                personDAO.persist(deletedPerson);
             }
-            Person deletedPerson = personDAO.findByMail("Utilisateur de Campus Exchange");
+            else{
+                deletedPerson = personDAO.findByMail("Utilisateur de Campus Exchange");
+            }
+            
             //Pour toutes les annonces remplacer l'ancien utilisateur par le nouveau (qui correspon à un compte supprimé)
             List<Service> services = serviceDAO.findAllServicesByPerson(personDAO.findById(idPerson));
             for(Service s : services){
