@@ -220,14 +220,6 @@ public abstract class Service implements Serializable{
     public void setServiceState(int serviceState) {
         this.serviceState = serviceState;
     }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
     
     
     public Person getPerson(){

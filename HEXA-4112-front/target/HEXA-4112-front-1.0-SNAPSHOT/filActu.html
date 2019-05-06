@@ -479,12 +479,14 @@
                             if (data.Annonces[i].description != undefined && data.Annonces[i].description != "" ){
                             annonce += '<div class="card-body">' + data.Annonces[i].description + '</div>';
                             }
-
+                            var noteAuteur;
+                            if(data.Annonces[i].noteMoyenneAuteur != -1){noteAuteur = data.Annonces[i].noteMoyenneAuteur }else{noteAuteur='Non noté'}
+                    
                             annonce += '<ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : ' + data.Annonces[i].date + ' ' + data.Annonces[i].time + '</li>\n\
                                 <li class="list-group-item">Durée de disponibilité : ' + data.Annonces[i].duree + ' ' + data.Annonces[i].uniteDuree + '</li>\n\
                             <li class="list-group-item">Prix : ' + data.Annonces[i].nbPts + ' points par ' + data.Annonces[i].unitePrix + '</li>\n\
                                 <li class="list-group-item">Localisation : ' + data.Annonces[i].localisation + '</li>\n\
-                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
+                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Note : '+noteAuteur+'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
                                     $('#fil').append(annonce);
                                     }
                                     },
@@ -588,12 +590,14 @@
                             if (data.Annonces[i].description != undefined && data.Annonces[i].description != ""){
                             annonce += '<div class="card-body">' + data.Annonces[i].description + '</div>';
                             }
-
+                            var noteAuteur;
+                            if(data.Annonces[i].noteMoyenneAuteur != -1){noteAuteur = data.Annonces[i].noteMoyenneAuteur }else{noteAuteur='Non noté'}
+                    
                             annonce += '<ul class="list-group list-group-flush"><li class="list-group-item">Date de disponibilité : ' + data.Annonces[i].date + ' ' + data.Annonces[i].time + '</li>\n\
                                 <li class="list-group-item">Durée de disponibilité : ' + data.Annonces[i].duree + ' ' + data.Annonces[i].uniteDuree + '</li>\n\
                             <li class="list-group-item">Prix : ' + data.Annonces[i].nbPts + ' points par ' + data.Annonces[i].unitePrix + '</li>\n\
                                 <li class="list-group-item">Localisation : ' + data.Annonces[i].localisation + '</li>\n\
-                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
+                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Note : '+noteAuteur+'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
                                     $('#fil').append(annonce);
                             }
                             },
