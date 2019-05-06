@@ -476,7 +476,7 @@
                     </h5>\n\
                         </div>\n\
                         <div id="collapse' + i + '" class="collapse" aria-labelledby="headingOne" data-parent="#accordion' + i + '">';
-                            if (data.Annonces[i].description != undefined){
+                            if (data.Annonces[i].description != undefined && data.Annonces[i].description != "" ){
                             annonce += '<div class="card-body">' + data.Annonces[i].description + '</div>';
                             }
 
@@ -585,7 +585,7 @@
                     </h5>\n\
                         </div>\n\
                         <div id="collapse' + i + '" class="collapse" aria-labelledby="headingOne" data-parent="#accordion' + i + '">';
-                            if (data.Annonces[i].description != undefined){
+                            if (data.Annonces[i].description != undefined && data.Annonces[i].description != ""){
                             annonce += '<div class="card-body">' + data.Annonces[i].description + '</div>';
                             }
 

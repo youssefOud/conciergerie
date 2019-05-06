@@ -133,17 +133,19 @@
 
                             <div class="modal-body">
                                 Un mail vous a été envoyé, veuillez renseigner votre code de confirmation.
-                                <div class="form-group">
+                                <div class="form-group" >
                                     <label for="code">Code de validation</label>
 
-                                    <input type="number" class="form-control" min="0" maxlength="6" id="code" aria-describedby="emailHelp">
+                                    <input type="number" id="codeIncorrect" class="form-control" min="0" maxlength="6" aria-describedby="emailHelp">
+                                    <div class="invalid-feedback">Code incorrect, veuillez réessayer.</div>
                                 </div>
                             </div>
 
-                            <div class="modal-footer" id="codeIncorrect">
+                            <div class="modal-footer" >
                                 <button type="button" id="verifierCode" class="btn btn-danger" >Valider</button>
-                                <div class="invalid-feedback">Code incorrect, veuillez réessayer.</div>
                                 <button type="button" id="fermer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                                
+
                             </div>
 
                         </div>
@@ -216,7 +218,7 @@
                                             answers.motDePasse = document.getElementById("mdp").value;
                                             answers.nom = document.getElementById("nom").value;
                                             answers.prenom = document.getElementById("prenom").value;
-                                            answers.code = document.getElementById("code").value;
+                                            answers.code = document.getElementById("codeIncorrect").value;
                                             $.ajax({
                                                 type: 'POST',
                                                 url: './ActionServlet',
@@ -230,7 +232,7 @@
                                                         "./filActu.html");
                                                     }
                                                     else{
-                                                         document.getElementById("codeIncorrect").classList.add("is-invalid");
+                                                        document.getElementById("codeIncorrect").classList.add("is-invalid");
                                                     }
                                                 },
                                                 error: function () {
