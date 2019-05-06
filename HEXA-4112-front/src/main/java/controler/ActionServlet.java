@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import DAO.JpaUtil;
 import Model.Person;
+import actions.ActionChangePrivilegedContact;
 import actions.ActionAnswerAnAd;
 import actions.ActionCheckEmail;
 import actions.ActionComputePrice;
@@ -14,8 +15,11 @@ import actions.ActionConnection;
 import actions.ActionCreation;
 import actions.ActionGetAdsByPerson;
 import actions.ActionDeconnection;
+import actions.ActionDeleteInterest;
+import actions.ActionDeletePerson;
 import actions.ActionGetAdDetails;
 import actions.ActionGetInformationPerson;
+import actions.ActionGetInterestsPerson;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
 import javax.servlet.ServletException;
@@ -137,6 +141,25 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "enregistreContactPrivilegie":
+                if (session.getAttribute("idPerson") != null){
+                    ActionChangePrivilegedContact acpv = new ActionChangePrivilegedContact();
+
+                    try {
+                        acpv.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeEnregistreContactPrivilegie(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+            
             case "afficherFilActualite":
                 if (session.getAttribute("idPerson") != null){
                     ActionShowTimeline astl = new ActionShowTimeline();
@@ -224,6 +247,66 @@ public class ActionServlet extends HttpServlet {
                     }
 
                     serialisationJSON.executeDetailsAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "getInteretsPersonne":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionGetInterestsPerson actionGetInterestsPerson = new ActionGetInterestsPerson();
+
+                    try {
+                        actionGetInterestsPerson.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeGetInteretsPersonne(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "supprimerInteret":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionDeleteInterest actionDeleteInterest = new ActionDeleteInterest();
+
+                    try {
+                        actionDeleteInterest.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeSupprimerInteret(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "supprimerPersonne":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionDeletePerson actionDeletePerson = new ActionDeletePerson();
+
+                    try {
+                        actionDeletePerson.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeSupprimerPersonne(request, response);
                 
                 } else {
                     request.setAttribute("error", false);

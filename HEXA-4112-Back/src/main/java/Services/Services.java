@@ -16,22 +16,29 @@ import Utils.EmailSenderService;
 import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import javafx.util.Pair;
 
-/**
- *
- * @author B3427
- */
-
 public class Services {
+    
     final private DemandDAO demandDAO;
     final private OfferDAO offerDAO;
     final private PersonDAO personDAO;
     final private ServiceDAO serviceDAO;
     final private VerificationTokenDAO verificationTokenDAO;
     final private ReservationDAO reservationDAO;
+    
+     Comparator<Service> compareByServiceState = new Comparator<Service>() {
+        @Override
+        public int compare(Service s1, Service s2) {
+            return s1.getServiceState().compareTo(s2.getServiceState());
+//            if (s1.getServiceState()>s2.getServiceState()) return s2.getServiceState();
+//            return s1.getServiceState();
+        }
+    };
     
     public Services(){
         this.demandDAO = new DemandDAO();
@@ -42,6 +49,88 @@ public class Services {
         this.reservationDAO = new ReservationDAO();
     }
     
+    // TODO : A completer : permet de retourner toutes les demandes
+    // en cours
+    public List<Demand> findAllDemands() {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Demand> listDemand = new ArrayList<>();
+        
+        JpaUtil.closeEntityManager();
+        return listDemand;
+    }
+    
+    // TODO : A completer : permet de retourner toutes les offres
+    // en cours
+    public List<Offer> findAllOffers() {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Offer> listOffer = new ArrayList<>();
+        
+        
+        
+        JpaUtil.closeEntityManager();
+        return listOffer;
+    }
+    
+    // Ajouter en parametre tous les critères des filtres afin de faire nos
+    // comparaison
+    // TODO : A completer : permet de retourner toutes les offres
+    // en cours avec les filtres mis
+    public List<Offer> findAllOffersWithFilters(/*Add Filter*/) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        
+        List<Offer> listOffer = new ArrayList<>();
+        
+        
+        
+        JpaUtil.closeEntityManager();
+        return listOffer;
+    }
+
+    public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
+        // TODO : to implement : persist la personne en base de données
+        return new Person();
+    }
+    
+    public boolean verifyEmailAdress(String mail) {
+        // TODO : to implement : envoyer un mail et attendre la validation de celui-ci
+        // Voir comment faire cela
+        return false;
+    }
+
+    public boolean savePrivilegedContact(Long idPerson, String privilegedContact, String cellNumber) {
+        JpaUtil.createEntityManager();
+        
+        Person person = personDAO.findById(idPerson);
+        
+        if (!cellNumber.equals("")) {
+            person.setCellNumber(cellNumber);
+        }
+        
+        if (privilegedContact.equals("email")) {
+            person.setPrivilegedContact(privilegedContact);
+        } else {
+            person.setPrivilegedContact("cellphone");
+        }
+        
+        try {
+            JpaUtil.openTransaction();
+            personDAO.merge(person);
+            JpaUtil.validateTransaction();
+        }
+        catch(RollbackException e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        
+        JpaUtil.closeEntityManager();
+        return true;
+    }
     
     // TODO : compléter
     public Person connectPerson (String mail, String mdp) {
@@ -268,8 +357,7 @@ public class Services {
         JpaUtil.closeEntityManager();
         return listServices;
     }
-    
-    
+   
     public Person getPersonById(Long idPerson) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();     
@@ -283,6 +371,7 @@ public class Services {
         JpaUtil.openTransaction();
         
         Service service = serviceDAO.findById(idService);
+        updateServiceState(service);
         
         JpaUtil.closeEntityManager();
         return service;
@@ -316,7 +405,7 @@ public class Services {
         }
         catch (Exception e){
             JpaUtil.closeEntityManager();
-            return new Pair<>(false, "Erreur : uen erreure s'est produite lors de l'opération");
+            return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
         }
         Date reservationRequestDate = new Date();
         
@@ -328,7 +417,7 @@ public class Services {
                 if(reservation.getReservationStartingDate().getTime() < service.getAvailabilityDate().getTime() || reservation.getReservationEndingDate().getTime() > service.getEndOfAvailabilityDate().getTime()){
                     JpaUtil.validateTransaction();
                     JpaUtil.closeEntityManager();
-                    return new Pair<>(false, "Erreur : les dates saisies ne sont pas valides");
+                    return new Pair<>(false, "Les dates saisies ne sont pas valides. Veuillez réessayer.");
                 }
                 
                 //Point balance checking
@@ -350,8 +439,14 @@ public class Services {
                 else{
                     JpaUtil.cancelTransaction();
                     JpaUtil.closeEntityManager();
-                    return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
+                    return new Pair<> (true,"Votre solde est insuffisant pour réaliser cette opération.");
                 }
+                
+                String demandOwnerContact = ((demandOwner.getPrivilegedContact().equals("email")) ? demandOwner.getMail() : demandOwner.getCellNumber());
+                String offerOwnerContact = ((offerOwner.getPrivilegedContact().equals("email")) ? offerOwner.getMail() : offerOwner.getCellNumber());
+                
+                EmailSenderService.sendDemandReservationEmail(demandOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), offerOwner.getFirstName(), offerOwnerContact, reservation.getReservationPrice());
+                EmailSenderService.sendOfferReservationEmail(offerOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), demandOwner.getFirstName(), demandOwnerContact, reservation.getReservationPrice());
                 
                 reservationDAO.persist(reservation);
                 JpaUtil.validateTransaction();
@@ -359,12 +454,12 @@ public class Services {
             catch(Exception e){
                 JpaUtil.cancelTransaction();
                 JpaUtil.closeEntityManager();
-                return new Pair<>(false, "Erreur : une erreure s'est produite lors de l'opération");
+                return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
             }
         }
         else{
             JpaUtil.closeEntityManager();
-            return new Pair<>(false, "Erreur : une erreure s'est produite lors de l'opération");
+            return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
         }
         JpaUtil.closeEntityManager();
         return new Pair<>(true, "Votre demande a bien été prise en compte");
@@ -382,7 +477,7 @@ public class Services {
         if (now.compareTo(service.getEndOfAvailabilityDate()) > 0) {
             try {
                 JpaUtil.openTransaction();
-                service.setServiceState("expired");
+                service.setServiceState(1);
                 serviceDAO.merge(service);
                 JpaUtil.validateTransaction();
             }
@@ -394,6 +489,7 @@ public class Services {
         }
         return true;
     }
+
     
     public HashMap<Service, List<Reservation>> getAdsByPerson(Person person) {
         if (person == null) return null;
@@ -405,6 +501,9 @@ public class Services {
         HashMap<Service,List<Reservation>> hm = new HashMap<>();
         for (Service serv :services) {
             updateServiceState(serv);
+        }
+        Collections.sort(services,compareByServiceState);
+        for (Service serv :services) {
             List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
             hm.put(serv,reservations);
         }
@@ -464,11 +563,8 @@ public class Services {
         Reservation reservation = reservationDAO.findById(idReservation);
         try{
             JpaUtil.openTransaction();
-            reservation.setReservationState(1);
-            reservationDAO.merge(reservation);
             
-            //Vérifier que les deux ont un nombre de points suffisants
-            //faire passer les points d'un utilisateur à un autre
+            //Check point balance
             Person offerOwner;
             Person demandOwner;
             if(reservation.getService() instanceof Offer){
@@ -491,8 +587,16 @@ public class Services {
                 return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
             }
             
-            //Envoyer mails de confirmation aux deux personnes
+            reservation.getService().setServiceState(2);
+            reservation.setReservationState(1);
+            serviceDAO.merge(reservation.getService());
+            reservationDAO.merge(reservation);
+           
+            //Email sending
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            EmailSenderService.sendDemandConfirmationEmail(demandOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()));
             
+            EmailSenderService.sendOfferConfirmationEmail(offerOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), demandOwner.getFirstName(), demandOwner.getPrivilegedContact());
             JpaUtil.validateTransaction(); 
         }
         catch (Exception e){
@@ -522,21 +626,40 @@ public class Services {
         return true;
     }
     
-    public HashMap<Service, List<Reservation>> getAds(Person person) {
+    public boolean deleteInterest(Long idReservation) {
+        JpaUtil.createEntityManager();
+        Reservation reservation = reservationDAO.findById(idReservation);
+        if (reservation == null) return false;
+         try{
+            JpaUtil.openTransaction();
+            reservationDAO.remove(reservation);
+            JpaUtil.validateTransaction(); 
+        }
+        catch (Exception e){
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
+    public HashMap<Service,Reservation> getInterests(Person person) {
         if (person == null) return null;
-        
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
                 
-        List<Service> services = serviceDAO.findAllServicesByPerson(person);
-        HashMap<Service,List<Reservation>> hm = new HashMap<>();
-        for (Service serv :services) {
-            updateServiceState(serv);
-            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
-            hm.put(serv,reservations);
+        List<Object[]> interests = serviceDAO.findInterestsByPerson(person);
+        HashMap<Service,Reservation> hm= new HashMap<Service, Reservation>();
+        for (Object[] i :interests) {
+             updateServiceState((Service)i[1]);
+        }
+         for (Object[] i :interests) {
+            hm.put((Service)i[1], (Reservation)i[0]);
         }
         JpaUtil.closeEntityManager();       
         return hm;
+
     }
     
     public boolean deletePerson(Long idPerson){
@@ -578,6 +701,5 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-    
     
 }

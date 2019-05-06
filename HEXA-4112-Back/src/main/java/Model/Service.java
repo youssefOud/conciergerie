@@ -2,6 +2,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Convert;
@@ -56,7 +57,9 @@ public abstract class Service implements Serializable{
     
     protected String durationUnit;
     
-    protected String serviceState; // valid or expired
+    protected Integer serviceState; // valid=0 or expired=1 or closed=2
+    
+   
     
     @OneToMany (mappedBy = "service")
     protected List<Reservation> reservations;
@@ -81,7 +84,7 @@ public abstract class Service implements Serializable{
         this.durationUnit = durationUnit;
         this.duration = duration;
         this.publicationDate = new Date();
-        this.serviceState = "valid";
+        this.serviceState = 0;
         
         Long durationInMillis = Long.valueOf(duration);
         if (durationUnit.equals("jours")) {
@@ -215,11 +218,11 @@ public abstract class Service implements Serializable{
         this.type = type;
     }
 
-    public String getServiceState() {
+    public Integer getServiceState() {
         return serviceState;
     }
 
-    public void setServiceState(String serviceState) {
+    public void setServiceState(int serviceState) {
         this.serviceState = serviceState;
     }
 
@@ -254,7 +257,8 @@ public abstract class Service implements Serializable{
         String serviceString = "Service : " + personOffering + " propose un " + nameObject;
         return serviceString;
     }
-    
+
     public abstract int getNbPoint();
     public abstract int getNbPointPerDay();
 }
+
