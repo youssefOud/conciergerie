@@ -438,4 +438,113 @@ public class SerialisationJSON {
         out.println(gson.toJson(jo));
         out.close();
     }
+
+    public void executeGetInteretsPersonne(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject container = new JsonObject();
+        JsonArray jsonList = new JsonArray();
+
+        HashMap<Service, Reservation> services = (HashMap<Service, Reservation>) request.getAttribute("listOfServices");
+        if (services != null && !services.isEmpty()) {
+            container.addProperty("error", false);
+            Set<Entry<Service, Reservation>> setServices = services.entrySet();
+            Iterator<Entry<Service, Reservation>> it = setServices.iterator();
+            while (it.hasNext()) {
+                JsonObject jo = new JsonObject();
+                Entry<Service, Reservation> e = it.next();
+                jo.addProperty("etat", (String) e.getKey().getServiceState());
+                jo.addProperty("categorie", (String) e.getKey().getCategory());
+                jo.addProperty("description", (String) e.getKey().getDescription());
+                jo.addProperty("duree", (int) e.getKey().getDuration());
+                jo.addProperty("uniteDuree", (String) e.getKey().getDurationUnit());
+                jo.addProperty("objet", (String) e.getKey().getNameObject());
+                jo.addProperty("nbPts", (int) e.getKey().getNbPoint());
+                jo.addProperty("unitePrix", (String) e.getKey().getPriceUnit());
+                jo.addProperty("localisation", (String) e.getKey().getLocation());
+                jo.addProperty("typeService", (String) e.getKey().getType());
+                jo.addProperty("idAnnonce", e.getKey().getId());
+                if (e.getKey() instanceof Offer) {
+                    jo.addProperty("typeAnnonce", "offre");
+                    if (e.getKey().getPersonOffering() != null) {
+                        if (e.getKey().getPersonOffering().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", e.getKey().getPersonOffering().getMail());
+                        } else {
+                            jo.addProperty("auteur", e.getKey().getPersonOffering().getCellNumber());
+                        }
+                    }
+                } else {
+                    jo.addProperty("typeAnnonce", "demande");
+                    if (e.getKey().getPersonDemanding() != null) {
+                        if (e.getKey().getPersonDemanding().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", e.getKey().getPersonDemanding().getMail());
+                        } else {
+                            jo.addProperty("auteur", e.getKey().getPersonDemanding().getCellNumber());
+                        }
+                    }
+                }
+
+                Date date = e.getKey().getAvailabilityDate();
+                Date datePublication = e.getKey().getPublicationDate();
+                String pattern = "dd/MM/yyyy HH:mm";
+                DateFormat df = new SimpleDateFormat(pattern);
+                String dateAsString = df.format(date);
+                String datePublicationAsString = df.format(datePublication);
+
+                String theDate = dateAsString.substring(0, 11);
+                String theTime = dateAsString.substring(11);
+
+                String theDateOfPublication = datePublicationAsString.substring(0, 11);
+                String theTimeOfPublication = datePublicationAsString.substring(11);
+
+                jo.addProperty("date", theDate);
+                jo.addProperty("time", theTime);
+                jo.addProperty("datePublication", theDateOfPublication);
+                jo.addProperty("timePublication", theTimeOfPublication);
+
+                JsonArray jsonListPictures = new JsonArray();
+                if (e.getKey().getPictures() != null && e.getKey().getPictures() != "") {
+                    String pictures = e.getKey().getPictures();
+                    String[] picturesArray = pictures.split("-");
+                    for (int i = 0; i < picturesArray.length; i++) {
+                        jsonListPictures.add(picturesArray[i]);
+                    }
+                    jo.add("pictures", jsonListPictures);
+                }
+
+                Reservation reservation = e.getValue();
+
+                if (reservation != null) {
+                    jo.addProperty("idReponse", reservation.getId());
+                    jo.addProperty("dureeReponse", reservation.getReservationDuration());
+                    jo.addProperty("uniteDureeReponse", reservation.getDurationUnit());
+                    jo.addProperty("etatReponse", reservation.getReservationState());
+                    if (reservation.getReservationOwner() != null) {
+                        if (reservation.getReservationOwner().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteurReponse", reservation.getReservationOwner().getMail());
+                        } else {
+                            jo.addProperty("auteurReponse", reservation.getReservationOwner().getCellNumber());
+                        }
+                    }
+                    Date dateWanted = reservation.getReservationStartingDate();
+                    String dateWantedAsString = df.format(dateWanted);
+
+                    String theDateWanted = dateWantedAsString.substring(0, 11);
+                    String theTimeWanted = dateWantedAsString.substring(11);
+
+                    jo.addProperty("dateReponse", theDateWanted);
+                    jo.addProperty("timeReponse", theTimeWanted);
+                }
+                jsonList.add(jo);
+            }
+        } else {
+            container.addProperty("error", true);
+        }
+
+        container.add("Annonces", jsonList);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.println(gson.toJson(container));
+        out.close();
+    }
 }

@@ -17,6 +17,7 @@ import actions.ActionGetAdsByPerson;
 import actions.ActionDeconnection;
 import actions.ActionGetAdDetails;
 import actions.ActionGetInformationPerson;
+import actions.ActionGetInterestsPerson;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
 import javax.servlet.ServletException;
@@ -244,6 +245,26 @@ public class ActionServlet extends HttpServlet {
                     }
 
                     serialisationJSON.executeDetailsAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+                case "getInteretsPersonne":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionGetInterestsPerson actionGetInterestsPerson = new ActionGetInterestsPerson();
+
+                    try {
+                        actionGetInterestsPerson.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeGetInteretsPersonne(request, response);
                 
                 } else {
                     request.setAttribute("error", false);
