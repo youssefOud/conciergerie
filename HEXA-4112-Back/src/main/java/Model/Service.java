@@ -59,10 +59,6 @@ public abstract class Service implements Serializable{
     
     protected Integer serviceState; // valid=0 or expired=1 or closed=2
     
-   
-    
-    @OneToMany (mappedBy = "service")
-    protected List<Reservation> reservations;
     
     public Service() {
         
@@ -225,15 +221,6 @@ public abstract class Service implements Serializable{
     public void setServiceState(int serviceState) {
         this.serviceState = serviceState;
     }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-    
     
     public Person getPerson(){
         if(personOffering != null){
