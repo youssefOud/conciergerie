@@ -16,6 +16,7 @@ import actions.ActionCreation;
 import actions.ActionGetAdsByPerson;
 import actions.ActionDeconnection;
 import actions.ActionDeleteInterest;
+import actions.ActionDeletePerson;
 import actions.ActionGetAdDetails;
 import actions.ActionGetInformationPerson;
 import actions.ActionGetInterestsPerson;
@@ -286,6 +287,26 @@ public class ActionServlet extends HttpServlet {
                     }
 
                     serialisationJSON.executeSupprimerInteret(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "supprimerPersonne":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionDeletePerson actionDeletePerson = new ActionDeletePerson();
+
+                    try {
+                        actionDeletePerson.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeSupprimerPersonne(request, response);
                 
                 } else {
                     request.setAttribute("error", false);
