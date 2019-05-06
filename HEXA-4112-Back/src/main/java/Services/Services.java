@@ -16,6 +16,8 @@ import Utils.EmailSenderService;
 import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import javafx.util.Pair;
@@ -28,6 +30,15 @@ public class Services {
     final private ServiceDAO serviceDAO;
     final private VerificationTokenDAO verificationTokenDAO;
     final private ReservationDAO reservationDAO;
+    
+     Comparator<Service> compareByServiceState = new Comparator<Service>() {
+        @Override
+        public int compare(Service s1, Service s2) {
+            return s1.getServiceState().compareTo(s2.getServiceState());
+//            if (s1.getServiceState()>s2.getServiceState()) return s2.getServiceState();
+//            return s1.getServiceState();
+        }
+    };
     
     public Services(){
         this.demandDAO = new DemandDAO();
@@ -478,6 +489,7 @@ public class Services {
         }
         return true;
     }
+
     
     public HashMap<Service, List<Reservation>> getAdsByPerson(Person person) {
         if (person == null) return null;
@@ -489,6 +501,9 @@ public class Services {
         HashMap<Service,List<Reservation>> hm = new HashMap<>();
         for (Service serv :services) {
             updateServiceState(serv);
+        }
+        Collections.sort(services,compareByServiceState);
+        for (Service serv :services) {
             List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
             hm.put(serv,reservations);
         }

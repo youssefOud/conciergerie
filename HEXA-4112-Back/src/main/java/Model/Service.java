@@ -2,6 +2,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Convert;
@@ -54,7 +55,9 @@ public abstract class Service implements Serializable{
     
     protected String durationUnit;
     
-    protected int serviceState; // valid=0 or expired=1 or closed=2
+    protected Integer serviceState; // valid=0 or expired=1 or closed=2
+    
+   
     
     public Service() {
         
@@ -210,7 +213,7 @@ public abstract class Service implements Serializable{
         this.type = type;
     }
 
-    public int getServiceState() {
+    public Integer getServiceState() {
         return serviceState;
     }
 
@@ -231,7 +234,8 @@ public abstract class Service implements Serializable{
         String serviceString = "Service : " + personOffering + " propose un " + nameObject;
         return serviceString;
     }
-    
+
     public abstract int getNbPoint();
     public abstract int getNbPointPerDay();
 }
+
