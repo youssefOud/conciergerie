@@ -59,11 +59,6 @@ public abstract class Service implements Serializable{
     
     protected Integer serviceState; // valid=0 or expired=1 or closed=2
     
-   
-    
-    @OneToMany (mappedBy = "service")
-    protected List<Reservation> reservations;
-    
     public Service() {
         
     }
