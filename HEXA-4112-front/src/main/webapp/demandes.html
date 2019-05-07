@@ -183,16 +183,20 @@
                             annonce += '<span style="color:#f47d42" >DEMANDE</span>';
                             }
 
-                            annonce += ' - Prêt - ' + data.Annonces[i].nomObjet + '<div class="text-right">\n\
+                            annonce += ' - Prêt - ' + data.Annonces[i].nomObjet;
+                            if(!data.Annonces[i].memePersonne){
+                                annonce +='<div class="text-right">\n\
                                                            <button type="button" class="btn btn-outline-warning" onclick="window.location.href =';
-                            if (data.Annonces[i].typeAnnonce == "offre"){
-                            annonce += "'./repondreOffre.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div></h3>';
-                            }
-                            else if (data.Annonces[i].typeAnnonce == "demande"){
-                            annonce += "'./repondreDemande.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div></h3>';
-                            }
+                                if (data.Annonces[i].typeAnnonce == "offre"){
+                                annonce += "'./repondreOffre.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div>';
+                                }
+                                else if (data.Annonces[i].typeAnnonce == "demande"){
+                                annonce += "'./repondreDemande.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div>';
+                                }
             
-                                         annonce += '<div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
+                            }
+                            
+                            annonce += '</h3><div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
                             if (data.Annonces[i].images != undefined && data.Annonces[i].images.length != 0){
                             annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
                                         <div class="carousel-inner">\n\
