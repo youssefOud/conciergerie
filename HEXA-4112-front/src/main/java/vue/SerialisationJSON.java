@@ -68,6 +68,7 @@ public class SerialisationJSON {
                 jo.addProperty("nomObjet", s.getNameObject());
                 jo.addProperty("nbPts", s.getNbPoint());
                 jo.addProperty("typeService", s.getType());
+                jo.addProperty("description", s.getDescription());
                 if (s instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
                     if (s.getPersonOffering() != null) {

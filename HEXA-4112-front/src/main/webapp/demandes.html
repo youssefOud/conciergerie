@@ -70,8 +70,28 @@
 
         <div class='container'>
             <div id="fil"></div>
-        </div>
-        <!-- Pop Up d'erreur -->
+            <!-- Pop Up de confirmation signalisation -->
+            <div class="modal" id="validationSignaler">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Confirmation</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                L'annonce a bien été signalée.
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button"  class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            <!-- Pop Up d'erreur -->
                 <div class="modal" id="erreur">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -92,6 +112,8 @@
                         </div>
                     </div>
                 </div>
+        </div>
+        
 
         <script>
         
@@ -240,8 +262,31 @@
                                 <li class="list-group-item">Durée de disponibilité : ' + data.Annonces[i].duree + ' ' + data.Annonces[i].uniteDuree + '</li>\n\
                             <li class="list-group-item">Prix : ' + data.Annonces[i].nbPts + ' points par ' + data.Annonces[i].unitePrix + '</li>\n\
                                 <li class="list-group-item">Localisation : ' + data.Annonces[i].localisation + '</li>\n\
-                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Note : '+noteAuteur+'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
-                                    $('#fil').append(annonce);
+                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Note : '+noteAuteur+'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication; 
+                                if(!data.Annonces[i].memePersonne){
+                                    annonce+='<div class="text-right"><a href="#" onclick="$.ajax({\n\
+                                type:'+" 'POST',\n\
+                                        url: './ActionServlet',\n\
+                                        data: {todo : 'signalerAnnonce', idAnnonce : "+ data.Annonces[i].idAnnonce +" },\n\
+                                        timeout: 3000,\n\
+                                        dataType:'json',\n\
+                                        success: function (data) {\n\
+                                        console.log(data);\n\
+                                        if (data.signale){"+'\n\
+                                            $('+"'#validationSignaler'"+').modal();\n\
+                                        }\n\
+                                        else{\n\
+                                                $('+"'#erreur'"+').modal();\n\
+                                        }\n\
+                                        },\n\
+                                        error: function () {\n\
+                                                $('+"'#erreur'"+').modal();\n\
+                                        }\n\
+                                    });"  > Signaler</a></div>';
+                                }
+                                
+                            annonce +='</div></div></div>';                                    
+                            $('#fil').append(annonce);
                     }
                     },
                     error: function (data) {
