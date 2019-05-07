@@ -47,6 +47,8 @@ public class Main {
         System.out.println("offer2 : " + s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
+        s.deletePerson(person1.getId());
+        s.deletePerson(person1.getId());
 
         //s.createReservation(person1.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
         //s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");

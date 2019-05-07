@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.RollbackException;
 
 import DAO.*;
+import Model.DeletedAccounts;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
@@ -31,6 +32,7 @@ public class Services {
     final private ServiceDAO serviceDAO;
     final private VerificationTokenDAO verificationTokenDAO;
     final private ReservationDAO reservationDAO;
+    final private DeletedAccountsDAO deletedAccountsDAO;
     
     Comparator<Service> compareByServiceState = new Comparator<Service>() {
         @Override
@@ -48,6 +50,7 @@ public class Services {
         this.serviceDAO = new ServiceDAO();
         this.verificationTokenDAO = new VerificationTokenDAO();
         this.reservationDAO = new ReservationDAO();
+        this.deletedAccountsDAO = new DeletedAccountsDAO();
     }
     
     // TODO : A completer : permet de retourner toutes les demandes
@@ -689,26 +692,40 @@ public class Services {
     public boolean deletePerson(Long idPerson){
         JpaUtil.createEntityManager();
         try{
-            JpaUtil.openTransaction();
             
+            addToDeletedAccounts(personDAO.findById(idPerson));
             //Creer utilisateur supprimé si existe pas déjà
             Person deletedPerson;
             if(!personDAO.personExists("Utilisateur de Campus Exchange")){
                 deletedPerson = new Person("", "", "", "", "Utilisateur de Campus Exchange");
+                JpaUtil.openTransaction();
                 personDAO.persist(deletedPerson);
+                JpaUtil.validateTransaction();
             }
             else{
                 deletedPerson = personDAO.findByMail("Utilisateur de Campus Exchange");
             }
             
             //Pour toutes les annonces remplacer l'ancien utilisateur par le nouveau (qui correspon à un compte supprimé)
-            List<Service> services = serviceDAO.findAllServicesByPerson(personDAO.findById(idPerson));
+            Person personToDelete = (personDAO.findById(idPerson));
+            
+            List<Service> services = serviceDAO.findAllServicesByPerson(personToDelete);
             for(Service s : services){
                 s.setPerson(deletedPerson);
-                serviceDAO.merge(s);
+                try {
+                    JpaUtil.openTransaction();
+                    serviceDAO.merge(s);
+                    JpaUtil.validateTransaction();
+                    System.out.println("");
+                } catch (Exception e){
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
             }
             
-            List<Reservation> reservations = reservationDAO.findAllReservationsByReservationOwner(personDAO.findById(idPerson));
+            List<Reservation> reservations = reservationDAO.findAllReservationsByReservationOwner(personToDelete);
+            
             for(Reservation r : reservations){
                 if(r.getServiceOwner().getId().equals(idPerson)){
                     r.setServiceOwner(deletedPerson);
@@ -716,11 +733,27 @@ public class Services {
                 else{
                     r.setReservationOwner(deletedPerson);
                 }
-                reservationDAO.merge(r);
+                try {
+                    JpaUtil.openTransaction();
+                    reservationDAO.merge(r);
+                    JpaUtil.validateTransaction();
+                }catch (Exception e){
+                    JpaUtil.cancelTransaction();
+                    JpaUtil.closeEntityManager();
+                    return false;
+                }
             }
             
-            personDAO.remove(personDAO.findById(idPerson));
-            JpaUtil.validateTransaction();
+            try {
+                JpaUtil.openTransaction();
+                personDAO.remove(personToDelete);
+                JpaUtil.validateTransaction();
+            } catch (Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+            
         }
         catch (Exception e){
             JpaUtil.cancelTransaction();
@@ -730,7 +763,24 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-
+    
+    public boolean addToDeletedAccounts(Person person) {
+        if (person != null) {
+            DeletedAccounts da = new DeletedAccounts(person.getMail(), person.getPointBalance(), person.getRating());
+            try{
+                JpaUtil.openTransaction();
+                deletedAccountsDAO.persist(da);
+                JpaUtil.validateTransaction();
+            }
+            catch (Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public boolean reportAd(Person person, Long idAd) {
         
         Service ad = getServiceById(idAd);
