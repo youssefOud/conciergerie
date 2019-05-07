@@ -192,13 +192,13 @@
                                                 annonce += '<span style="color:#f47d42" >DEMANDE</span>';
                                             }
                                             annonce += ' - Prêt - ' + data.Annonces[i].objet + '<div class="text-right">';
-                                            if (data.Annonces[i].etat == "valid"){
+                                            if (data.Annonces[i].etat == 0){
                                                 annonce += '<span style="color:#4da026" >EN COURS</span>';
                                             }
-                                            else if (data.Annonces[i].etat == "closed"){
+                                            else if (data.Annonces[i].etat == 1){
                                                 annonce += '<span style="color:#9b2699" >FERMEE</span>';
                                             }
-                                            else if (data.Annonces[i].etat == "expired"){
+                                            else if (data.Annonces[i].etat == 2){
                                                 annonce += '<span style="color:#f44253" >EXPIREE</span>';
                                             }
                                             annonce += '</div></h3><div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
