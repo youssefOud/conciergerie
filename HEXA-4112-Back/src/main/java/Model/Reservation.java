@@ -49,8 +49,8 @@ public class Reservation implements Serializable{
     
     protected int reservationPrice;
     
-    protected int reservationState; //0 for pending / 1 for accepted / 2 for refused / 3 for ended / 4 for evaluated
-    
+    protected int reservationState; //0 for pending / 1 for accepted / 2 for refused / 3 for ended / 4 for evaluatedByServiceOwner 
+                                    //5 for evaluatedByReservationOwner / 6 evaluatedByBoth
     
     public Reservation() {
         
@@ -65,6 +65,8 @@ public class Reservation implements Serializable{
         this.durationUnit = durationUnit;
         this.reservationRequestDate = reservationRequestDate;
         this.reservationState = 0;
+        this.serviceOwnerRating = -1;
+        this.reservationOwnerRating = -1;
         
         
          Long durationInMillis = Long.valueOf(reservationDuration);

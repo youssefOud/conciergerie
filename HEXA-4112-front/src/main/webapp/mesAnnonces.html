@@ -48,8 +48,7 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item"><a class="nav-link" href="deposerAnnonce.html">D&eacute;poser
-                            une annonce
-                        </a></li>
+                            une annonce</a></li>
                     <li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
                     <li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
                     <li class="nav-item"><a class="nav-link active" href="mesAnnonces.html">Mes annonces</a></li>
@@ -281,7 +280,7 @@
                                                         annonce+='<tr><td><button class="btn"\n\
                                                         onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'validerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.confirmationDone){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
                                                         annonce+='><i class="fa fa-check"></i></button><button class="btn"\n\
-                                                        onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'declinerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+", rating : "+document.getElementById("rating")+"},dataType:'json',success: function (data) {console.log(data);if (data.declined){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                        onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'declinerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.declined){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
                                                         annonce+=' ><i class="fa fa-times"></i></button></td>';
                                                     }//acceptée
                                                     else if(data.Annonces[i].reponses[j].etat == 1){
@@ -290,16 +289,14 @@
                                                     else if(data.Annonces[i].reponses[j].etat == 2){
                                                         annonce+='<tr class="table-danger"><td></td>';
                                                     }//terminée
-                                                    else if(data.Annonces[i].reponses[j].etat == 3){
-                                                        annonce+='<tr><td><input\n\
-                                                        type="number" min="0" max="1" class="form-control" id="rating"\n\
-                                                        placeholder="0"><button class="btn"\n\
-                                                        onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'noterBeneficiaire', reservationId :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.note){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
-                                                        annonce+='><i class="fas fa-star"></i></button></td>';
+                                                    else if(data.Annonces[i].reponses[j].etat == 3 || data.Annonces[i].reponses[j].etat == 5){
+                                                        annonce+='<tr><td><input type="number" min="0" max="5" value="0" id="rating"/><button class="btn" \n\
+                                                        onclick="'+"var rating=$('#rating').val();$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'noterBeneficiaire', reservationId :"+data.Annonces[i].reponses[j].idReponse+", rating : rating },dataType:'json',success: function (data) {console.log(data);if (data.note){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                        annonce+='><i class="fa fa-star"></i></button></td>';
 //                                                            annonce+='<tr><td></td>'
                                                     }//notée
-                                                    else if(data.Annonces[i].reponses[j].etat == 4){
-                                                        annonce+='<tr class="table-active"><td></td>';
+                                                    else if(data.Annonces[i].reponses[j].etat == 4 || data.Annonces[i].reponses[j].etat == 6  ){
+                                                        annonce+='<tr class="table-active"><td>Prêt noté</td>';
                                                     }
                                                                 
                                                     annonce+='<td>'+data.Annonces[i].reponses[j].auteur+'</td>\n\
