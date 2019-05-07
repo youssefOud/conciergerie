@@ -715,4 +715,15 @@ public class Services {
         return true;
     }
     
+    public List<Service> matchMakingForOffer(Long idService){
+        JpaUtil.createEntityManager();
+        
+        Service service = serviceDAO.findById(idService);
+        List<Service> services = serviceDAO.matchMakingForOffer(service);
+        
+        JpaUtil.closeEntityManager();
+        return services;
+    }
+    
+    
 }

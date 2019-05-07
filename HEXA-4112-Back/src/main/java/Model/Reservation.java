@@ -67,7 +67,7 @@ public class Reservation implements Serializable{
         this.reservationState = 0;
         
         
-         Long durationInMillis = Long.valueOf(reservationDuration);
+        Long durationInMillis = Long.valueOf(reservationDuration);
         if (durationUnit.equals("jours")) {
             durationInMillis *= 24*60*60*1000;
         } else if (durationUnit.equals("heures")) {

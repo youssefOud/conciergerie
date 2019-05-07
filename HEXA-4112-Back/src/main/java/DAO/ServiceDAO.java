@@ -2,6 +2,7 @@ package DAO;
 
 import javax.persistence.EntityManager;
 import Model.*;
+import Utils.SynonymsFinder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -137,4 +138,66 @@ public class ServiceDAO {
         return services; 
     }
      
+    public List<Service> matchMakingForOffer(Service service){
+        EntityManager em = JpaUtil.getEntityManager();
+        String request = "select s from Service s where "
+                + "type(s) = :class "
+                + "and s.serviceState = :validState "
+                + "and s.availabilityDate <= :startingDate "
+                + "and s.category = :category ";
+                //+ "and lower(s.nameObject) like concat('%',:object,'%') ";
+        if(!service.getLocation().equals("Autre")){
+            request += "and s.location = :location ";
+        }
+        request += " order by s.publicationDate desc";
+        
+        
+        Query query = em.createQuery(request);
+        query.setParameter("class", Demand.class);
+        query.setParameter("validState", 0);
+        query.setParameter("startingDate", new Date(service.getAvailabilityDate().getTime() + 2*24*60*60*1000), TemporalType.TIMESTAMP);
+        query.setParameter("category", service.getCategory());
+        //query.setParameter("object", service.getNameObject().toLowerCase());
+         if(!service.getLocation().equals("Autre")){
+            query.setParameter("location", "Autre");
+        }
+        
+        
+
+ 
+        List<Service> servicesWithoutNameFilter = (List<Service>) query.getResultList();
+        
+        List<Service> res = new ArrayList<>();
+        SynonymsFinder sf = new SynonymsFinder();
+        
+        String pronouns = "un une le la ce cette ma ta les des mon ton mes tes ses sa son notre votre leur";
+        
+        String [] objectNameWords = service.getNameObject().toLowerCase().split(" ");
+        List<String> objectNameWordsWithoutPronouns = new ArrayList<>();
+        
+        for(String word : objectNameWords){
+            if(!pronouns.contains(word)){
+                objectNameWordsWithoutPronouns.add(word);
+            }
+        }
+        
+        String synonyms = "";
+        for(String word : objectNameWordsWithoutPronouns){
+            synonyms += sf.SendRequest(word, "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json") + "|";
+        }
+        
+        String[] pronounsArray = pronouns.split(" ");
+        
+        for(Service s : servicesWithoutNameFilter){
+            String[] words = s.getNameObject().split(" ");
+            for(String word : words){
+                if ( !pronouns.contains(word) && synonyms.contains(word)){
+                    res.add(s);
+                }
+            }
+        }
+        
+ 
+        return res;
+    }
 }
