@@ -31,32 +31,41 @@ public class Main {
         Person person1 = new Person("John","Smith","123","+1234", "fifi@gmail.com");
         Person person2 = new Person("Paul","Cartney","123","+1234", "paulc@gmail.com");
 
-        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("04/05/2019 00:00")
+
+        Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("07/05/2019 00:00")
                 ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
         Demand demand = new Demand(person1, "Bricolage",null, "marteau FDP", formatDate.parse("03/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
+        Offer offer3 = new Offer(person1, "Bricolage", null, "fourFDP",  formatDate.parse("06/05/2019 00:00")
+                ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
 
         System.out.println(s.createPerson(person1));
         System.out.println(s.createPerson(person2));
-        System.out.println(s.createDemand(demand));
-        System.out.println(s.createOffer(offer2));
+
+        System.out.println("demand : " + s.createDemand(demand));
+        System.out.println("offer3 : " + s.createOffer(offer3));
+        System.out.println("offer2 : " + s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
 
-        s.createReservation(person2.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
-        s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 5, "minutes");
+        //s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
             
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         
-      //  HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
-      //  HashMap<Service,Reservation> interests = s.getInterests(person2);
+        HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
+        HashMap<Service,Reservation> interests = s.getInterests(person2);
         
-        s.rateReservationByReservationOwner(7L, 5);
-        s.rateReservationByReservationOwner(7L, 4);
+        s.rateReservationByReservationOwner(6L, 5);
+        s.rateReservationByServiceOwner(6L, 4);
+        
+        s.rateReservationByReservationOwner(6L, 2);
+        
+
         System.out.println();
 
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");

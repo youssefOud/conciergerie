@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="css/clockpicker.css"></link>
         <link rel="stylesheet" href="css/style.css"></link>
         <!-- JS Files -->
-        <script src="//code.jquery.com/jquery-1.12.0.min.js">
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
         <script
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -137,7 +137,7 @@
                             </div>
 
                             <div class="modal-body">
-                                Êtes-vous sûr de vouloir déposer cette annonce ?
+                                Êtes-vous sûr de vouloir déposer cette réponse ?
                             </div>
 
                             <div class="modal-footer">
@@ -277,12 +277,12 @@
                                     
                                     document.getElementById("duree").value = data.duree;
                                     document.getElementById("time").value = data.time;
-                                    if (data.uniteDuree = "heures") {
-                                        document.getElementById("heures").checked = "";
-                                    } else if (data.uniteDuree = "jours") {
-                                        document.getElementById("jours").checked = "";
-                                    } else if (data.uniteDuree = "minutes") {
-                                        document.getElementById("minutes").checked = "";
+                                    if (data.uniteDuree == "heures") {
+                                        $("#heures").prop("checked", true);
+                                    } else if (data.uniteDuree == "jours") {
+                                        $("#jours").prop("checked", true);
+                                    } else if (data.uniteDuree == "minutes") {
+                                        $("#minutes").prop("checked", true);
                                     }
 
                                 } else {
@@ -340,6 +340,7 @@
                                 });
                             }
                         });
+                        
                         document.getElementById("valider").addEventListener("click", function() {
                             var send = true;
                             var answers = new Object();
@@ -376,7 +377,17 @@
                             if (send) {
                                 //Validation
                                 $("#validation").modal();
-                                document.getElementById("deposer").addEventListener("click", function() {
+                                
+                            }
+                        });
+                    }
+                },
+                error(data){
+                    console.log(data);
+                    $("#erreur").modal();
+                }
+            });
+            document.getElementById("deposer").addEventListener("click", function() {
                                     var send = true;
                                     var answers = new Object();
                                     var url = new URL(window.location);
@@ -414,15 +425,6 @@
                                         }
                                     });
                                 });
-                            }
-                        });
-                    }
-                },
-                error(data){
-                    console.log(data);
-                    $("#erreur").modal();
-                }
-            });
     
         });
                     </script>
