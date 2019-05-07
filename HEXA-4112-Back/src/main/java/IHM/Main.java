@@ -37,11 +37,14 @@ public class Main {
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
+        Offer offer3 = new Offer(person1, "Bricolage", null, "fourFDP",  formatDate.parse("06/05/2019 00:00")
+                ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
 
         System.out.println(s.createPerson(person1));
         System.out.println(s.createPerson(person2));
-        System.out.println(s.createDemand(demand));
-        System.out.println(s.createOffer(offer2));
+        System.out.println("demand : " + s.createDemand(demand));
+        System.out.println("offer3 : " + s.createOffer(offer3));
+        System.out.println("offer2 : " + s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
 

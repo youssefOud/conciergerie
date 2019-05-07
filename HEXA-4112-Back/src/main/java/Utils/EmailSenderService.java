@@ -232,9 +232,10 @@ public class EmailSenderService {
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(email));
             message.setSubject("Annonce signalée par un utilisateur");
             message.setText("L'annonce d'identifiant " + idAd + " a été signalée par l'utilisateur " + person.getFirstName() + " " + person.getLastName() +".");
-            //send message
             Transport.send(message);
-        } catch (MessagingException e) {throw new RuntimeException(e); }
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
         
         return true;
     }
