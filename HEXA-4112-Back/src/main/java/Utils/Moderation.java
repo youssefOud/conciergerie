@@ -6,6 +6,7 @@
 package Utils;
 
 import Model.Demand;
+import Model.Service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,15 +19,15 @@ import java.io.InputStreamReader;
  */
 public class Moderation {
     
-    public static String checkObsceneWords(Demand demand) {
+    public static String checkObsceneWords(Service service) {
         String ligne = "";
         try{
             InputStream flux = new FileInputStream("./src/fichierTexte/grosOrdones.txt"); 
             InputStreamReader lecture=new InputStreamReader(flux);
             BufferedReader buff = new BufferedReader(lecture);
             
-            String description = demand.getDescription().toLowerCase();
-            String nameObject = demand.getNameObject().toLowerCase();
+            String description = service.getDescription().toLowerCase();
+            String nameObject = service.getNameObject().toLowerCase();
             boolean findWordObscene = false;
             while ((ligne=buff.readLine())!=null && !findWordObscene){
                     findWordObscene = nameObject.contains(ligne.toLowerCase()) || description.contains(ligne.toLowerCase());

@@ -265,9 +265,9 @@ public class Services {
         JpaUtil.openTransaction();
         
         // Traitement sur offer ? Date de début ?
-        String word = Moderation.checkObsceneWords(demand);
+        String word = Moderation.checkObsceneWords(offer);
         if (word.equals("")) {
-            demandDAO.persist(demand);
+            offerDAO.persist(offer);
         } else {
             JpaUtil.cancelTransaction();
             JpaUtil.closeEntityManager();
