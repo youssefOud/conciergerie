@@ -3,12 +3,30 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="UTF-8">
         <!--  CSS Files -->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous" />
+        <link rel="stylesheet" href="css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="css/datepicker.css"></link>
+        <link rel="stylesheet" href="css/clockpicker.css"></link>
+        <link rel="stylesheet" href="css/style.css"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+        <!-- JS Files -->
 
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.min.js">
+        <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+              crossorigin="anonymous"></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/clockpicker.js"></script>
 
+        <link rel="shortcut icon" type="images/png" href="img/favicon.png"/>
         <title>Profil</title>
 
     </head>
@@ -25,23 +43,24 @@
 
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item "><a class="nav-link" href="deposerAnnonce.html">D&eacute;poser
-                            une annonce <span class="sr-only">(current)</span>
+                    <li class="nav-item"><a class="nav-link" href="deposerAnnonce.html">D&eacute;poser
+                            une annonce
                         </a></li>
                     <li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
                     <li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesAnnonces.html">Mes annonces</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesReponses.html">Mes réponses</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item dropdown"><a
                             class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="true" aria-expanded="true">Bonjour,
-                            Agathe</a>
+                            role="button" aria-haspopup="true" aria-expanded="true" id="welcome"><span class="sr-only">(current)</span></a>
                         <div class="dropdown-menu" x-placement="bottom-start"
                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
                             <a class="dropdown-item" href="profile.html">Paramètres</a> <a
                                 class="dropdown-item" href="contact.html">Contact support</a> <a
-                                class="dropdown-item" href="index.html">Déconnexion</a>
+                                class="dropdown-item" href="#" id="deco">Déconnexion</a>
                         </div></li>
                 </ul>
             </div>
@@ -54,20 +73,20 @@
                             <div class="image_outer_container">
                                 <div class="green_icon"></div>
                                 <div class="image_inner_container">
-                                    <img src="img/team/agathe.jpg">
+                                    <img src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/256/user-male-icon.png">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">
-                            <h5>
-                                Agathe Sauvestre
+                            <h5 id="mon_profile">
+                                Chargement en cours...
                             </h5>
                             <h6>
                                 Mon compte utilisateur
                             </h6>
-                            <p class="proile-rating">NOTE : <span>8/10</span></p>
+                            <p class="proile-rating">NOTE : <span id="note"> /5</span></p>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">Détails</a>
@@ -80,7 +99,7 @@
                     <div class="col-md-4">
                         <div class="profile-work">
                             <p>MA PERFORMANCE :</p>
-                            <a>100 points</a><br/>
+                            <a id="points">100 points</a><br/>
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -91,7 +110,7 @@
                                         <label>Nom</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>Sauvestre</p>
+                                        <p id="nom">Chargement en cours...</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -99,7 +118,7 @@
                                         <label>Prénom</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>Agathe</p>
+                                        <p id="prenom">Chargement en cours...</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -107,7 +126,7 @@
                                         <label>Email</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>agathe.sauvestre@insa-lyon.fr</p>
+                                        <p id="email">Chargement en cours...</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -117,8 +136,14 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div id="radioBtn" class="btn-group">
-                                                <a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="EMAIL" onclick="OnChangeRadio(this)">EMAIL</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="TELEPHONE" onclick="OnChangeRadio(this)">TELEPHONE</a>
+                                                <a class="btn btn-primary btn-sm active" 
+                                                   data-toggle="happy" id="radio-email" 
+                                                   data-title="email" 
+                                                   onclick="OnChangeRadio(this)">EMAIL</a>
+                                                <a class="btn btn-primary btn-sm notActive" 
+                                                   data-toggle="happy" data-title="telephone" 
+                                                   id="radio-tel" 
+                                                   onclick="OnChangeRadio(this)">TELEPHONE</a>
                                             </div>
                                             <input type="hidden" name="happy" id="happy">
                                         </div>
@@ -126,53 +151,229 @@
                                 </div>
                                 <br>
                                 <div class="row" id="telephone-cont"></div>
+                                <br>
+                                <div class="col-md-4">
+                                    <button id="btnValider" type="button" 
+                                            class="btn btn-primary"onclick="onValidateChange()">
+                                        Valider
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="col-md-6">
+                            <div class="profile-head">
+                                <ul class="nav nav-tabs" id="myTabBis" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab-bis" data-toggle="tab" href="#desinscription" role="tab" aria-controls="about" aria-selected="true">Désinscription</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="tab-content profile-tab" id="myTabDesc">
+                                <div class="tab-pane fade show active" id="desc" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label><b>Supprimer définitivement mon compte</b></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="desinscription">
+                                                Vous souhaitez supprimer votre compte Campus Exchange. Conformement à la 
+                                                législation européenne, vous pouvez faire valoir votre droit à l'oubli. 
+                                                Sachez néanmoins qu'une fois le processus de suppression démarré, 
+                                                vous ne pourrez plus réactiver votre compte ou récupérer du contenu ou 
+                                                des informations que vous y aviez ajoutés.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button id="btnUnsubscribe" type="button" 
+                                            class="btn btn-primary"onclick="unsubscribe()">
+                                        Se Désinscrire
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>           
+            </form>
+            <div class="modal" id="erreur">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Erreur</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="deposer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <script>
+            var numTelephone;
+            var contactPrefere;
 
             $(document).ready(function () {
                 $('#radioBtn a').on('click', function () {
                     var sel = $(this).data('title');
                     var tog = $(this).data('toggle');
                     $('#' + tog).prop('value', sel);
-
                     $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
                     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
                 });
 
+                var filtres = new Object();
+                filtres.todo = "recupererInfoPersonne";
+
+                $.ajax({
+                    type: 'GET',
+                    url: './ActionServlet',
+                    data: filtres,
+                    timeout: 3000,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (!data.session){
+                            window.location.replace("./index.html");
+                        }else{
+                            document.getElementById("deco").addEventListener("click", function () {
+                                var deco = new Object();
+                                deco.todo = "seDeconnecter";
+                                $.ajax({
+                                    type: 'POST',
+                                    url: './ActionServlet',
+                                    data: deco,
+                                    timeout: 3000,
+                                    dataType:'json',
+                                    success: function (data) {
+                                        console.log(data);
+                                        if (!data.error){
+                                            window.location.replace("./index.html");
+                                        }else{
+                                            $("#erreur").modal();
+                                        }
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        $("#erreur").modal();
+                                    }
+                                });
+                            });
+                            console.log(data);
+                            document.getElementById("welcome").innerHTML = "Bonjour "+data.prenom;
+                            document.getElementById("nom").innerHTML = data.nom;
+                            document.getElementById("prenom").innerHTML = data.prenom;
+                            document.getElementById("email").innerHTML = data.email;
+                            document.getElementById("mon_profile").innerHTML = data.prenom + " " + data.nom;
+                            if(data.note != -1){
+                                    document.getElementById("note").innerHTML = data.note + "/5";
+                            }else{
+                                    document.getElementById("note").innerHTML = "Non noté";
+                            }
+                            document.getElementById("points").innerHTML = data.nbPoint + " points";
+                            numTelephone = data.numTel;
+                            contactPrefere = data.contactPrefere;
+                            if (data.contactPrefere == "cellphone") {
+                                var radio_tel = document.getElementById("radio-tel");
+                                radio_tel.className = "btn btn-primary btn-sm active";
+                                document.getElementById("radio-email").className = "btn btn-primary btn-sm notActive";
+                                OnChangeRadio(radio_tel);
+                                document.getElementById("tel").value = data.numTel;
+                            }
+                            document.getElementById("btnValider").disabled = true;
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        alert("Le changement n'a pu être réalisé, veuillez réessayer plus tard");
+                    }
+                });
             });
-            
-            var last_sel = "EMAIL";
+
+            var last_sel = "email";
             var new_sel;
-    
+
             function OnChangeRadio(radio) {
                 new_sel = $(radio).data('title');
                 var tel = document.getElementById("telephone-cont");
-                if (new_sel == "TELEPHONE" && last_sel == "EMAIL" ) {
-                    tel.innerHTML += '<div class="col-md-4"><label>Numéro de téléphone</label></div>';
-                    tel.innerHTML += '<div class="col-md-4"><input type="phone" class="form-control" id="tel" placeholder="Numéro de téléphone"></div>';
-                    tel.innerHTML += '<div class="col-md-4"><button type="button" class="btn btn-primary" onclick="OnChangeRadio(this)">Valider</button></div></div>';
-                }else if (new_sel == "EMAIL" && last_sel == "TELEPHONE" ){
-                    tel.innerHTML ="";
+                if (new_sel == "telephone" && last_sel == "email") {
+                    tel.innerHTML += '<div class="col-md-6"><label>Numéro de téléphone</label></div>';
+                    tel.innerHTML += '<div class="col-md-6"><input type="tel" class="form-control bfh-phone" id="tel" value="' + numTelephone + '"></div></div>';
+                } else if (new_sel == "email" && last_sel == "telephone") {
+                    tel.innerHTML = "";
+                }
+
+                if(new_sel == contactPrefere && contactPrefere == "email"){
+                    document.getElementById("btnValider").disabled = true;
+                }else{
+                    document.getElementById("btnValider").disabled = false;
                 }
                 last_sel = $(radio).data('title');
             }
-            
-            function onValidateTel() {
-                new_sel = $(radio).data('title');
-                var tel = document.getElementById("telephone-cont");
-                if (new_sel == "TELEPHONE" && last_sel == "EMAIL" ) {
-                    tel.innerHTML += '<div class="col-md-4"><label>Numéro de téléphone</label></div>';
-                    tel.innerHTML += '<div class="col-md-4"><input type="phone" class="form-control" id="tel" placeholder="Numéro de téléphone"></div>';
-                    tel.innerHTML += '<div class="col-md-4"><button type="button" class="btn btn-primary" onclick="OnChangeRadio(this)">Valider</button></div></div>';
-                }else if (new_sel == "EMAIL" && last_sel == "TELEPHONE" ){
-                    tel.innerHTML ="";
+
+            function onValidateChange() {
+                var saveContact = new Object();
+                saveContact.todo = "enregistreContactPrivilegie";
+                saveContact.contactPrivilegie = last_sel;
+                if (last_sel == "email"){
+                    saveContact.numeroTelephone = "";
+                }else{
+                    saveContact.numeroTelephone = document.getElementById("tel").value;
                 }
-                last_sel = $(radio).data('title');
+                console.log(saveContact);
+                $.ajax({
+                    type: 'POST',
+                    url: './ActionServlet',
+                    data: saveContact,
+                    timeout: 3000,
+                    dataType:'json',
+                    success: function (data) {
+                        console.log(data);
+                        if (data.saved){
+                            alert("Changements pris en compte");
+                            window.location.replace("./filActu.html");
+                        }else{
+                            $("#erreur").modal();
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        $("#erreur").modal();
+                    }
+                });
+            }
+            
+            function unsubscribe() {
+                var unsubscribe = new Object();
+                unsubscribe.todo = "supprimerPersonne";
+                var conf = confirm('Etes-vous sûr de vouloir supprimer votre compte ?');
+                if(conf){
+                    $.ajax({
+                        type: 'POST',
+                        url: './ActionServlet',
+                        data: unsubscribe,
+                        timeout: 3000,
+                        dataType:'json',
+                        success: function (data) {
+                            if (data.deleted){
+                                window.location.replace("./index.html");
+                            }else{
+                                $("#erreur").modal();
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            $("#erreur").modal();
+                        }
+                    });
+                }
             }
         </script>
     </body>

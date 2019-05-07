@@ -33,9 +33,9 @@ public class Main {
                 
         Offer offer = new Offer(person1, "Bricolage", null, "fff",  formatDate.parse("01/05/2019 00:00")
                 ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
-        Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("01/05/2019 19:00")
+        Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("05/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
-        Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("01/05/2019 00:00")
+        Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("05/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
 
         System.out.println(s.createPerson(person1));
@@ -44,17 +44,18 @@ public class Main {
         System.out.println(s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
-        s.createReservation(person2.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
-        s.createReservation(person2.getId(), offer2.getId(), "04/05/2019", "00:00", 5, "minutes");
-        
-        
+        s.createReservation(person2.getId(), offer.getId(), "05/05/2019", "00:00", 5, "minutes");
+        s.createReservation(person2.getId(), offer2.getId(), "05/05/2019", "00:00", 5, "minutes");
     
         List<Service> listS = s.findAllServicesWithFilter("Marteau", "Bricolage", "Residence M", "", "", "", "", "", "", "offre");
       
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         
+
         //HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
+        //List<Service> interests = s.getInterests(person2);
+
         System.out.println();
 
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");

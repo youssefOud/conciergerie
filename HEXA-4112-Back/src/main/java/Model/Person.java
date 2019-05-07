@@ -30,7 +30,7 @@ public class Person{
     
     private String location;
     
-    private String privilegedContact;
+    private String privilegedContact; // Value : "email" or "cellphone"
     
     public Person() {
         
@@ -44,7 +44,7 @@ public class Person{
         this.mail = mail;
         this.pointBalance = 100;
         this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
-        this.privilegedContact = "email";
+        this.privilegedContact = "email"; // Par défaut
     }
 
     public Long getId() {

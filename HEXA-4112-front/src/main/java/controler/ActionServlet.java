@@ -7,17 +7,21 @@ import java.util.logging.Logger;
 
 import DAO.JpaUtil;
 import Model.Person;
+import actions.ActionChangePrivilegedContact;
 import actions.ActionAnswerAnAd;
 import actions.ActionCheckEmail;
 import actions.ActionComputePrice;
 import actions.ActionConnection;
 import actions.ActionCreation;
+import actions.ActionDeclineAnswerAd;
 import actions.ActionGetAdsByPerson;
 import actions.ActionDeconnection;
+import actions.ActionDeleteAd;
 import actions.ActionGetAdDetails;
 import actions.ActionGetInformationPerson;
 import actions.ActionRegistration;
 import actions.ActionShowTimeline;
+import actions.ActionValidateAnswerAd;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -137,6 +141,25 @@ public class ActionServlet extends HttpServlet {
                 
                 break;
                 
+            case "enregistreContactPrivilegie":
+                if (session.getAttribute("idPerson") != null){
+                    ActionChangePrivilegedContact acpv = new ActionChangePrivilegedContact();
+
+                    try {
+                        acpv.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeEnregistreContactPrivilegie(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+            
             case "afficherFilActualite":
                 if (session.getAttribute("idPerson") != null){
                     ActionShowTimeline astl = new ActionShowTimeline();
@@ -224,6 +247,66 @@ public class ActionServlet extends HttpServlet {
                     }
 
                     serialisationJSON.executeDetailsAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "validerReponseAnnonce":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionValidateAnswerAd actionValidateAnswerAd = new ActionValidateAnswerAd();
+
+                    try {
+                        actionValidateAnswerAd.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeValiderReponseAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "declinerReponseAnnonce":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionDeclineAnswerAd actionDeclineAnswerAd = new ActionDeclineAnswerAd();
+
+                    try {
+                        actionDeclineAnswerAd.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeDeclinerReponseAnnonce(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "supprimerAnnonce":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionDeleteAd actionDeleteAd = new ActionDeleteAd();
+
+                    try {
+                        actionDeleteAd.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeSupprimerAnnonce(request, response);
                 
                 } else {
                     request.setAttribute("error", false);
