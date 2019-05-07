@@ -61,6 +61,8 @@ public class Main {
         s.rateReservationByReservationOwner(6L, 5);
         s.rateReservationByServiceOwner(6L, 4);
         
+        s.rateReservationByReservationOwner(6L, 2);
+        
         System.out.println();
 
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");

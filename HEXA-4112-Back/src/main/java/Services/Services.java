@@ -823,14 +823,14 @@ public class Services {
                 int nbRatings = reservationOwner.getNbRatings();
                 double avg;
                 if ((int)reservationOwner.getRating() == -1)
-                    avg = (rating)/(double)(nbRatings + 1);
+                    avg = (double)(rating)/(double)(nbRatings + 1);
                 else
-                    avg = (nbRatings*reservationOwner.getRating()+rating)/(double)(nbRatings + 1);
+                    avg = (double)((double)nbRatings*(double)reservationOwner.getRating()+(double)rating)/(double)(nbRatings + 1);
                 reservationOwner.setRating(avg);
                 reservationOwner.setNbRatings(nbRatings + 1);
                 try {
                     JpaUtil.openTransaction();
-                    System.out.println();
+                    System.out.println("avg" + avg);
                     reservationDAO.merge(r);
                     personDAO.merge(reservationOwner);
                     JpaUtil.validateTransaction();
@@ -865,13 +865,14 @@ public class Services {
                 int nbRatings = serviceOwner.getNbRatings();
                 double avg;
                 if ((int)serviceOwner.getRating() == -1)
-                    avg = (rating)/(double)(nbRatings + 1);
+                    avg = (double)(rating)/(double)(nbRatings + 1);
                 else
-                    avg = (nbRatings*serviceOwner.getRating()+rating)/(double)(nbRatings + 1);
+                    avg = (double) ((double)nbRatings*(double)serviceOwner.getRating()+(double)rating)/(double)(nbRatings + 1);
                 serviceOwner.setRating(avg);
                 serviceOwner.setNbRatings(nbRatings + 1);
                 try {
                     JpaUtil.openTransaction();
+                    System.out.println("avg : " + avg);
                     reservationDAO.merge(r);
                     personDAO.merge(serviceOwner);
                     JpaUtil.validateTransaction();
