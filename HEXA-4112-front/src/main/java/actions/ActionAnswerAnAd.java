@@ -31,13 +31,16 @@ public class ActionAnswerAnAd extends Action {
         String durationUnit = request.getParameter("uniteDuree");
         String date = request.getParameter("date");
         String time = request.getParameter("time");
+        String pictures = request.getParameter("pictures");
+        String description = request.getParameter("description");
+        String location = request.getParameter("localisation");
         
         Services services = new Services();
 
-//        Pair<Boolean,String> created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit);
-//        
-//        request.setAttribute("created", created.getKey());
-//        request.setAttribute("message", created.getValue());
+        Pair<Boolean,String> created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit,pictures,description,location);
+        
+        request.setAttribute("created", created.getKey());
+        request.setAttribute("message", created.getValue());
         
     }
     
