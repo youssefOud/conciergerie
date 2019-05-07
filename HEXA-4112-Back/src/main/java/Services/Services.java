@@ -379,17 +379,9 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-    
-//    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
-//        
-//    
-//    }
-//    
-//    public Pair<Boolean, String> createReservationForDemand(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
-//    
-//    }
-    
-    public Pair<Boolean, String> createReservationForOffer(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
+        
+    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit, 
+                                                    String pictures, String description, String location){
         JpaUtil.createEntityManager();
         Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
         Person reservationOwner = personDAO.findById(idReservationOwner);
@@ -428,9 +420,12 @@ public class Services {
                     offerOwner = reservation.getService().getPerson();
                     demandOwner = reservation.getReservationOwner();
                 }
-                else{
+                else {
                     offerOwner = reservation.getReservationOwner();
                     demandOwner = reservation.getService().getPerson();
+                    if (pictures != null) reservation.setPictures(pictures);
+                    if (description != null) reservation.setPictures(description);
+                    if (location != null) reservation.setLocation(location);
                 }
 
                 if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
@@ -464,8 +459,9 @@ public class Services {
         }
         JpaUtil.closeEntityManager();
         return new Pair<>(true, "Votre demande a bien été prise en compte");
-    }
     
+    }
+
     public List<Reservation> getReservationByPersonId(Long personId){
         //todo
         return null;
