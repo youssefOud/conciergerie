@@ -25,6 +25,7 @@ import actions.ActionGetInterestsPerson;
 import actions.ActionRateBeneficiary;
 import actions.ActionRateBidder;
 import actions.ActionRegistration;
+import actions.ActionReportAd;
 import actions.ActionShowTimeline;
 import actions.ActionValidateAnswerAd;
 import javax.servlet.ServletException;
@@ -408,6 +409,26 @@ public class ActionServlet extends HttpServlet {
                     }
 
                     serialisationJSON.executeNoterOffrant(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "signalerAnnonce":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionReportAd actionReportAd = new ActionReportAd();
+
+                    try {
+                        actionReportAd.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeSignalerAnnonce(request, response);
                 
                 } else {
                     request.setAttribute("error", false);

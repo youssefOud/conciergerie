@@ -265,8 +265,14 @@ public class Services {
         JpaUtil.openTransaction();
         
         // Traitement sur offer ? Date de début ?
-        
-        offerDAO.persist(offer);
+        String word = Moderation.checkObsceneWords(offer);
+        if (word.equals("")) {
+            offerDAO.persist(offer);
+        } else {
+            JpaUtil.cancelTransaction();
+            JpaUtil.closeEntityManager();
+            return false;
+        }
         
         try {
             JpaUtil.validateTransaction();
@@ -723,6 +729,32 @@ public class Services {
         }
         JpaUtil.closeEntityManager();
         return true;
+    }
+
+    public boolean reportAd(Person person, Long idAd) {
+        
+        Service ad = getServiceById(idAd);
+        Long idPerson;
+        if (ad instanceof Demand) {
+            if (ad.getPersonDemanding() != null) {
+                idPerson = ad.getPersonDemanding().getId();
+            } else {
+                return false;
+            }
+        } else {
+            if (ad.getPersonOffering() != null) {
+                idPerson = ad.getPersonOffering().getId();
+            } else {
+                return false;
+            }
+        }
+        // Verification que la personne qui signale n'est pas celle qui a posté l'annonce
+        if (idPerson != person.getId()) {
+            boolean reported = EmailSenderService.sendEmailModeratorReportAd(idAd, person);
+            return reported;
+        }
+        
+        return false;
     }
     
     public List<Service> matchMakingForOffer(Long idService){
