@@ -48,7 +48,7 @@ public class Reservation implements Serializable{
     private int reservationOwnerRating;
     
     protected int reservationPrice;
-    
+  
     protected int reservationState; //0 for pending / 1 for accepted / 2 for refused 
     
     // attributes used exclusively for making an offer for an available demand
@@ -76,6 +76,8 @@ public class Reservation implements Serializable{
         this.location = null;
         this.pictures = null;
         this.description = null;
+        this.serviceOwnerRating = -1;
+        this.reservationOwnerRating = -1;
         
          Long durationInMillis = Long.valueOf(reservationDuration);
         if (durationUnit.equals("jours")) {
