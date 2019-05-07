@@ -521,24 +521,4 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-    
-    public HashMap<Service, List<Reservation>> getAds(Person person) {
-        if (person == null) return null;
-        
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-                
-        List<Service> services = serviceDAO.findAllServicesByPerson(person);
-        HashMap<Service,List<Reservation>> hm = new HashMap<>();
-        for (Service serv :services) {
-            updateServiceState(serv);
-            List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
-            hm.put(serv,reservations);
-        }
-        JpaUtil.closeEntityManager();       
-        return hm;
-    }
-    
-    
-    
 }
