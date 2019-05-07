@@ -70,10 +70,33 @@ public class SerialisationJSON {
                 jo.addProperty("typeService", s.getType());
                 if (s instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
+                    if (s.getPersonOffering() != null) {
+                        if (s.getPersonOffering().getId() == request.getAttribute("idPerson")) {
+                            jo.addProperty("memePersonne", true);
+                        } else {
+                            jo.addProperty("memePersonne", false);
+                        }
+                        if (s.getPersonOffering().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", s.getPersonOffering().getMail());
+                        } else {
+                            jo.addProperty("auteur", s.getPersonOffering().getCellNumber());
+                        }
+                    }
                 } else {
                     jo.addProperty("typeAnnonce", "demande");
-                }
-
+                    if (s.getPersonDemanding() != null) {
+                        if (s.getPersonDemanding().getId() == request.getAttribute("idPerson")) {
+                            jo.addProperty("memePersonne", true);
+                        } else {
+                            jo.addProperty("memePersonne", false);
+                        }
+                        if (s.getPersonDemanding().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", s.getPersonDemanding().getMail());
+                        } else {
+                            jo.addProperty("auteur", s.getPersonDemanding().getCellNumber());
+                        }
+                    }
+               }
                 Date date = s.getAvailabilityDate();
                 Date datePublication = s.getPublicationDate();
                 String pattern = "dd/MM/yyyy HH:mm";

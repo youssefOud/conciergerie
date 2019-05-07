@@ -414,6 +414,10 @@ public class Services {
         Person reservationOwner = personDAO.findById(idReservationOwner);
         Service service = serviceDAO.findById(idService);
         if (service != null) serviceOwner = service.getPerson();
+        if (serviceOwner.getId() == idReservationOwner) {
+            JpaUtil.closeEntityManager();
+            return new Pair<>(false, "Vous ne pouvez pas répondre à votre propre annonce.");
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date reservationStartingDate;
         try{
