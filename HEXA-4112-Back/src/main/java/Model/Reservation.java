@@ -48,9 +48,17 @@ public class Reservation implements Serializable{
     private int reservationOwnerRating;
     
     protected int reservationPrice;
+  
+    protected int reservationState; //0 for pending / 1 for accepted / 2 for refused 
     
-    protected int reservationState; //0 for pending / 1 for accepted / 2 for refused / 3 for ended / 4 for evaluatedByServiceOwner 
-                                    //5 for evaluatedByReservationOwner / 6 evaluatedByBoth
+    // attributes used exclusively for making an offer for an available demand
+    
+    @javax.persistence.Lob
+    protected String pictures;
+    
+    protected String description;
+    
+    protected String location;   
     
     public Reservation() {
         
@@ -65,9 +73,11 @@ public class Reservation implements Serializable{
         this.durationUnit = durationUnit;
         this.reservationRequestDate = reservationRequestDate;
         this.reservationState = 0;
+        this.location = null;
+        this.pictures = null;
+        this.description = null;
         this.serviceOwnerRating = -1;
         this.reservationOwnerRating = -1;
-        
         
          Long durationInMillis = Long.valueOf(reservationDuration);
         if (durationUnit.equals("jours")) {
@@ -95,9 +105,8 @@ public class Reservation implements Serializable{
         else{
             nbPtsInMinutes = nbPts;
         }
-        
         reservationPrice = (int)Math.ceil(durationInMinutes * nbPtsInMinutes);
-        
+                
     }
 
     public Long getId() {
@@ -204,6 +213,30 @@ public class Reservation implements Serializable{
 
     public void setReservationState(int reservationState) {
         this.reservationState = reservationState;
+    }
+
+    public String getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(String pictures) {
+        this.pictures = pictures;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
     
     

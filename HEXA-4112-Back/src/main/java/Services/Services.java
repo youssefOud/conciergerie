@@ -50,48 +50,6 @@ public class Services {
         this.reservationDAO = new ReservationDAO();
     }
     
-    // TODO : A completer : permet de retourner toutes les demandes
-    // en cours
-    public List<Demand> findAllDemands() {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Demand> listDemand = new ArrayList<>();
-        
-        JpaUtil.closeEntityManager();
-        return listDemand;
-    }
-    
-    // TODO : A completer : permet de retourner toutes les offres
-    // en cours
-    public List<Offer> findAllOffers() {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Offer> listOffer = new ArrayList<>();
-        
-        
-        
-        JpaUtil.closeEntityManager();
-        return listOffer;
-    }
-    
-    // Ajouter en parametre tous les critères des filtres afin de faire nos
-    // comparaison
-    // TODO : A completer : permet de retourner toutes les offres
-    // en cours avec les filtres mis
-    public List<Offer> findAllOffersWithFilters(/*Add Filter*/) {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Offer> listOffer = new ArrayList<>();
-        
-        
-        
-        JpaUtil.closeEntityManager();
-        return listOffer;
-    }
-    
     public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
         // TODO : to implement : persist la personne en base de données
         return new Person();
@@ -407,10 +365,11 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-    
-    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
-        JpaUtil.createEntityManager();
-        Person serviceOwner = null; // = personDAO.findById(idServiceOwner);
+  
+     public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit, 
+                                                    String pictures, String description, String location){
+       JpaUtil.createEntityManager();
+        Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
         Person reservationOwner = personDAO.findById(idReservationOwner);
         Service service = serviceDAO.findById(idService);
         if (service != null) serviceOwner = service.getPerson();
@@ -447,11 +406,14 @@ public class Services {
                     offerOwner = reservation.getService().getPerson();
                     demandOwner = reservation.getReservationOwner();
                 }
-                else{
+                else {
                     offerOwner = reservation.getReservationOwner();
                     demandOwner = reservation.getService().getPerson();
+                    if (pictures != null) reservation.setPictures(pictures);
+                    if (description != null) reservation.setPictures(description);
+                    if (location != null) reservation.setLocation(location);
                 }
-                
+
                 if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
                     offerOwner.setPointBalance(offerOwner.getPointBalance() +  reservation.getReservationPrice());
                     demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
@@ -483,11 +445,7 @@ public class Services {
         }
         JpaUtil.closeEntityManager();
         return new Pair<>(true, "Votre demande a bien été prise en compte");
-    }
     
-    public List<Reservation> getReservationByPersonId(Long personId){
-        //todo
-        return null;
     }
     
     public boolean updateServiceState(Service service) {
@@ -895,3 +853,4 @@ public class Services {
     }
     
 }
+
