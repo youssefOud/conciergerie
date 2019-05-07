@@ -69,26 +69,33 @@
 
 
         <div class='container'>
-            
             <form>
+                
                 <fieldset>
                     <legend id="titre"></legend>
                 </fieldset>
 
-                <!-- Date de début -->
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="objet">Description</label> <input type="text"
+                                                                  class="form-control" id="description"
+                                                                  placeholder="Renseignez le description de l'objet">
+                </div>
+
+                <!-- Date de dispo -->
                 <div class="form-group">
                     <label class="control-label" for="date">Date de
-                        début souhaitée</label> <input class="form-control" id="date" 
-                                                  type="text" /><br> <input type="text"
-                                                 class="form-control" id="time" ><div class="invalid-feedback">Veuillez renseigner une date ultérieure.</div>
+                        disponibilité</label> <input class="form-control" id="date" 
+                                                 placeholder="le DD/MM/AAAA" type="text" /><br> <input type="text"
+                                                 class="form-control" id="time" placeholder="à HH:mm"><div class="invalid-feedback">Veuillez renseigner une date ultérieure.</div>
                 </div>
 
 
-                <!-- Durée de début-->
+                <!-- Durée de dispo-->
                 <div class="form-group">
-                    <label for="objet">Dur&eacute;e de disponibilit&eacute; souhaitée</label> <input
+                    <label for="objet">Dur&eacute;e de disponibilit&eacute;</label> <input
                         type="number" min="1" class="form-control" id="duree"
-                        >
+                        placeholder="Renseignez la dur&eacute;e de disponibilit&eacute; de l'objet">
                 </div>
 
                 <!-- En minutes, en heures ou en jours-->
@@ -110,6 +117,41 @@
                     </div>
                 </div>
 
+                <!-- Localisations-->
+                <div class="form-group">
+                    <label for="localisations">Localisation</label> <select
+                        class="form-control select" id="localisations">
+                        <option>R&eacute;sidence A</option>
+                        <option>R&eacute;sidence B</option>
+                        <option>R&eacute;sidence C</option>
+                        <option>R&eacute;sidence D</option>
+                        <option>R&eacute;sidence E</option>
+                        <option>R&eacute;sidence F</option>
+                        <option>R&eacute;sidence G</option>
+                        <option>R&eacute;sidence H</option>
+                        <option>R&eacute;sidence I</option>
+                        <option>R&eacute;sidence J</option>
+                        <option>R&eacute;sidence M</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+
+                <br>
+                <!-- Import de photos -->
+                <label for="nbPts">Photos (limité à 5 images)</label>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-2 imgUp">
+                            <div class="imagePreview"></div>
+                            <label class="btn btn-primary btn-image">
+                                Charger<input type="file" class="uploadFile img" value="Upload Photo" 
+                                              style="width: 0px;height: 0px;overflow: hidden;">
+                            </label>
+                        </div>
+                        <i class="fa fa-plus imgAdd" id="ajouterBox"></i>
+                    </div>
+                </div>
+                
                 <div class="form-group form-inline">
                     <button type="button" class="btn btn-secondary" id="calculerPrix" >Calculer le prix  </button>&nbsp;&nbsp;&nbsp;
 
@@ -119,7 +161,6 @@
                         </fieldset>
                     </div>
                 </div>
-                
 
                 <!-- Validation -->
                 <div class="center">
@@ -192,12 +233,8 @@
                     </div>
                 </div>
 
-            </form>
-           
-        </div>
-
 <script>
-        
+            
         $(document).ready(function () {
             var session = new Object();
             session.todo = "recupererInfoPersonne";
@@ -373,6 +410,17 @@
                             } else if ($('#minutes').is(':checked')) {
                                 answers.uniteDuree = "minutes";
                             }
+                            //Description
+                            if (document.getElementById("description").value != "") {
+                                answers.description = document.getElementById("description").value;
+                            }else{
+                                answers.description="";
+                            }
+                            //Localisation
+                            answers.localisation = document.getElementById('localisations').value;
+                            //Images
+                            
+                            
                             if (send) {
                                 //Validation
                                 $("#validation").modal();
@@ -425,7 +473,8 @@
             });
     
         });
-                    </script>
+    
+</script>
 
 
     </body>

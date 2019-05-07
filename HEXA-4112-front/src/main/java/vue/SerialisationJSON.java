@@ -450,7 +450,7 @@ public class SerialisationJSON {
                     }
                 }
             }
-            jo.addProperty("idAnnonce", (String) service.getPersonOffering().getPrivilegedContact());
+            jo.addProperty("idAnnonce", (long) service.getId());
             jo.addProperty("typeService", (String) service.getType());
         } else {
             jo.addProperty("annonce", false);

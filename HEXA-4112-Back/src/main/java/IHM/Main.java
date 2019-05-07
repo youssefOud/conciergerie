@@ -44,8 +44,13 @@ public class Main {
         System.out.println(s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
+<<<<<<< Updated upstream
         s.createReservation(person2.getId(), offer.getId(), "05/05/2019", "00:00", 5, "minutes",null,null,null);
         s.createReservation(person2.getId(), offer2.getId(), "05/05/2019", "00:00", 5, "minutes",null,null,null);
+=======
+//        s.createReservation(person2.getId(), offer.getId(), "05/05/2019", "00:00", 5, "minutes");
+//        s.createReservation(person2.getId(), offer2.getId(), "05/05/2019", "00:00", 5, "minutes");
+>>>>>>> Stashed changes
     
         List<Service> listS = s.findAllServicesWithFilter("Marteau", "Bricolage", "Residence M", "", "", "", "", "", "", "offre");
       

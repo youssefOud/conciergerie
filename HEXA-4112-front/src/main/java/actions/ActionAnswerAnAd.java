@@ -34,10 +34,10 @@ public class ActionAnswerAnAd extends Action {
         
         Services services = new Services();
 
-        Pair<Boolean,String> created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit);
-        
-        request.setAttribute("created", created.getKey());
-        request.setAttribute("message", created.getValue());
+//        Pair<Boolean,String> created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit);
+//        
+//        request.setAttribute("created", created.getKey());
+//        request.setAttribute("message", created.getValue());
         
     }
     
