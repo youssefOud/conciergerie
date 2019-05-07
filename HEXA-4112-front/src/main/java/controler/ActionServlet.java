@@ -22,7 +22,10 @@ import actions.ActionDeleteAd;
 import actions.ActionGetAdDetails;
 import actions.ActionGetInformationPerson;
 import actions.ActionGetInterestsPerson;
+import actions.ActionRateBeneficiary;
+import actions.ActionRateBidder;
 import actions.ActionRegistration;
+import actions.ActionReportAd;
 import actions.ActionShowTimeline;
 import actions.ActionValidateAnswerAd;
 import javax.servlet.ServletException;
@@ -367,6 +370,66 @@ public class ActionServlet extends HttpServlet {
                     }
                   
                     serialisationJSON.executeSupprimerAnnonce(request, response);
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "noterBeneficiaire":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionRateBeneficiary actionRateBeneficiary = new ActionRateBeneficiary();
+
+                    try {
+                        actionRateBeneficiary.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeNoterBeneficiaire(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "noterOffrant":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionRateBidder actionRateBidder = new ActionRateBidder();
+
+                    try {
+                        actionRateBidder.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeNoterOffrant(request, response);
+                
+                } else {
+                    request.setAttribute("error", false);
+                    serialisationJSON.executeErrorNotConnected(request, response);
+                }
+                
+                break;
+                
+            case "signalerAnnonce":
+                
+                if (session.getAttribute("idPerson") != null){
+                    ActionReportAd actionReportAd = new ActionReportAd();
+
+                    try {
+                        actionReportAd.executeAction(request);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    serialisationJSON.executeSignalerAnnonce(request, response);
+                
                 } else {
                     request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
