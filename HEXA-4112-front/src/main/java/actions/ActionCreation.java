@@ -44,15 +44,10 @@ public class ActionCreation extends Action {
         String description = request.getParameter("description");
         
         String date = request.getParameter("date");
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");  
-        Date availabilityDate = formatDate.parse(date);
-        
         String time = request.getParameter("time");
-        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");  
-        Date availabilityTime = formatTime.parse(time);
-        
-        // On combine les deux dates ensemble
-        Date availabilityDateComplete = new Date(availabilityDate.getTime() + availabilityTime.getTime());
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
+        formatDate.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+        Date availabilityDateComplete = formatDate.parse(date + " " + time);
         
         String localisation = request.getParameter("localisation");
         // type indique si c'est un prêt, une donation, un service rendu ...
