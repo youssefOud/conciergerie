@@ -14,7 +14,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,10 +70,33 @@ public class SerialisationJSON {
                 jo.addProperty("typeService", s.getType());
                 if (s instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
+                    if (s.getPersonOffering() != null) {
+                        if (s.getPersonOffering().getId() == request.getAttribute("idPerson")) {
+                            jo.addProperty("memePersonne", true);
+                        } else {
+                            jo.addProperty("memePersonne", false);
+                        }
+                        if (s.getPersonOffering().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", s.getPersonOffering().getMail());
+                        } else {
+                            jo.addProperty("auteur", s.getPersonOffering().getCellNumber());
+                        }
+                    }
                 } else {
                     jo.addProperty("typeAnnonce", "demande");
-                }
-
+                    if (s.getPersonDemanding() != null) {
+                        if (s.getPersonDemanding().getId() == request.getAttribute("idPerson")) {
+                            jo.addProperty("memePersonne", true);
+                        } else {
+                            jo.addProperty("memePersonne", false);
+                        }
+                        if (s.getPersonDemanding().getPrivilegedContact().equals("email")) {
+                            jo.addProperty("auteur", s.getPersonDemanding().getMail());
+                        } else {
+                            jo.addProperty("auteur", s.getPersonDemanding().getCellNumber());
+                        }
+                    }
+               }
                 Date date = s.getAvailabilityDate();
                 Date datePublication = s.getPublicationDate();
                 String pattern = "dd/MM/yyyy HH:mm";
@@ -99,12 +124,13 @@ public class SerialisationJSON {
                 jo.addProperty("idAnnonce", s.getId());
                 // TODO : A changer quand l'attribut preferences de contact sera mis en place
 
+                
                 if (s.getPersonDemanding() != null) {
                     jo.addProperty("auteur", s.getPersonDemanding().getMail());
-                    jo.addProperty("noteMoyenneAuteur", s.getPersonDemanding().getRating());
+                    jo.addProperty("noteMoyenneAuteur", (double) roundRating(s.getPersonDemanding().getRating()));
                 } else if (s.getPersonOffering() != null) {
                     jo.addProperty("auteur", s.getPersonOffering().getMail());
-                    jo.addProperty("noteMoyenneAuteur", s.getPersonOffering().getRating());
+                    jo.addProperty("noteMoyenneAuteur", (double) roundRating(s.getPersonOffering().getRating()));
                 }
                 JsonArray jsonListPictures = new JsonArray();
                 if (s.getPictures() != null && s.getPictures() != "") {
@@ -276,7 +302,7 @@ public class SerialisationJSON {
                             }
                         }
                         joReponse.addProperty("prix", r.getReservationPrice());
-                        joReponse.addProperty("note", r.getReservationOwner().getRating());
+                        joReponse.addProperty("note", (double) roundRating(r.getReservationOwner().getRating()));
                         Date dateWanted = r.getReservationStartingDate();
                         String dateWantedAsString = df.format(dateWanted);
                         
@@ -430,7 +456,7 @@ public class SerialisationJSON {
                     jo.addProperty("auteur", (String) service.getPersonDemanding().getPrivilegedContact());
                 }
             }
-            jo.addProperty("idAnnonce", (String) service.getPersonOffering().getPrivilegedContact());
+            jo.addProperty("idAnnonce", (Long) service.getId());
             jo.addProperty("typeService", (String) service.getType());
         } else {
             jo.addProperty("annonce", false);
@@ -487,7 +513,7 @@ public class SerialisationJSON {
                 if (e.getKey() instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
                     if (e.getKey().getPersonOffering() != null) {
-                        jo.addProperty("noteMoyenneAuteur", e.getKey().getPersonOffering().getRating());
+                        jo.addProperty("noteMoyenneAuteur", (double) roundRating(e.getKey().getPersonOffering().getRating()));
                         if (e.getKey().getPersonOffering().getPrivilegedContact().equals("email")) {
                             jo.addProperty("auteur", e.getKey().getPersonOffering().getMail());
                         } else {
@@ -497,7 +523,7 @@ public class SerialisationJSON {
                 } else {
                     jo.addProperty("typeAnnonce", "demande");
                     if (e.getKey().getPersonDemanding() != null) {
-                        jo.addProperty("noteMoyenneAuteur", e.getKey().getPersonDemanding().getRating());
+                        jo.addProperty("noteMoyenneAuteur",(double) roundRating(e.getKey().getPersonDemanding().getRating()));
                         if (e.getKey().getPersonDemanding().getPrivilegedContact().equals("email")) {
                             jo.addProperty("auteur", e.getKey().getPersonDemanding().getMail());
                         } else {
@@ -558,8 +584,8 @@ public class SerialisationJSON {
                     jo.addProperty("dateReponse", theDateWanted);
                     jo.addProperty("timeReponse", theTimeWanted);
                     jo.addProperty("prixPropose", reservation.getReservationPrice());
-                    jo.addProperty("noteAuteurAnnonce", reservation.getServiceOwnerRating());
-                    jo.addProperty("noteReponseAnnonce", reservation.getReservationOwnerRating());
+                    jo.addProperty("noteAuteurAnnonce", (double) roundRating(reservation.getServiceOwnerRating()));
+                    jo.addProperty("noteReponseAnnonce", (double) roundRating(reservation.getReservationOwnerRating()));
                     
                 }
                 jsonList.add(jo);
@@ -686,5 +712,12 @@ public class SerialisationJSON {
         response.setCharacterEncoding("UTF-8");
         out.println(gson.toJson(jo));
         out.close();
+    }
+    
+    private double roundRating (double numberToRound) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,#");
+        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+        String doubleString = decimalFormat.format(numberToRound).replace(",",".");
+        return Double.valueOf(doubleString);
     }
 }

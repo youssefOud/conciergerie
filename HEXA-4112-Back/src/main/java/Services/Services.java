@@ -53,48 +53,6 @@ public class Services {
         this.deletedAccountsDAO = new DeletedAccountsDAO();
     }
     
-    // TODO : A completer : permet de retourner toutes les demandes
-    // en cours
-    public List<Demand> findAllDemands() {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Demand> listDemand = new ArrayList<>();
-        
-        JpaUtil.closeEntityManager();
-        return listDemand;
-    }
-    
-    // TODO : A completer : permet de retourner toutes les offres
-    // en cours
-    public List<Offer> findAllOffers() {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Offer> listOffer = new ArrayList<>();
-        
-        
-        
-        JpaUtil.closeEntityManager();
-        return listOffer;
-    }
-    
-    // Ajouter en parametre tous les critères des filtres afin de faire nos
-    // comparaison
-    // TODO : A completer : permet de retourner toutes les offres
-    // en cours avec les filtres mis
-    public List<Offer> findAllOffersWithFilters(/*Add Filter*/) {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        List<Offer> listOffer = new ArrayList<>();
-        
-        
-        
-        JpaUtil.closeEntityManager();
-        return listOffer;
-    }
-    
     public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
         // TODO : to implement : persist la personne en base de données
         return new Person();
@@ -410,13 +368,18 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-    
-    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
-        JpaUtil.createEntityManager();
-        Person serviceOwner = null; // = personDAO.findById(idServiceOwner);
+  
+     public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit, 
+                                                    String pictures, String description, String location){
+       JpaUtil.createEntityManager();
+        Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
         Person reservationOwner = personDAO.findById(idReservationOwner);
         Service service = serviceDAO.findById(idService);
         if (service != null) serviceOwner = service.getPerson();
+        if (serviceOwner.getId() == idReservationOwner) {
+            JpaUtil.closeEntityManager();
+            return new Pair<>(false, "Vous ne pouvez pas répondre à votre propre annonce.");
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date reservationStartingDate;
         try{
@@ -446,11 +409,14 @@ public class Services {
                     offerOwner = reservation.getService().getPerson();
                     demandOwner = reservation.getReservationOwner();
                 }
-                else{
+                else {
                     offerOwner = reservation.getReservationOwner();
                     demandOwner = reservation.getService().getPerson();
+                    if (pictures != null) reservation.setPictures(pictures);
+                    if (description != null) reservation.setPictures(description);
+                    if (location != null) reservation.setLocation(location);
                 }
-                
+
                 if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
                     offerOwner.setPointBalance(offerOwner.getPointBalance() +  reservation.getReservationPrice());
                     demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
@@ -482,11 +448,7 @@ public class Services {
         }
         JpaUtil.closeEntityManager();
         return new Pair<>(true, "Votre demande a bien été prise en compte");
-    }
     
-    public List<Reservation> getReservationByPersonId(Long personId){
-        //todo
-        return null;
     }
     
     public boolean updateServiceState(Service service) {
@@ -498,6 +460,55 @@ public class Services {
                 JpaUtil.openTransaction();
                 service.setServiceState(1);
                 serviceDAO.merge(service);
+                JpaUtil.validateTransaction();
+            }
+            catch(Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public boolean updateReservationState(Reservation res) {
+        JpaUtil.createEntityManager();
+        if (res == null) return false;
+        Date now  = new Date();
+        if (res.getReservationOwnerRating() != -1 && res.getServiceOwnerRating() != -1) {
+            try {
+                JpaUtil.openTransaction();
+                res.setReservationState(6);
+                reservationDAO.merge(res);
+                JpaUtil.validateTransaction();
+            }
+            catch(Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        } 
+        else if (res.getReservationOwnerRating() != -1 || res.getServiceOwnerRating() != -1) {
+            try {
+                JpaUtil.openTransaction();
+                if (res.getReservationOwnerRating() != -1) 
+                    res.setReservationState(5);
+                else 
+                    res.setReservationState(4);
+                reservationDAO.merge(res);
+                JpaUtil.validateTransaction();
+            }
+            catch(Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return false;
+            }
+        } 
+        else if (now.compareTo(res.getReservationEndingDate()) > 0) {
+            try {
+                JpaUtil.openTransaction();
+                res.setReservationState(3);
+                reservationDAO.merge(res);
                 JpaUtil.validateTransaction();
             }
             catch(Exception e){
@@ -524,6 +535,9 @@ public class Services {
         Collections.sort(services,compareByServiceState);
         for (Service serv :services) {
             List<Reservation> reservations = reservationDAO.findAllReservationsByService(serv);
+            for (Reservation res :reservations) {
+                updateReservationState(res);
+            }
             hm.put(serv,reservations);
         }
         JpaUtil.closeEntityManager();
@@ -680,6 +694,8 @@ public class Services {
         HashMap<Service,Reservation> hm= new HashMap<Service, Reservation>();
         for (Object[] i :interests) {
             updateServiceState((Service)i[1]);
+            updateReservationState((Reservation)i[0]);
+            
         }
         for (Object[] i :interests) {
             hm.put((Service)i[1], (Reservation)i[0]);
@@ -815,18 +831,18 @@ public class Services {
             Person reservationOwner = r.getReservationOwner();
             
             if (reservationOwner != null ){
-                r.setReservationOwnerRating(rating);
+                r.setServiceOwnerRating(rating);
                 int nbRatings = reservationOwner.getNbRatings();
                 double avg;
                 if ((int)reservationOwner.getRating() == -1)
-                    avg = (rating)/(double)(nbRatings + 1);
+                    avg = (double)(rating)/(double)(nbRatings + 1);
                 else
-                    avg = (nbRatings*reservationOwner.getRating()+rating)/(double)(nbRatings + 1);
+                    avg = (double)((double)nbRatings*(double)reservationOwner.getRating()+(double)rating)/(double)(nbRatings + 1);
                 reservationOwner.setRating(avg);
                 reservationOwner.setNbRatings(nbRatings + 1);
                 try {
                     JpaUtil.openTransaction();
-                    System.out.println();
+                    System.out.println("avg" + avg);
                     reservationDAO.merge(r);
                     personDAO.merge(reservationOwner);
                     JpaUtil.validateTransaction();
@@ -837,10 +853,11 @@ public class Services {
                     return false;
                 }
             }
+            updateReservationState(r);
         }
+        
         JpaUtil.closeEntityManager();
         return true;
-        
     }
     
     public Reservation getReservationById(Long id) {
@@ -860,13 +877,14 @@ public class Services {
                 int nbRatings = serviceOwner.getNbRatings();
                 double avg;
                 if ((int)serviceOwner.getRating() == -1)
-                    avg = (rating)/(double)(nbRatings + 1);
+                    avg = (double)(rating)/(double)(nbRatings + 1);
                 else
-                    avg = (nbRatings*serviceOwner.getRating()+rating)/(double)(nbRatings + 1);
+                    avg = (double) ((double)nbRatings*(double)serviceOwner.getRating()+(double)rating)/(double)(nbRatings + 1);
                 serviceOwner.setRating(avg);
                 serviceOwner.setNbRatings(nbRatings + 1);
                 try {
                     JpaUtil.openTransaction();
+                    System.out.println("avg : " + avg);
                     reservationDAO.merge(r);
                     personDAO.merge(serviceOwner);
                     JpaUtil.validateTransaction();
@@ -877,9 +895,12 @@ public class Services {
                     return false;
                 }
             }
+            updateReservationState(r);
         }
+        
         JpaUtil.closeEntityManager();
         return true;
     }
     
 }
+

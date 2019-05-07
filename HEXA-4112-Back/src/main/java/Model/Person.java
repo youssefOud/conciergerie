@@ -73,8 +73,6 @@ public class Person{
     public void setNbRatings(int nbRatings) {
         this.nbRatings = nbRatings;
     }
-    
-    
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

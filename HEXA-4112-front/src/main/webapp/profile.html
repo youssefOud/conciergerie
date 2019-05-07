@@ -16,9 +16,9 @@
 
         <script src="//code.jquery.com/jquery-1.12.0.min.js">
         <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+              crossorigin="anonymous"></script>
         <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -136,8 +136,14 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div id="radioBtn" class="btn-group">
-                                                <a class="btn btn-primary btn-sm active" data-toggle="happy" id="radio-email" data-title="email" onclick="OnChangeRadio(this)">EMAIL</a>
-                                                <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="telephone" id="radio-tel" onclick="OnChangeRadio(this)">TELEPHONE</a>
+                                                <a class="btn btn-primary btn-sm active" 
+                                                   data-toggle="happy" id="radio-email" 
+                                                   data-title="email" 
+                                                   onclick="OnChangeRadio(this)">EMAIL</a>
+                                                <a class="btn btn-primary btn-sm notActive" 
+                                                   data-toggle="happy" data-title="telephone" 
+                                                   id="radio-tel" 
+                                                   onclick="OnChangeRadio(this)">TELEPHONE</a>
                                             </div>
                                             <input type="hidden" name="happy" id="happy">
                                         </div>
@@ -146,7 +152,49 @@
                                 <br>
                                 <div class="row" id="telephone-cont"></div>
                                 <br>
-                                <div class="col-md-4"><button id="btnValider" type="button" class="btn btn-primary" onclick="onValidateChange()">Valider</button></div>
+                                <div class="col-md-4">
+                                    <button id="btnValider" type="button" 
+                                            class="btn btn-primary"onclick="onValidateChange()">
+                                        Valider
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="col-md-6">
+                            <div class="profile-head">
+                                <ul class="nav nav-tabs" id="myTabBis" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab-bis" data-toggle="tab" href="#desinscription" role="tab" aria-controls="about" aria-selected="true">Désinscription</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="tab-content profile-tab" id="myTabDesc">
+                                <div class="tab-pane fade show active" id="desc" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label><b>Supprimer définitivement mon compte</b></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="desinscription">
+                                                Vous souhaitez supprimer votre compte Campus Exchange. Conformement à la 
+                                                législation européenne, vous pouvez faire valoir votre droit à l'oubli. 
+                                                Sachez néanmoins qu'une fois le processus de suppression démarré, 
+                                                vous ne pourrez plus réactiver votre compte ou récupérer du contenu ou 
+                                                des informations que vous y aviez ajoutés.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button id="btnUnsubscribe" type="button" 
+                                            class="btn btn-primary"onclick="unsubscribe()">
+                                        Se Désinscrire
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -178,14 +226,13 @@
                     var sel = $(this).data('title');
                     var tog = $(this).data('toggle');
                     $('#' + tog).prop('value', sel);
-
                     $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
                     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
                 });
 
                 var filtres = new Object();
                 filtres.todo = "recupererInfoPersonne";
-                
+
                 $.ajax({
                     type: 'GET',
                     url: './ActionServlet',
@@ -197,8 +244,8 @@
                             window.location.replace("./index.html");
                         }else{
                             document.getElementById("deco").addEventListener("click", function () {
-                                var deco=new Object();
-                                deco.todo="seDeconnecter";
+                                var deco = new Object();
+                                deco.todo = "seDeconnecter";
                                 $.ajax({
                                     type: 'POST',
                                     url: './ActionServlet',
@@ -226,10 +273,9 @@
                             document.getElementById("email").innerHTML = data.email;
                             document.getElementById("mon_profile").innerHTML = data.prenom + " " + data.nom;
                             if(data.note != -1){
-                                document.getElementById("note").innerHTML = data.note + "/5";
-                            }
-                            else{
-                                document.getElementById("note").innerHTML = "Non noté";
+                                    document.getElementById("note").innerHTML = data.note + "/5";
+                            }else{
+                                    document.getElementById("note").innerHTML = "Non noté";
                             }
                             document.getElementById("points").innerHTML = data.nbPoint + " points";
                             numTelephone = data.numTel;
@@ -251,7 +297,6 @@
                 });
             });
 
-
             var last_sel = "email";
             var new_sel;
 
@@ -260,11 +305,11 @@
                 var tel = document.getElementById("telephone-cont");
                 if (new_sel == "telephone" && last_sel == "email") {
                     tel.innerHTML += '<div class="col-md-6"><label>Numéro de téléphone</label></div>';
-                    tel.innerHTML += '<div class="col-md-6"><input type="tel" class="form-control bfh-phone" id="tel" value="'+numTelephone+'"></div></div>';
+                    tel.innerHTML += '<div class="col-md-6"><input type="tel" class="form-control bfh-phone" id="tel" value="' + numTelephone + '"></div></div>';
                 } else if (new_sel == "email" && last_sel == "telephone") {
                     tel.innerHTML = "";
                 }
-                
+
                 if(new_sel == contactPrefere && contactPrefere == "email"){
                     document.getElementById("btnValider").disabled = true;
                 }else{
@@ -277,10 +322,10 @@
                 var saveContact = new Object();
                 saveContact.todo = "enregistreContactPrivilegie";
                 saveContact.contactPrivilegie = last_sel;
-                if(last_sel == "email"){
-                    saveContact.numeroTelephone="";
+                if (last_sel == "email"){
+                    saveContact.numeroTelephone = "";
                 }else{
-                    saveContact.numeroTelephone=document.getElementById("tel").value;
+                    saveContact.numeroTelephone = document.getElementById("tel").value;
                 }
                 console.log(saveContact);
                 $.ajax({
@@ -303,6 +348,32 @@
                         $("#erreur").modal();
                     }
                 });
+            }
+            
+            function unsubscribe() {
+                var unsubscribe = new Object();
+                unsubscribe.todo = "supprimerPersonne";
+                var conf = confirm('Etes-vous sûr de vouloir supprimer votre compte ?');
+                if(conf){
+                    $.ajax({
+                        type: 'POST',
+                        url: './ActionServlet',
+                        data: unsubscribe,
+                        timeout: 3000,
+                        dataType:'json',
+                        success: function (data) {
+                            if (data.deleted){
+                                window.location.replace("./index.html");
+                            }else{
+                                $("#erreur").modal();
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            $("#erreur").modal();
+                        }
+                    });
+                }
             }
         </script>
     </body>

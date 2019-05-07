@@ -40,7 +40,7 @@ public class ServiceDAO {
         }
 
         if (!object.isEmpty()) {
-            request += "and lower(s.nameObject) like concat('%',:object,'%') ";
+            request += "and lower(s.nameObject) like concat('%',:object,'%') or lower(s.description) like concat('%',:object,'%')  ";
         }
 
         if (!category.isEmpty()) {
@@ -89,7 +89,6 @@ public class ServiceDAO {
             }
         }
         List<Service> filteredServices = (List<Service>) query.getResultList();
-        System.out.println("filtered: " + filteredServices.size());
 
         if (!nbPts.isEmpty()) {
             int nbPtsPerDay;
