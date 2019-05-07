@@ -439,6 +439,10 @@
                                     } else if ($('#minutes').is(':checked')) {
                                         answers.uniteDuree = "minutes";
                                     }
+                                    //Description
+                                    answers.description = document.getElementById("description").value;
+                                    //Localisation
+                                    answers.localisation = document.getElementById('localisations').value;
                                     console.log(answers);
                                     $.ajax({
                                         type: 'POST',

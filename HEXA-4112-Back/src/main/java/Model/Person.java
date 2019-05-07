@@ -26,6 +26,8 @@ public class Person{
     
     private Double rating;
     
+    private int nbRatings;
+    
     private String picture;
     
     private String location;
@@ -44,6 +46,7 @@ public class Person{
         this.mail = mail;
         this.pointBalance = 100;
         this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
+        this.nbRatings = 0;
         this.privilegedContact = "email"; // Par défaut
     }
 
@@ -63,7 +66,15 @@ public class Person{
         return lastName;
     }
 
-        public void setFirstName(String firstName) {
+    public int getNbRatings() {
+        return nbRatings;
+    }
+
+    public void setNbRatings(int nbRatings) {
+        this.nbRatings = nbRatings;
+    }
+
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
