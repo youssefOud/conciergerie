@@ -278,14 +278,11 @@
                                                 for (var j in data.Annonces[i].reponses){
                                                     
                                                     if(data.Annonces[i].reponses[j].etat == 0){//encours
-                                                        var answers = new Object();
-                                                        answers.todo="validerReponseAnnonce";
-                                                        answers.idReservation=data.Annonces[i].reponses[j].idReponse;
                                                         annonce+='<tr><td><button class="btn"\n\
-                                                            onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'validerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.confirmationDone){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
-                                                            annonce+='><i class="fa fa-check"></i></button><button class="btn"\n\
-                                                            onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'declinerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.declined){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
-                                                            annonce+=' ><i class="fa fa-times"></i></button></td>';
+                                                        onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'validerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.confirmationDone){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                        annonce+='><i class="fa fa-check"></i></button><button class="btn"\n\
+                                                        onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'declinerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+", rating : "+document.getElementById("rating")+"},dataType:'json',success: function (data) {console.log(data);if (data.declined){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                        annonce+=' ><i class="fa fa-times"></i></button></td>';
                                                     }//acceptée
                                                     else if(data.Annonces[i].reponses[j].etat == 1){
                                                         annonce+='<tr class="table-success"><td></td>';
@@ -294,10 +291,12 @@
                                                         annonce+='<tr class="table-danger"><td></td>';
                                                     }//terminée
                                                     else if(data.Annonces[i].reponses[j].etat == 3){
-//                                                        annonce+='<tr><td><button class="btn"\n\
-//                                                        onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'validerReponseAnnonce', idReservation :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.confirmationDone){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
-//                                                        annonce+='><i class="fas fa-star"></i></button></td>';
-                                                            annonce+='<tr><td></td>'
+                                                        annonce+='<tr><td><input\n\
+                                                        type="number" min="0" max="1" class="form-control" id="rating"\n\
+                                                        placeholder="0"><button class="btn"\n\
+                                                        onclick="'+"$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'noterBeneficiaire', reservationId :"+data.Annonces[i].reponses[j].idReponse+"},dataType:'json',success: function (data) {console.log(data);if (data.note){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                        annonce+='><i class="fas fa-star"></i></button></td>';
+//                                                            annonce+='<tr><td></td>'
                                                     }//notée
                                                     else if(data.Annonces[i].reponses[j].etat == 4){
                                                         annonce+='<tr class="table-active"><td></td>';

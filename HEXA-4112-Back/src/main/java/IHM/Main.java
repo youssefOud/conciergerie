@@ -45,8 +45,8 @@ public class Main {
         System.out.println(s.createOffer(offer));
         
 
-        s.createReservation(person1.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
-        s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
+        //s.createReservation(person1.getId(), offer.getId(), "04/05/2019", "00:00", 5, "minutes");
+        //s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
             
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
@@ -55,8 +55,9 @@ public class Main {
         HashMap<Service, List<Reservation>> ads = s.getAdsByPerson(person1);
         HashMap<Service,Reservation> interests = s.getInterests(person2);
         
-        s.rateReservationByReservationOwner(6L, 5);
-        s.rateReservationByServiceOwner(6L, 4);
+   //     s.rateReservationByReservationOwner(6L, 5);
+    //    s.rateReservationByServiceOwner(6L, 4);
+        
         System.out.println();
 
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");
