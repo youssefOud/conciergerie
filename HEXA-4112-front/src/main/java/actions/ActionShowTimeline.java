@@ -23,6 +23,9 @@ public class ActionShowTimeline extends Action {
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
 
+        HttpSession session = request.getSession();
+        Long idPerson = (Long) session.getAttribute("idPerson");
+        
         String objectName = request.getParameter("objet");
         String priceUnit = request.getParameter("unitePrix"); 
         String category = request.getParameter("categorie");
@@ -38,5 +41,6 @@ public class ActionShowTimeline extends Action {
         List<Service> listOfServices = services.findAllServicesWithFilter(objectName, category, location,availabilityDate, availabilityTime, duration, durationUnit, nbPts, priceUnit, typeService);
         
         request.setAttribute("listOfServices", listOfServices);
+        request.setAttribute("idPerson", idPerson);
     }
 }

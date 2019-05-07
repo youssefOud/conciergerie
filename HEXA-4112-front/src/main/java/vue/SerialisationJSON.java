@@ -69,6 +69,11 @@ public class SerialisationJSON {
                 if (s instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
                     if (s.getPersonOffering() != null) {
+                        if (s.getPersonOffering().getId() == request.getAttribute("idPerson")) {
+                            jo.addProperty("memePersonne", true);
+                        } else {
+                            jo.addProperty("memePersonne", false);
+                        }
                         if (s.getPersonOffering().getPrivilegedContact().equals("email")) {
                             jo.addProperty("auteur", s.getPersonOffering().getMail());
                         } else {
@@ -78,6 +83,11 @@ public class SerialisationJSON {
                 } else {
                     jo.addProperty("typeAnnonce", "demande");
                     if (s.getPersonDemanding() != null) {
+                        if (s.getPersonDemanding().getId() == request.getAttribute("idPerson")) {
+                            jo.addProperty("memePersonne", true);
+                        } else {
+                            jo.addProperty("memePersonne", false);
+                        }
                         if (s.getPersonDemanding().getPrivilegedContact().equals("email")) {
                             jo.addProperty("auteur", s.getPersonDemanding().getMail());
                         } else {
