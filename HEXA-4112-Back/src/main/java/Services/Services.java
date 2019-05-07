@@ -380,7 +380,16 @@ public class Services {
         return true;
     }
     
-    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
+//    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
+//        
+//    
+//    }
+//    
+//    public Pair<Boolean, String> createReservationForDemand(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
+//    
+//    }
+    
+    public Pair<Boolean, String> createReservationForOffer(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
         JpaUtil.createEntityManager();
         Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
         Person reservationOwner = personDAO.findById(idReservationOwner);
