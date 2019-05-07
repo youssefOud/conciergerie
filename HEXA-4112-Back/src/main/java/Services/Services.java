@@ -379,11 +379,6 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-<<<<<<< Updated upstream
-        
-    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit, 
-                                                    String pictures, String description, String location){
-=======
     
 //    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
 //        
@@ -394,9 +389,9 @@ public class Services {
 //    
 //    }
     
-    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
->>>>>>> Stashed changes
-        JpaUtil.createEntityManager();
+   public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit, 
+                                                    String pictures, String description, String location){
+       JpaUtil.createEntityManager();
         Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
         Person reservationOwner = personDAO.findById(idReservationOwner);
         Service service = serviceDAO.findById(idService);
