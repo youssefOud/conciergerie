@@ -354,8 +354,9 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-    
-    public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit, 
+
+  
+     public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit, 
                                                     String pictures, String description, String location){
        JpaUtil.createEntityManager();
         Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
@@ -436,7 +437,7 @@ public class Services {
         return new Pair<>(true, "Votre demande a bien été prise en compte");
     
     }
-
+     
     public boolean updateServiceState(Service service) {
         JpaUtil.createEntityManager();
         if (service == null) return false;
@@ -685,6 +686,7 @@ public class Services {
         }
         for (Object[] i :interests) {
             hm.put((Service)i[1], (Reservation)i[0]);
+
         }
         JpaUtil.closeEntityManager();
         return hm;
