@@ -10,16 +10,9 @@ import Model.Demand;
 import Model.Offer;
 import Model.Person;
 import Services.Services;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.TimeZone;
 import javax.servlet.http.HttpSession;
 
 public class ActionCreation extends Action {
@@ -44,15 +37,10 @@ public class ActionCreation extends Action {
         String description = request.getParameter("description");
         
         String date = request.getParameter("date");
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");  
-        Date availabilityDate = formatDate.parse(date);
-        
         String time = request.getParameter("time");
-        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");  
-        Date availabilityTime = formatTime.parse(time);
-        
-        // On combine les deux dates ensemble
-        Date availabilityDateComplete = new Date(availabilityDate.getTime() + availabilityTime.getTime());
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
+        formatDate.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+        Date availabilityDateComplete = formatDate.parse(date + " " + time);
         
         String localisation = request.getParameter("localisation");
         // type indique si c'est un prêt, une donation, un service rendu ...

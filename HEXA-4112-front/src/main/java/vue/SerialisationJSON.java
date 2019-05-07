@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -68,6 +69,7 @@ public class SerialisationJSON {
                 jo.addProperty("nomObjet", s.getNameObject());
                 jo.addProperty("nbPts", s.getNbPoint());
                 jo.addProperty("typeService", s.getType());
+                jo.addProperty("description", s.getDescription());
                 if (s instanceof Offer) {
                     jo.addProperty("typeAnnonce", "offre");
                     if (s.getPersonOffering() != null) {
@@ -101,6 +103,7 @@ public class SerialisationJSON {
                 Date datePublication = s.getPublicationDate();
                 String pattern = "dd/MM/yyyy HH:mm";
                 DateFormat df = new SimpleDateFormat(pattern);
+                df.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
                 String dateAsString = df.format(date);
                 String datePublicationAsString = df.format(datePublication);
 
@@ -260,6 +263,7 @@ public class SerialisationJSON {
                 Date datePublication = e.getKey().getPublicationDate();
                 String pattern = "dd/MM/yyyy HH:mm";
                 DateFormat df = new SimpleDateFormat(pattern);
+                df.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
                 String dateAsString = df.format(date);
                 String datePublicationAsString = df.format(datePublication);
 
@@ -419,6 +423,7 @@ public class SerialisationJSON {
             Date datePublication = service.getPublicationDate();
             String pattern = "dd/MM/yyyy HH:mm";
             DateFormat df = new SimpleDateFormat(pattern);
+            df.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
             String dateAsString = df.format(date);
             String datePublicationAsString = df.format(datePublication);
 
@@ -536,6 +541,7 @@ public class SerialisationJSON {
                 Date datePublication = e.getKey().getPublicationDate();
                 String pattern = "dd/MM/yyyy HH:mm";
                 DateFormat df = new SimpleDateFormat(pattern);
+                df.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
                 String dateAsString = df.format(date);
                 String datePublicationAsString = df.format(datePublication);
 
