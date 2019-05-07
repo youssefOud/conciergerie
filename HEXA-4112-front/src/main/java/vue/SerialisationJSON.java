@@ -694,7 +694,7 @@ public class SerialisationJSON {
     private double roundRating (double numberToRound) {
         DecimalFormat decimalFormat = new DecimalFormat("#,#");
         decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-        
-        return Long.valueOf(decimalFormat.format(numberToRound));
+        String doubleString = decimalFormat.format(numberToRound).replace(",",".");
+        return Double.valueOf(doubleString);
     }
 }
