@@ -266,7 +266,6 @@ public class Services {
         
         // Traitement sur offer ? Date de début ?
         String word = Moderation.checkObsceneWords(offer);
-        System.out.println("word : " + word);
         if (word.equals("")) {
             offerDAO.persist(offer);
         } else {
@@ -788,9 +787,28 @@ public class Services {
 
     public boolean reportAd(Person person, Long idAd) {
         
-        boolean reported = EmailSenderService.sendEmailModeratorReportAd(idAd, person);
+        Service ad = getServiceById(idAd);
+        Long idPerson;
+        if (ad instanceof Demand) {
+            if (ad.getPersonDemanding() != null) {
+                idPerson = ad.getPersonDemanding().getId();
+            } else {
+                return false;
+            }
+        } else {
+            if (ad.getPersonOffering() != null) {
+                idPerson = ad.getPersonOffering().getId();
+            } else {
+                return false;
+            }
+        }
+        // Verification que la personne qui signale n'est pas celle qui a posté l'annonce
+        if (idPerson != person.getId()) {
+            boolean reported = EmailSenderService.sendEmailModeratorReportAd(idAd, person);
+            return reported;
+        }
         
-        return reported;
+        return false;
     }
     
     public boolean rateReservationByServiceOwner(Long reservationId, int rating) {
