@@ -433,7 +433,7 @@ public class SerialisationJSON {
                     jo.addProperty("auteur", (String) service.getPersonDemanding().getPrivilegedContact());
                 }
             }
-            jo.addProperty("idAnnonce", (String) service.getPersonOffering().getPrivilegedContact());
+            jo.addProperty("idAnnonce", (Long) service.getId());
             jo.addProperty("typeService", (String) service.getType());
         } else {
             jo.addProperty("annonce", false);
@@ -692,7 +692,7 @@ public class SerialisationJSON {
     }
     
     private double roundRating (double numberToRound) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+        DecimalFormat decimalFormat = new DecimalFormat("#,#");
         decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
         
         return Long.valueOf(decimalFormat.format(numberToRound));
