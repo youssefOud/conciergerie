@@ -266,6 +266,7 @@ public class Services {
         
         // Traitement sur offer ? Date de début ?
         String word = Moderation.checkObsceneWords(offer);
+        System.out.println("word : " + word);
         if (word.equals("")) {
             offerDAO.persist(offer);
         } else {

@@ -36,6 +36,6 @@ public class Moderation {
         } catch (Exception e){
             System.out.println(e.toString());
         }
-        return ligne;
+        return ligne==null ? "" : ligne;
     }
 }
