@@ -30,8 +30,16 @@ public class ReservationDAO {
     
     public List<Reservation> findAllReservationsByService(Service service){
         EntityManager em = JpaUtil.getEntityManager();
-        String request = "select r from Reservation r where r.service = :service ";         
+        String request = "select r from Reservation r where r.service = :service order by r.reservationRequestDate desc";         
         Query query = em.createQuery(request).setParameter("service", service);
+        List<Reservation> reservations = (List<Reservation>)query.getResultList();
+        return reservations; 
+    }
+    
+    public List<Reservation> findAllReservationsByReservationOwner(Person p){
+        EntityManager em = JpaUtil.getEntityManager();
+        String request = "select r from Reservation r where r.reservationOwner = :person OR r.serviceOwner = :person ";         
+        Query query = em.createQuery(request).setParameter("person", p);
         List<Reservation> reservations = (List<Reservation>)query.getResultList();
         return reservations; 
     }

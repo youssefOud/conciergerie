@@ -5,6 +5,7 @@
 */
 package Utils;
 
+import Model.Person;
 import java.util.Properties;
 import java.util.Random;
 import javax.mail.Message;
@@ -207,5 +208,35 @@ public class EmailSenderService {
         } catch (MessagingException e) {throw new RuntimeException(e); }
         
         return code;
+    }
+    
+    public static boolean sendEmailModeratorReportAd(Long idAd, Person person){
+        //Get properties object
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+        //get Session
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(email,password);
+                    }
+                });
+        
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.addRecipient(Message.RecipientType.TO,new InternetAddress(email));
+            message.setSubject("Annonce signalée par un utilisateur");
+            message.setText("L'annonce d'identifiant " + idAd + " a été signalée par l'utilisateur " + person.getFirstName() + " " + person.getLastName() +".");
+            Transport.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return true;
     }
 }
