@@ -10,16 +10,9 @@ import Model.Demand;
 import Model.Offer;
 import Model.Person;
 import Services.Services;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.TimeZone;
 import javax.servlet.http.HttpSession;
 
 public class ActionCreation extends Action {
