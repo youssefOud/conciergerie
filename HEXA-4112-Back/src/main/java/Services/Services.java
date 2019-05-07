@@ -727,7 +727,7 @@ public class Services {
 
     public boolean reportAd(Person person, Long idAd) {
         
-        boolean reported = EmailSenderService.sendEmailModeratorReportAd(idAds, person);
+        boolean reported = EmailSenderService.sendEmailModeratorReportAd(idAd, person);
         
         return reported;
     }

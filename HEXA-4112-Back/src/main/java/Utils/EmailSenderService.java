@@ -210,7 +210,7 @@ public class EmailSenderService {
         return code;
     }
     
-    public static String sendEmailModeratorReportAd(Long idAd, Person person){
+    public static boolean sendEmailModeratorReportAd(Long idAd, Person person){
         //Get properties object
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -227,18 +227,16 @@ public class EmailSenderService {
                     }
                 });
         
-        String code = "";
-        
         try {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(email));
             message.setSubject("Annonce signalée par un utilisateur");
-            code = generateCode();
             message.setText("L'annonce d'identifiant " + idAd + " a été signalée par l'utilisateur " + person.getFirstName() + " " + person.getLastName() +".");
-            //send message
             Transport.send(message);
-        } catch (MessagingException e) {throw new RuntimeException(e); }
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
         
-        return code;
+        return true;
     }
 }
