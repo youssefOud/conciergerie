@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.util.Pair;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,7 @@ public class ActionValidateAnswerAd extends Action {
         Long idReservationLong = Long.valueOf(idReservation);
         
         Services services = new Services();
-        Pair<Boolean, String> confirmReservation = services.confirmReservation(idReservationLong);
+        Map.Entry confirmReservation = services.confirmReservation(idReservationLong);
         
         request.setAttribute("confirmed", confirmReservation.getKey());
         request.setAttribute("message", confirmReservation.getValue());
