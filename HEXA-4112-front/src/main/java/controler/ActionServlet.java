@@ -38,6 +38,8 @@ import vue.SerialisationJSON;
 
 /**
  * Servlet implementation class ActionServlet
+ * 
+ * @author HEXA-4112
  */
 
 @WebServlet(name="ActionServlet", urlPatterns = {"/ActionServlet"})
@@ -45,6 +47,14 @@ public class ActionServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
     
+    /**
+     * Gets the parameter todo and handles the session
+     * 
+     * @param request contains the parameter send by the front-end
+     * @param response contains the information to send to the user
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -107,7 +117,6 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "deposerAnnonce":
-                System.out.println("idPerson : " + session.getAttribute("idPerson"));
                 if (session.getAttribute("idPerson") != null){
                     ActionCreation actionCreation = new ActionCreation();
 
@@ -116,8 +125,6 @@ public class ActionServlet extends HttpServlet {
                     } catch (ParseException ex) {
                         Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
-                    boolean created = (boolean) request.getAttribute("created");
 
                     serialisationJSON.executeDeposerAnnonce(request, response);
                     
@@ -198,6 +205,7 @@ public class ActionServlet extends HttpServlet {
                     serialisationJSON.executeGetAnnoncesPersonne(request, response);
                 
                 } else {
+                    request.setAttribute("error", false);
                     serialisationJSON.executeErrorNotConnected(request, response);
                 }
                 
@@ -242,7 +250,6 @@ public class ActionServlet extends HttpServlet {
                 break;
             
             case "detailsAnnonce":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionGetAdDetails actionGetAdDetails = new ActionGetAdDetails();
 
@@ -262,7 +269,6 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "getInteretsPersonne":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionGetInterestsPerson actionGetInterestsPerson = new ActionGetInterestsPerson();
 
@@ -281,7 +287,6 @@ public class ActionServlet extends HttpServlet {
                 break;
 
             case "validerReponseAnnonce":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionValidateAnswerAd actionValidateAnswerAd = new ActionValidateAnswerAd();
 
@@ -301,7 +306,6 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "supprimerInteret":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionDeleteInterest actionDeleteInterest = new ActionDeleteInterest();
 
@@ -320,7 +324,6 @@ public class ActionServlet extends HttpServlet {
                 break;
             
             case "declinerReponseAnnonce":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionDeclineAnswerAd actionDeclineAnswerAd = new ActionDeclineAnswerAd();
 
@@ -340,7 +343,6 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "supprimerPersonne":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionDeletePerson actionDeletePerson = new ActionDeletePerson();
 
@@ -359,7 +361,6 @@ public class ActionServlet extends HttpServlet {
                 break;
             
             case "supprimerAnnonce":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionDeleteAd actionDeleteAd = new ActionDeleteAd();
 
@@ -378,7 +379,6 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "noterBeneficiaire":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionRateBeneficiary actionRateBeneficiary = new ActionRateBeneficiary();
 
@@ -398,7 +398,6 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "noterOffrant":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionRateBidder actionRateBidder = new ActionRateBidder();
 
@@ -418,7 +417,6 @@ public class ActionServlet extends HttpServlet {
                 break;
                 
             case "signalerAnnonce":
-                
                 if (session.getAttribute("idPerson") != null){
                     ActionReportAd actionReportAd = new ActionReportAd();
 
@@ -488,7 +486,7 @@ public class ActionServlet extends HttpServlet {
     
     @Override
     public String getServletInfo() {
-        return "Servlet principale faisant office de controler";
+        return "Servlet principale : lien entre le back et le front";
     }
     
 }

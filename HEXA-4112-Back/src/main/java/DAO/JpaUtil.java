@@ -1,5 +1,9 @@
 package DAO;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -36,6 +40,7 @@ public class JpaUtil {
      * L'utilisation de ThreadLocal garantie une unique instance courante par
      * Thread.
      */
+    
     private static final ThreadLocal<EntityManager> threadLocalEntityManager = new ThreadLocal<EntityManager>() {
         
         @Override
@@ -73,7 +78,31 @@ public class JpaUtil {
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
-        entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        try{
+            Map<String, String> props = createConfigurationMap();
+            entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME,props);
+        }catch(Exception e){
+            e.printStackTrace();
+            entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        }
+    }
+    
+    private static Map<String, String> createConfigurationMap() throws URISyntaxException {
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        System.out.println(dbUri);
+        String username = dbUri.getUserInfo().split(":")[0];
+        System.out.println("Username POSTGRES "+username);
+        String password = dbUri.getUserInfo().split(":")[1];
+        System.out.println("Password POSTGRES "+password);
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+
+        Map<String, String> props = new HashMap<String, String>();
+        props.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
+        props.put("eclipselink.target-database", "PostgreSQL");
+        props.put("javax.persistence.jdbc.url", dbUrl);
+        props.put("javax.persistence.jdbc.user", username);
+        props.put("javax.persistence.jdbc.password", password);
+        return props;
     }
     
     /**
@@ -175,3 +204,4 @@ public class JpaUtil {
         return threadLocalEntityManager.get();
     }
 }
+

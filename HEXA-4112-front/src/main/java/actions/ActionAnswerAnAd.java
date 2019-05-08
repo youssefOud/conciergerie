@@ -1,21 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package actions;
 
 import Services.Services;
 import java.io.IOException;
 import java.text.ParseException;
-import javafx.util.Pair;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author X
+ * Class linking the front and back to respond to an ad
+ * 
+ * @author HEXA-4112
  */
 public class ActionAnswerAnAd extends Action {
 
@@ -37,7 +33,7 @@ public class ActionAnswerAnAd extends Action {
         
         Services services = new Services();
 
-        Pair<Boolean,String> created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit,pictures,description,location);
+        Map.Entry created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit);
         
         request.setAttribute("created", created.getKey());
         request.setAttribute("message", created.getValue());

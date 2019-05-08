@@ -1,26 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package actions;
 
-import Model.Person;
-import Model.Reservation;
-import Model.Service;
 import Services.Services;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.List;
-import javafx.util.Pair;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author X
+ * Class linking the front and back to validate the response to one 
+ * of the user's ads
+ * 
+ * @author HEXA-4112
  */
 public class ActionValidateAnswerAd extends Action {
 
@@ -30,7 +21,7 @@ public class ActionValidateAnswerAd extends Action {
         Long idReservationLong = Long.valueOf(idReservation);
         
         Services services = new Services();
-        Pair<Boolean, String> confirmReservation = services.confirmReservation(idReservationLong);
+        Map.Entry confirmReservation = services.confirmReservation(idReservationLong);
         
         request.setAttribute("confirmed", confirmReservation.getKey());
         request.setAttribute("message", confirmReservation.getValue());
