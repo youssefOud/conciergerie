@@ -44,11 +44,11 @@ public class ServicesTest {
 
         Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("07/05/2019 00:00")
                 ,"Residence M", "prêt", 3, "Propose un marteau classique", "jours", "jours", 2);
-        Demand demand = new Demand(person2, "Bricolage",null, "marteau FDP", formatDate.parse("03/05/2019 19:00")
+        Demand demand = new Demand(person2, "Bricolage",null, "marteau", formatDate.parse("03/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
-        Offer offer3 = new Offer(person1, "Bricolage", null, "fourFDP",  formatDate.parse("06/05/2019 00:00")
+        Offer offer3 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
 
         //Remplir la base de donnees
@@ -75,22 +75,6 @@ public class ServicesTest {
     }
     
     /**
-     * Test of connexion method, of class Services.
-     */
-//    @org.junit.Test
-//    public void testConnexion() {
-//        System.out.println("connexion");
-//        String mail = "";
-//        String mdp = "";
-//        Services instance = new Services();
-//        Person expResult = null;
-//        Person result = instance.connexion(mail, mdp);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to //fail.
-//        ////fail("The test case is a prototype.");
-//    }
-//    
-    /**
      * Test of createDemand method, of class Services.
      */
     @org.junit.Test
@@ -115,17 +99,12 @@ public class ServicesTest {
      */
     @org.junit.Test
     public void testCreateDemandFail() throws ParseException {
-        System.out.println("createDemandFail");
+        System.out.println("createDemand Fail : moderation des mots");
         Services instance = new Services();
-//        Person person = new Person("fifi", "12345", "+12345", "fifi@gmail.com",
-//                "fifi", "img.png", "Residence A");
-//        
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Person person = instance.getPersonById(1L);
-        Demand demand = new Demand(person, "Bricolage",null, "marteau", formatDate.parse("09/05/2019 20:00")
+        Demand demand = new Demand(person, "Bricolage",null, "matelas FDP", formatDate.parse("09/05/2019 20:00")
                 ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
-        
-        
         boolean expResult = false;
         boolean result = instance.createDemand(demand);
         assertEquals(expResult, result);
@@ -139,20 +118,9 @@ public class ServicesTest {
         System.out.println("createOfferOK");
         Services instance = new Services();
         Person person  = instance.getPersonById(1L);
-        
-
-//        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
-//        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
-//        
-//        Offer offer = new Offer(person, "Bricolage", "marteau", formatDate.parse("12/05/2019"), formatTime.parse("19:00")
-//                ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures", 2);
-//        
-
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Offer offer = new Offer(person, "Bricolage",null, "marteau", formatDate.parse("09/05/2019 20:00")
                 ,"Résidence M", "prêt", 2, "Propose un marteau classique", "heures","heures", 2);
-        
-
         boolean expResult = true;
         boolean result = instance.createOffer(offer);
         assertEquals(expResult, result);
@@ -165,10 +133,8 @@ public class ServicesTest {
     public void testCreateOfferFail() throws ParseException {
         System.out.println("createOfferFail");
         Services instance = new Services();
-        Person person  = instance.getPersonById(1L);
-        
+        Person person  = instance.getPersonById(1L);        
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        
         Offer offer = new Offer(person, "Bricolage", null, "marteau", formatDate.parse("09/05/2019 20:00")
                 ,"Résidence M", "prêt", 2, "Propose un marteau classique","heures", "heures", 2);
         
@@ -182,42 +148,10 @@ public class ServicesTest {
     public void testFindAllServicesWithFilterOK() throws ParseException {
         System.out.println("findAllServicesWithFilter");
         Services instance = new Services();
-//        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-//        Person person = instance.getPersonById(1L);
-//        Offer offer = new Offer(person, "Bricolage", "010010100110", "marteau",  formatDate.parse("10/04/2019 19:00")
-//                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
-//        Offer offer2 = new Offer(person, "Bricolage", "010010100110", "four",  formatDate.parse("10/04/2019 19:00")
-//                ,"Residence M", "prêt", 2, "Propose un marteau classique", "heures", "heures", 2);
-        
         List<Service> expResult = new ArrayList<Service>();
-        Service s = instance.getServiceById(2L);
-        expResult.add(s);
-         
-        //List<Service> result = instance.findAllServicesWithFilter("marteau","Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
-       // System.out.println("list : " + result.size());
-        
-       // assertEquals(s, result.get(0));
-        // TODO review the generated test code and remove the default call to //fail.
-    }
-    
-     @org.junit.Test
-    public void testFindAllServicesWithFilterFail() throws ParseException {
-        System.out.println("findAllServicesWithFilter");
-        Services instance = new Services();
-        List<Service> expResult = new ArrayList<Service>();
-        Service s = instance.getServiceById(3L);
-        System.out.println("serv" + s.toString());
-                
-       // List<Service> result = instance.findAllServicesWithFilter("marteau","Bricolage", "Residence M", "", "", "5","minutes","2" ,"Offer");
-       
-        /* System.out.println("list : " + result.size());
-        System.out.println("serv" + result.get(0).toString());
-        assertEquals(expResult, result.get(0));*/
-        
-        // TODO review the generated test code and remove the default call to //fail.
-
-    }
-    
+        List<Service> list = (instance.findAllServicesWithFilter(1L,"marteau","Bricolage", "Residence M", "", "", "", "", "", "","offre")).getKey();
+        assertEquals(1, list.size());
+    }    
     /**
      * Test of getPersonById method, of class Services.
      */
@@ -230,5 +164,39 @@ public class ServicesTest {
         Person result = instance.getPersonById(idPerson);
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of createReservation method, of class Services.
+     */
+    @org.junit.Test
+    public void testCreateReservationOk() {
+        System.out.println("createReservation : created");
+        Services instance = new Services();
+        boolean result  = (instance.createReservation(2L, 4L, "07/05/2019", "00:00", 1, "jours", null, null, null)).getKey();
+        assertEquals(true, result);
+    }
+    
+    /**
+     * Test of createReservation method, of class Services.
+     */
+    @org.junit.Test
+    public void testCreateReservationFail() {
+        System.out.println("createReservation : dates invalides");
+        Services instance = new Services();
+        boolean result  = (instance.createReservation(2L, 4L, "01/05/2019", "00:00", 1, "jours", null, null, null)).getKey();
+        assertEquals(false, result);
+    }
+   
+    /**
+     * Test of confirmReservation method, of class Services.
+     */
+    @org.junit.Test
+    public void testConfirmReservation() {
+        Services instance = new Services();
+        boolean result = instance.confirmReservation(10L).getKey();
+        assertEquals(true, result);
+    }
+    
+    
     
 }
