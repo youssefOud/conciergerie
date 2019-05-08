@@ -59,7 +59,7 @@ public class SerialisationJSON {
         JsonArray jsonList = new JsonArray();
 
         List<Service> listOfServices = (List<Service>) request.getAttribute("listOfServices");
-
+        container.addProperty("nbPropositions", (int) request.getAttribute("nbPropositions"));
         for (Service s : listOfServices) {
             if (s.getServiceState() == 0) {
                 JsonObject jo = new JsonObject();
