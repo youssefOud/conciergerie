@@ -211,7 +211,22 @@
                             console.log(data);
                             if (data.emailSent){
                             $("#validationCode").modal();
-                            document.getElementById("verifierCode").addEventListener("click", function () {
+                            
+                            
+                    }
+                    else{
+                                    $("#erreurDejaInscrit").modal();
+                    }
+                    },
+                error: function (data) {
+                                    console.log(data);
+                                    $("#erreurReseau").modal();
+                    }
+                    });
+                    
+                    };
+                });
+                document.getElementById("verifierCode").addEventListener("click", function () {
                                             var answers = new Object();
                                             answers.todo = "inscription";
                                             answers.mail = document.getElementById("mail").value;
@@ -243,20 +258,6 @@
 
 
                             });
-                            
-                    }
-                    else{
-                                    $("#erreurDejaInscrit").modal();
-                    }
-                    },
-                error: function (data) {
-                                    console.log(data);
-                                    $("#erreurReseau").modal();
-                    }
-                    });
-                    
-                    };
-                });
                 });
                 </script>
 
