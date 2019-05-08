@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 @Entity
 public class Person{
@@ -44,12 +45,14 @@ public class Person{
     private String privilegedContact; // Value : "email" or "cellphone"
     
 
-    @ManyToMany(cascade={CascadeType.ALL})
+    @ManyToMany(cascade={CascadeType.ALL} )
+    @CascadeOnDelete 
     @JoinTable(name="PERSON_OFFER", joinColumns=@JoinColumn(name="PERSON_ID"),
     inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))//@JoinTable is used to map Join table in database
     private List<Service> supposedlyInterestingOffers;
 
     @ManyToMany(cascade={CascadeType.ALL})
+    @CascadeOnDelete 
     @JoinTable(name="PERSON_DEMAND", joinColumns=@JoinColumn(name="PERSON_ID"),
     inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))//@JoinTable is used to map Join table in database
     private List<Service> supposedlyInterestingDemands;

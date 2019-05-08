@@ -667,7 +667,7 @@ public class Services {
         JpaUtil.createEntityManager();
         Reservation reservation = reservationDAO.findById(idReservation); //Reservation à valider
         try{
-            JpaUtil.openTransaction();
+            
             
             //Check point balance
             Person offerOwner;
@@ -687,7 +687,6 @@ public class Services {
                 demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
             }
             else{
-                JpaUtil.cancelTransaction();
                 JpaUtil.closeEntityManager();
                 return new AbstractMap.SimpleEntry (true,"Erreur : Solde insuffisant pour réaliser cette demande");
             }
@@ -695,8 +694,13 @@ public class Services {
             //On change les états de la réservation et du service
             reservation.getService().setServiceState(2);
             reservation.setReservationState(1);
+            JpaUtil.openTransaction();
             serviceDAO.merge(reservation.getService());
+            JpaUtil.validateTransaction();
+            
+            JpaUtil.openTransaction();
             reservationDAO.merge(reservation);
+            JpaUtil.validateTransaction();
             
             List<Reservation> reservationsAssociatedToService = reservationDAO.findAllReservationsByService(reservation.getService());
             for(Reservation r : reservationsAssociatedToService){
@@ -713,7 +717,7 @@ public class Services {
             EmailSenderService.sendDemandConfirmationEmail(demandOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()));
             
             EmailSenderService.sendOfferConfirmationEmail(offerOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), demandOwner.getFirstName(), demandOwner.getPrivilegedContact());
-            JpaUtil.validateTransaction();
+          
         }
         catch (Exception e){
             System.out.println(e.getMessage());
