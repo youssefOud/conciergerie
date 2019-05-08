@@ -53,7 +53,7 @@ public class Main {
       // s.deletePerson(person1.getId());
       //  s.deletePerson(person1.getId());
 
-        s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 1, "jours",null, null, null);
+        //s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 1, "jours",null, null, null);
         System.out.println();
         //s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
             

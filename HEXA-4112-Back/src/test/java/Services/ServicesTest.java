@@ -149,7 +149,7 @@ public class ServicesTest {
         System.out.println("findAllServicesWithFilter");
         Services instance = new Services();
         List<Service> expResult = new ArrayList<Service>();
-        List<Service> list = (instance.findAllServicesWithFilter(1L,"marteau","Bricolage", "Residence M", "", "", "", "", "", "","offre")).getKey();
+        List<Service> list = (List<Service>)(instance.findAllServicesWithFilter(1L,"marteau","Bricolage", "Residence M", "", "", "", "", "", "","offre")).getKey();
         assertEquals(1, list.size());
     }    
     /**
@@ -172,7 +172,7 @@ public class ServicesTest {
     public void testCreateReservationOk() {
         System.out.println("createReservation : created");
         Services instance = new Services();
-        boolean result  = (instance.createReservation(2L, 4L, "07/05/2019", "00:00", 1, "jours", null, null, null)).getKey();
+        boolean result  = (boolean)(instance.createReservation(2L, 4L, "07/05/2019", "00:00", 1, "jours")).getKey();
         assertEquals(true, result);
     }
     
@@ -183,7 +183,7 @@ public class ServicesTest {
     public void testCreateReservationFail() {
         System.out.println("createReservation : dates invalides");
         Services instance = new Services();
-        boolean result  = (instance.createReservation(2L, 4L, "01/05/2019", "00:00", 1, "jours", null, null, null)).getKey();
+        boolean result  = (boolean)(instance.createReservation(2L, 4L, "01/05/2019", "00:00", 1, "jours")).getKey();
         assertEquals(false, result);
     }
    
@@ -193,7 +193,7 @@ public class ServicesTest {
     @org.junit.Test
     public void testConfirmReservation() {
         Services instance = new Services();
-        boolean result = instance.confirmReservation(10L).getKey();
+        boolean result = (boolean)instance.confirmReservation(10L).getKey();
         assertEquals(true, result);
     }
     
