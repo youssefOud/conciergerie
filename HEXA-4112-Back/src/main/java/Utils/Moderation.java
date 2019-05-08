@@ -27,7 +27,7 @@ public class Moderation {
         int i = 0;
         while (!findWordObscene || i!=tabWordsObscenes.length)
         {
-                findWordObscene = nameObject.contains(s.toLowerCase()) || description.contains(s.toLowerCase());
+                findWordObscene = nameObject.contains(tabWordsObscenes[i].toLowerCase()) || description.contains(tabWordsObscenes[i].toLowerCase());
                 i++;
         }
         
