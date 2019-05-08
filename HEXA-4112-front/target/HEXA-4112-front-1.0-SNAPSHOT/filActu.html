@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="css/datepicker.css"></link>
         <link rel="stylesheet" href="css/clockpicker.css"></link>
         <link rel="stylesheet" href="css/style.css"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- JS Files -->
         <script src="//code.jquery.com/jquery-1.12.0.min.js">
         <script
@@ -449,6 +450,11 @@
                                     for (var i in data.Annonces)
                                     {
                                     var annonce = '<div class="card mb-3"><h3 class="card-header">';
+                                    if(i<data.nbPropositions && !data.Annonces[i].memePersonne){
+                               annonce+='<button class="btn"\n\
+                                                onclick="'+'"'
+                                                annonce+='><i class="fa fa-heart fa-2x" title="Susceptible de vous intéresser" style="color:red" ></i></button>';
+                            }
                             if (data.Annonces[i].typeAnnonce == "offre"){
                             annonce += '<span style="color:#007bff" >OFFRE</span>';
                             }
@@ -586,6 +592,11 @@
                             for (var i in data.Annonces)
                             {
                             var annonce = '<div class="card mb-3"><h3 class="card-header">';
+                            if(i<data.nbPropositions && !data.Annonces[i].memePersonne){
+                               annonce+='<button class="btn"\n\
+                                                onclick="'+'"'
+                                                annonce+='><i class="fa fa-heart fa-2x" title="Susceptible de vous intéresser" style="color:red" ></i></button>';
+                            }
                             if (data.Annonces[i].typeAnnonce == "offre"){
                             annonce += '<span style="color:#007bff" >OFFRE</span>';
                             }
