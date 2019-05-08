@@ -914,7 +914,7 @@ public class Services {
         List<Service> services = serviceDAO.matchMaking(service, 1);
         
         Person person = service.getPerson();
-        person.addSSupposedlyInterestingDemands(services);
+        person.addSSupposedlyInterestingOffers(services);
         
        
         JpaUtil.openTransaction();
