@@ -673,7 +673,7 @@ public class Services {
     
     public Pair<Boolean, String> confirmReservation(Long idReservation){ //On retourne le message d'erreur ou de confirmation
         JpaUtil.createEntityManager();
-        Reservation reservation = reservationDAO.findById(idReservation);
+        Reservation reservation = reservationDAO.findById(idReservation); //Reservation à valider
         try{
             JpaUtil.openTransaction();
             
@@ -700,10 +700,21 @@ public class Services {
                 return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
             }
             
+            //On change les états de la réservation et du service
             reservation.getService().setServiceState(2);
             reservation.setReservationState(1);
             serviceDAO.merge(reservation.getService());
             reservationDAO.merge(reservation);
+            
+            List<Reservation> reservationsAssociatedToService = reservationDAO.findAllReservationsByService(reservation.getService());
+            for(Reservation r : reservationsAssociatedToService){
+                if(!r.getId().equals(reservation.getId())){
+                    JpaUtil.openTransaction();
+                    r.setReservationState(2);
+                    reservationDAO.merge(r);
+                    JpaUtil.validateTransaction();
+                }
+            }
             
             //Email sending
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
