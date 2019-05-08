@@ -1,9 +1,11 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -22,6 +25,7 @@ public abstract class Service implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="SERVICE_ID")
     protected Long id;
 
     protected Person personOffering;
@@ -57,6 +61,7 @@ public abstract class Service implements Serializable{
     protected String durationUnit;
     
     protected Integer serviceState; // valid=0 or expired=1 or closed=2
+
     
     public Service() {
         
@@ -79,6 +84,8 @@ public abstract class Service implements Serializable{
         this.duration = duration;
         this.publicationDate = new Date();
         this.serviceState = 0;
+//        possibleInterestedPersonsDemand = new ArrayList<>();
+//        possibleInterestedPersonsOffer = new ArrayList<>();
         
         Long durationInMillis = Long.valueOf(duration);
         if (durationUnit.equals("jours")) {
@@ -236,7 +243,7 @@ public abstract class Service implements Serializable{
             this.personDemanding = p;
         }
     }
-    
+
     @Override
     public String toString() {
         // TODO Auto-generated method stub

@@ -15,6 +15,11 @@ import java.util.Date;
 import java.util.TimeZone;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Class linking the front and back the creation of an ad
+ * 
+ * @author HEXA-4112
+ */
 public class ActionCreation extends Action {
     
     @Override
@@ -28,8 +33,6 @@ public class ActionCreation extends Action {
         
         String pictures = request.getParameter("pictures");
 
-        // On recupere le parametre du bouton radio pour savoir
-        // si c'est une demande ou une offre
         String typeAnnonce = request.getParameter("type");
         
         String category = request.getParameter("categorie");
@@ -57,14 +60,11 @@ public class ActionCreation extends Action {
         if (typeAnnonce.equals("demande")) {
             Demand demand = new Demand(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
             created = services.createDemand(demand);
-            System.out.println("Value de la demande : " + demand);
         } else if (typeAnnonce.equals("offre")) {
             Offer offer = new Offer(person, category, pictures, nameObject, availabilityDateComplete, localisation, ""/*, type*/, nbPts, description, priceUnit, durationUnit, duration);
 
             created = services.createOffer(offer);
-            System.out.println("Value de l'offre : " + offer);
         }
-        System.out.println("Value : " + created);
         
         request.setAttribute("created", created);
         

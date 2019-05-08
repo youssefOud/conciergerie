@@ -9,6 +9,7 @@ import DAO.JpaUtil;
 import Model.*;
 import Services.Services;
 import Utils.EmailSenderService;
+import Utils.SynonymsFinder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,7 +23,7 @@ public class Main {
     public static void main (String[] args) throws ParseException{
         //Test de création de demande
         //On initialise
-        JpaUtil.init();
+        /*JpaUtil.init();
         Services s = new Services();
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
        
@@ -33,8 +34,8 @@ public class Main {
 
 
         Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("07/05/2019 00:00")
-                ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
-        Demand demand = new Demand(person1, "Bricolage",null, "marteau FDP", formatDate.parse("03/05/2019 19:00")
+                ,"Residence M", "prêt", 3, "Propose un marteau classique", "jours", "jours", 2);
+        Demand demand = new Demand(person2, "Bricolage",null, "marteau FDP", formatDate.parse("03/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
                 ,"Residence M", "prêt", 50, "Propose un marteau classique", "heures", "heures", 50);
@@ -49,10 +50,11 @@ public class Main {
         System.out.println("offer2 : " + s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
-        s.deletePerson(person1.getId());
-        s.deletePerson(person1.getId());
+      // s.deletePerson(person1.getId());
+      //  s.deletePerson(person1.getId());
 
-        //s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 5, "minutes",null, null, null);
+        s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 1, "jours",null, null, null);
+        System.out.println();
         //s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
             
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
@@ -68,6 +70,10 @@ public class Main {
         s.rateReservationByReservationOwner(6L, 2);
         
 
+        System.out.println();
+*/
+        SynonymsFinder sf = new SynonymsFinder();
+        System.out.println(sf.SendRequest("sac", "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json"));
         System.out.println();
 
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");

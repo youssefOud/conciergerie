@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package actions;
 
 import Services.Services;
@@ -12,8 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
- * @author X
+ * Class linking the front and back to rate the bidder of an ad
+ * 
+ * @author HEXA-4112
  */
 public class ActionRateBidder extends Action {
 

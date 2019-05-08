@@ -201,6 +201,8 @@ public class Services {
             return false;
         }
         
+        this.matchMakingForDemand(demand.getId());
+        
         JpaUtil.closeEntityManager();
         return true;
     }
@@ -241,6 +243,7 @@ public class Services {
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
         }
+        //this.matchMakingForOffer(offer.getId());
         
         JpaUtil.closeEntityManager();
         return true;
@@ -281,7 +284,7 @@ public class Services {
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
     
-    public List<Service> findAllServicesWithFilter(String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
+    public Map.Entry findAllServicesWithFilter(Long idPerson, String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
         
         Date today = new Date();
@@ -330,10 +333,80 @@ public class Services {
             endingDate = formatNormal.parse( formatNormal.format(today.getTime() + durationInMillis) );
         }
         
-        List<Service> listServices = serviceDAO.findAllServicesWithFilter(object, category, location, startingDate, endingDate, nbPts, paymentUnit, serviceType);
+        List<Service> filteredServices = serviceDAO.findAllServicesWithFilter(object, category, location, startingDate, endingDate, nbPts, paymentUnit, serviceType);
+        
+        Person user = personDAO.findById(idPerson);
+        
+        int nbPropositions = 0;
+        //On retrouve les éléments susceptibles d'intéresser l'utilisateur et on les met en début de liste
+        if(!serviceType.equals("demande")){
+            List<Service> supposedlyInterestingOffers = user.getSupposedlyInterestingOffers();
+            List<Service> offersToRemove = new ArrayList<>();
+            for(Service s : supposedlyInterestingOffers){
+                updateServiceState(s);
+                if(s.getServiceState() != 0){
+                    offersToRemove.add(s);
+                }
+            }
+            for(Service s : offersToRemove){
+                supposedlyInterestingOffers.remove(s);
+            }
+            user.setSupposedlyInterestingOffers(supposedlyInterestingOffers);
+            try{
+            JpaUtil.openTransaction();
+            personDAO.merge(user);
+            JpaUtil.validateTransaction();
+            }
+            catch (Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return null;
+            }
+            
+            for(Service s : supposedlyInterestingOffers){
+                if(filteredServices.contains(s)){
+                    filteredServices.remove(s);
+                    filteredServices.add(0,s);
+                    nbPropositions++;
+                }
+            }
+        }
+        
+        if(!serviceType.equals("offre")){
+            List<Service> supposedlyInterestingDemands = user.getSupposedlyInterestingDemands();
+            List<Service> demandsToRemove = new ArrayList<>();
+            for(Service s : supposedlyInterestingDemands){
+                updateServiceState(s);
+                if(s.getServiceState() != 0){
+                    demandsToRemove.add(s);
+                }
+            }
+            for(Service s : demandsToRemove){
+                supposedlyInterestingDemands.remove(s);
+            }
+            user.setSupposedlyInterestingDemands(supposedlyInterestingDemands);
+            try{
+            JpaUtil.openTransaction();
+            personDAO.merge(user);
+            JpaUtil.validateTransaction();
+            }
+            catch (Exception e){
+                JpaUtil.cancelTransaction();
+                JpaUtil.closeEntityManager();
+                return null;
+            }
+            
+            for(Service s : supposedlyInterestingDemands){
+                if(filteredServices.contains(s)){
+                    filteredServices.remove(s);
+                    filteredServices.add(0,s);
+                    nbPropositions++;
+                }
+            }
+        } 
         
         JpaUtil.closeEntityManager();
-        return listServices;
+        return new AbstractMap.SimpleEntry(filteredServices,nbPropositions);
     }
     
     public Person getPersonById(Long idPerson) {
@@ -414,11 +487,7 @@ public class Services {
                     demandOwner = reservation.getService().getPerson();
                 }
 
-                if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
-                    offerOwner.setPointBalance(offerOwner.getPointBalance() +  reservation.getReservationPrice());
-                    demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
-                }
-                else{
+                if(demandOwner.getPointBalance() < reservation.getReservationPrice()){
                     JpaUtil.cancelTransaction();
                     JpaUtil.closeEntityManager();
                     return new AbstractMap.SimpleEntry (false,"Votre solde est insuffisant pour réaliser cette opération.");
@@ -817,6 +886,38 @@ public class Services {
         }
         
         return false;
+    }
+    
+    public List<Service> matchMakingForOffer(Long idService){
+      
+        Service service = serviceDAO.findById(idService);
+        List<Service> services = serviceDAO.matchMaking(service, 0);
+        
+        Person person = service.getPerson();
+        person.addSSupposedlyInterestingDemands(services);
+        
+       
+        JpaUtil.openTransaction();
+        personDAO.merge(person);
+        JpaUtil.validateTransaction();
+        
+        return services;
+    }
+    
+    public List<Service> matchMakingForDemand(Long idService){
+        
+        Service service = serviceDAO.findById(idService);
+        List<Service> services = serviceDAO.matchMaking(service, 1);
+        
+        Person person = service.getPerson();
+        person.addSSupposedlyInterestingOffers(services);
+        
+       
+        JpaUtil.openTransaction();
+        personDAO.merge(person);
+        JpaUtil.validateTransaction();
+        
+        return services;
     }
     
     public boolean rateReservationByServiceOwner(Long reservationId, int rating) {
