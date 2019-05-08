@@ -10,7 +10,7 @@ import Services.Services;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-import javafx.util.Pair;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,7 +41,7 @@ public class ActionShowTimeline extends Action {
         String typeService = request.getParameter("type");
         
         Services services = new Services(); 
-        Pair<List<Service>,Integer> listOfServices = services.findAllServicesWithFilter(idPerson, objectName, category, location,availabilityDate, availabilityTime, duration, durationUnit, nbPts, priceUnit, typeService);
+        Map.Entry listOfServices = services.findAllServicesWithFilter(idPerson, objectName, category, location,availabilityDate, availabilityTime, duration, durationUnit, nbPts, priceUnit, typeService);
         
         request.setAttribute("listOfServices", listOfServices.getKey());
         request.setAttribute("idPerson", idPerson);
