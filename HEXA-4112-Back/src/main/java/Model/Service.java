@@ -77,8 +77,6 @@ public abstract class Service implements Serializable{
         this.duration = duration;
         this.publicationDate = new Date();
         this.serviceState = 0;
-//        possibleInterestedPersonsDemand = new ArrayList<>();
-//        possibleInterestedPersonsOffer = new ArrayList<>();
         
         Long durationInMillis = Long.valueOf(duration);
         if (durationUnit.equals("jours")) {
@@ -239,7 +237,6 @@ public abstract class Service implements Serializable{
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         String serviceString = "Service : " + personOffering + " propose un " + nameObject;
         return serviceString;
     }

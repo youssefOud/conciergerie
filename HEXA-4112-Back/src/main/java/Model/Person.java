@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 @Entity
 public class Person{
@@ -66,10 +64,10 @@ public class Person{
         this.password = password;
         this.cellNumber = cellNumber;
         this.mail = mail;
-        this.pointBalance = 100;
-        this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
+        this.pointBalance = 50;
+        this.rating = -1.0; // Default value while no rating has been done
         this.nbRatings = 0;
-        this.privilegedContact = "email"; // Par défaut
+        this.privilegedContact = "email"; // Default value
         this.supposedlyInterestingDemands = new ArrayList<>();
         this.supposedlyInterestingOffers = new ArrayList<>();
     }
