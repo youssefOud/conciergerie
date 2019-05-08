@@ -40,9 +40,9 @@ public class ServiceDAO {
             request = "select s from Service s where s.availabilityDate <= :startingDate and s.endOfAvailabilityDate >= :endingDate and s.serviceState = :validState ";
         }
 
-        if (!object.isEmpty()) {
-            request += "and lower(s.nameObject) like concat('%',:object,'%') ";
-        }
+        //if (!object.isEmpty()) {
+        //    request += "and lower(s.nameObject) like concat('%',:object,'%') ";
+        //}
 
         if (!category.isEmpty()) {
             request += "and ";
@@ -72,9 +72,9 @@ public class ServiceDAO {
         query.setParameter("validState", 0);
         
 
-        if (!object.isEmpty()) {
-            query.setParameter("object", object.toLowerCase());
-        }
+        //if (!object.isEmpty()) {
+        //    query.setParameter("object", object.toLowerCase());
+        //}
         if (!category.isEmpty()) {
             query.setParameter("category", category);
         }
@@ -91,6 +91,42 @@ public class ServiceDAO {
         }
         List<Service> filteredServices = (List<Service>) query.getResultList();
         System.out.println("filtered: " + filteredServices.size());
+        
+        //Analyse sémantique sur le nom de l'objet
+        if (!object.isEmpty()) {
+            List<Service> filteredServicesWithName = new ArrayList<>();
+            SynonymsFinder sf = new SynonymsFinder();
+
+            String pronouns = "un une le la ce cette ma ta les des mon ton mes tes ses sa son notre votre leur";
+
+            String [] objectNameWords = object.toLowerCase().split(" ");
+            List<String> objectNameWordsWithoutPronouns = new ArrayList<>();
+
+            for(String word : objectNameWords){
+                if(!pronouns.contains(word)){
+                    objectNameWordsWithoutPronouns.add(word);
+                }
+            }
+
+            String synonyms = "";
+            for(String word : objectNameWordsWithoutPronouns){
+                synonyms += sf.SendRequest(word, "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json") + "|";
+            }
+
+
+            for(Service s : filteredServices){
+                String[] words = s.getNameObject().split(" ");
+                for(String word : words){
+                    if ( !pronouns.contains(word) && synonyms.contains(word)){
+                        filteredServicesWithName.add(s);
+                    }
+                }
+            }
+            filteredServices = filteredServicesWithName;
+        }
+        
+        //Tri sur le nombre de points
+        
 
         if (!nbPts.isEmpty()) {
             int nbPtsPerDay;
@@ -138,7 +174,7 @@ public class ServiceDAO {
         return services; 
     }
      
-    public List<Service> matchMakingForOffer(Service service){
+    public List<Service> matchMaking(Service service, int serviceClass){ //serviceClass: 0 for offer, 1 for demand
         EntityManager em = JpaUtil.getEntityManager();
         String request = "select s from Service s where "
                 + "type(s) = :class "
@@ -146,21 +182,26 @@ public class ServiceDAO {
                 + "and s.availabilityDate <= :startingDate "
                 + "and s.category = :category ";
                 //+ "and lower(s.nameObject) like concat('%',:object,'%') ";
-        if(!service.getLocation().equals("Autre")){
-            request += "and s.location = :location ";
-        }
+        //if(!service.getLocation().equals("Autre")){
+        //    request += "and s.location = :location ";
+        //}
         request += " order by s.publicationDate desc";
         
         
         Query query = em.createQuery(request);
-        query.setParameter("class", Demand.class);
+        if(serviceClass == 0){
+            query.setParameter("class", Demand.class);
+        }
+        else{
+            query.setParameter("class", Offer.class);
+        }
         query.setParameter("validState", 0);
         query.setParameter("startingDate", new Date(service.getAvailabilityDate().getTime() + 2*24*60*60*1000), TemporalType.TIMESTAMP);
         query.setParameter("category", service.getCategory());
         //query.setParameter("object", service.getNameObject().toLowerCase());
-         if(!service.getLocation().equals("Autre")){
-            query.setParameter("location", "Autre");
-        }
+         //if(!service.getLocation().equals("Autre")){
+         //   query.setParameter("location", service.getLocation());
+        //}
         
         
 
@@ -186,7 +227,6 @@ public class ServiceDAO {
             synonyms += sf.SendRequest(word, "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json") + "|";
         }
         
-        String[] pronounsArray = pronouns.split(" ");
         
         for(Service s : servicesWithoutNameFilter){
             String[] words = s.getNameObject().split(" ");

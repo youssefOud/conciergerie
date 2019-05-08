@@ -1,15 +1,24 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Person{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="PERSON_ID")
     private Long id;
     
     private String firstName;
@@ -34,6 +43,18 @@ public class Person{
     
     private String privilegedContact; // Value : "email" or "cellphone"
     
+
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="PERSON_OFFER", joinColumns=@JoinColumn(name="PERSON_ID"),
+    inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))//@JoinTable is used to map Join table in database
+    private List<Service> supposedlyInterestingOffers;
+
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="PERSON_DEMAND", joinColumns=@JoinColumn(name="PERSON_ID"),
+    inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))//@JoinTable is used to map Join table in database
+    private List<Service> supposedlyInterestingDemands;
+    
+    
     public Person() {
         
     }
@@ -48,6 +69,8 @@ public class Person{
         this.rating = -1.0; // Par défaut, si aucune annonce d'offre terminée
         this.nbRatings = 0;
         this.privilegedContact = "email"; // Par défaut
+        this.supposedlyInterestingDemands = new ArrayList<>();
+        this.supposedlyInterestingOffers = new ArrayList<>();
     }
 
     public Long getId() {
@@ -146,6 +169,30 @@ public class Person{
     
     public void setPrivilegedContact(String privilegedContact) {
         this.privilegedContact = privilegedContact;
+    }
+
+    public List<Service> getSupposedlyInterestingOffers() {
+        return supposedlyInterestingOffers;
+    }
+
+    public List<Service> getSupposedlyInterestingDemands() {
+        return supposedlyInterestingDemands;
+    }
+
+    public void setSupposedlyInterestingOffers(List<Service> supposedlyInterestingOffers) {
+        this.supposedlyInterestingOffers = supposedlyInterestingOffers;
+    }
+
+    public void setSupposedlyInterestingDemands(List<Service> supposedlyInterestingDemands) {
+        this.supposedlyInterestingDemands = supposedlyInterestingDemands;
+    }
+    
+    public void addSSupposedlyInterestingOffers(List<Service> supposedlyInterestingOffers) {
+        this.supposedlyInterestingOffers.addAll(supposedlyInterestingOffers);
+    }
+    
+    public void addSSupposedlyInterestingDemands(List<Service> supposedlyInterestingDemands) {
+        this.supposedlyInterestingDemands.addAll(supposedlyInterestingDemands);
     }
     
 }
