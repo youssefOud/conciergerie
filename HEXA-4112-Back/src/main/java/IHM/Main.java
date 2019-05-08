@@ -23,7 +23,7 @@ public class Main {
     public static void main (String[] args) throws ParseException{
         //Test de création de demande
         //On initialise
-        /*JpaUtil.init();
+        JpaUtil.init();
         Services s = new Services();
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
        
@@ -53,11 +53,12 @@ public class Main {
       // s.deletePerson(person1.getId());
       //  s.deletePerson(person1.getId());
 
-        s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 1, "jours",null, null, null);
+        //s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 1, "jours",null, null, null);
         System.out.println();
         //s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
             
-        //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
+//        List<Service> listS = (s.findAllServicesWithFilter(1L,"marteau","Bricolage", "Residence M", "", "", "", "", "", "","offre")).getKey();
+//        System.out.println("list size" + listS.size());
        // List<Service> listS = s.findAllServicesWithFilter("Marteau","", "", "", "", "","","" ,"");
         //List<Service> listS = s.findAllServicesWithFilter(category, location, date, time, duration, units, nbPts, serviceType)
         
@@ -69,9 +70,9 @@ public class Main {
         
         s.rateReservationByReservationOwner(6L, 2);
         
-
+       // boolean result  = (instance.createReservation(2L, 4L, "07/05/2019", "00:00", 1, "jours", null, null, null)).getKey();
         System.out.println();
-*/
+
         SynonymsFinder sf = new SynonymsFinder();
         System.out.println(sf.SendRequest("sac", "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json"));
         System.out.println();
