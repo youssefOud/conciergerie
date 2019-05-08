@@ -242,7 +242,7 @@ public class Services {
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
         }
-        this.matchMakingForOffer(offer.getId());
+        //this.matchMakingForOffer(offer.getId());
         
         JpaUtil.closeEntityManager();
         return true;
@@ -490,12 +490,7 @@ public class Services {
                     if (location != null) reservation.setLocation(location);
                 }
 
-                if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
-                    offerOwner.setPointBalance(offerOwner.getPointBalance() +  reservation.getReservationPrice());
-                    demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
-                    System.out.println("");
-                }
-                else{
+                if(demandOwner.getPointBalance() < reservation.getReservationPrice()){
                     JpaUtil.cancelTransaction();
                     JpaUtil.closeEntityManager();
                     return new Pair<> (false,"Votre solde est insuffisant pour réaliser cette opération.");
@@ -898,8 +893,7 @@ public class Services {
     }
     
     public List<Service> matchMakingForOffer(Long idService){
-        JpaUtil.createEntityManager();
-        
+      
         Service service = serviceDAO.findById(idService);
         List<Service> services = serviceDAO.matchMaking(service, 0);
         
@@ -911,24 +905,22 @@ public class Services {
         personDAO.merge(person);
         JpaUtil.validateTransaction();
         
-        
-        JpaUtil.closeEntityManager();
         return services;
     }
     
     public List<Service> matchMakingForDemand(Long idService){
-        JpaUtil.createEntityManager();
         
         Service service = serviceDAO.findById(idService);
         List<Service> services = serviceDAO.matchMaking(service, 1);
         
         Person person = service.getPerson();
-        List<Service> supposedlyInterestingOffers = person.getSupposedlyInterestingOffers();
-        supposedlyInterestingOffers.addAll(services);
-        person.setSupposedlyInterestingOffers(supposedlyInterestingOffers);
-        personDAO.merge(person);
+        person.addSSupposedlyInterestingDemands(services);
         
-        JpaUtil.closeEntityManager();
+       
+        JpaUtil.openTransaction();
+        personDAO.merge(person);
+        JpaUtil.validateTransaction();
+        
         return services;
     }
     
