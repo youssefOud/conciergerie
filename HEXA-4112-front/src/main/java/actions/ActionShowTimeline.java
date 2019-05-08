@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author X
+ * Class linking the front and back to display the timeline, 
+ * i.e. retrieve all ads that meet the user's criteria
+ * 
+ * @author HEXA-4112
  */
 public class ActionShowTimeline extends Action {
     

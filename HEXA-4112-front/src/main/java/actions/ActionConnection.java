@@ -13,8 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
- * @author X
+ * Class linking the front and back to connect the user
+ * 
+ * @author HEXA-4112
  */
 public class ActionConnection extends Action {
 
