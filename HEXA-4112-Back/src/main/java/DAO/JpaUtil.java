@@ -175,4 +175,3 @@ public class JpaUtil {
         return threadLocalEntityManager.get();
     }
 }
-

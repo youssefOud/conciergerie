@@ -59,7 +59,7 @@
                             role="button" aria-haspopup="true" aria-expanded="true" id="bonjour"></a>
                         <div class="dropdown-menu" x-placement="bottom-start"
                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
-                            <a class="dropdown-item" href="parametres.html">Paramètres</a> <a
+                            <a class="dropdown-item" href="profile.html">Paramètres</a> <a
                                 class="dropdown-item" href="contact.html">Contact support</a> <a
                                 class="dropdown-item" href="#" id="deco">Déconnexion</a>
                         </div></li>
@@ -91,6 +91,27 @@
 
                         </div>
                     </div>
+                    <!-- Pop Up de confirmation signalisation -->
+            <div class="modal" id="validationSignaler">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Confirmation</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                L'annonce a bien été signalée.
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button"  class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
                 </div>
 
         <script>
@@ -183,16 +204,20 @@
                             annonce += '<span style="color:#f47d42" >DEMANDE</span>';
                             }
 
-                            annonce += ' - Prêt - ' + data.Annonces[i].nomObjet + '<div class="text-right">\n\
+                            annonce += ' - Prêt - ' + data.Annonces[i].nomObjet;
+                            if(!data.Annonces[i].memePersonne){
+                                annonce +='<div class="text-right">\n\
                                                            <button type="button" class="btn btn-outline-warning" onclick="window.location.href =';
-                            if (data.Annonces[i].typeAnnonce == "offre"){
-                            annonce += "'./repondreOffre.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div></h3>';
-                            }
-                            else if (data.Annonces[i].typeAnnonce == "demande"){
-                            annonce += "'./repondreDemande.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div></h3>';
-                            }
+                                if (data.Annonces[i].typeAnnonce == "offre"){
+                                annonce += "'./repondreOffre.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div>';
+                                }
+                                else if (data.Annonces[i].typeAnnonce == "demande"){
+                                annonce += "'./repondreDemande.html?idAnnonce="+data.Annonces[i].idAnnonce +"'"+'"'+'">Répondre</button></div>';
+                                }
             
-                                         annonce += '<div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
+                            }
+                            
+                            annonce += '</h3><div class="card-body"><h6 class="card-subtitle text-muted">' + data.Annonces[i].categorie + '</h6>';
                             if (data.Annonces[i].images != undefined && data.Annonces[i].images.length != 0){
                             annonce += '<div id="carousel' + i + '" class="carousel slide" data-ride="carousel">\n\
                                         <div class="carousel-inner">\n\
@@ -236,8 +261,30 @@
                                 <li class="list-group-item">Durée de disponibilité : ' + data.Annonces[i].duree + ' ' + data.Annonces[i].uniteDuree + '</li>\n\
                             <li class="list-group-item">Prix : ' + data.Annonces[i].nbPts + ' points par ' + data.Annonces[i].unitePrix + '</li>\n\
                                 <li class="list-group-item">Localisation : ' + data.Annonces[i].localisation + '</li>\n\
-                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Note : '+noteAuteur+'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication + '</div></div></div>'
-                                    $('#fil').append(annonce);
+                                </ul></div></div><div class="card-footer text-muted">Contact : '+data.Annonces[i].auteur +'<br/>Note : '+noteAuteur+'<br/>Le ' + data.Annonces[i].datePublication + ' à ' + data.Annonces[i].timePublication; 
+                                if(!data.Annonces[i].memePersonne){
+                                    annonce+='<div class="text-right"><a href="#" onclick="$.ajax({\n\
+                                type:'+" 'POST',\n\
+                                        url: './ActionServlet',\n\
+                                        data: {todo : 'signalerAnnonce', idAnnonce : "+ data.Annonces[i].idAnnonce +" },\n\
+                                        timeout: 3000,\n\
+                                        dataType:'json',\n\
+                                        success: function (data) {\n\
+                                        console.log(data);\n\
+                                        if (data.signale){"+'\n\
+                                            $('+"'#validationSignaler'"+').modal();\n\
+                                        }\n\
+                                        else{\n\
+                                                $('+"'#erreur'"+').modal();\n\
+                                        }\n\
+                                        },\n\
+                                        error: function () {\n\
+                                                $('+"'#erreur'"+').modal();\n\
+                                        }\n\
+                                    });"  > Signaler</a></div>';
+                                }
+                                
+                            annonce +='</div></div></div>';                                    $('#fil').append(annonce);
                     }
                     },
                     error: function (data) {

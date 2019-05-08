@@ -277,7 +277,16 @@
                                             }
                                             else if(data.Annonces[i].etatReponse == 2){
                                                 annonce+='<tr class="table-danger"><td></td>';
+                                            }//terminée
+                                            else if(data.Annonces[i].etatReponse == 3 || data.Annonces[i].etatReponse == 4 ){
+                                                annonce+='<tr><td><input type="number" min="0" max="5" value="0" id="rating"/><button class="btn" \n\
+                                                onclick="'+"var rating=$('#rating').val();$.ajax({type: 'POST',url: './ActionServlet',data: { todo : 'noterOffrant', reservationId :"+data.Annonces[i].idReponse+", rating : rating },dataType:'json',success: function (data) {console.log(data);if (data.note){window.location.reload();}else{$('#erreur').modal();}},error: function () {$('#erreur').modal();}});"+'"';
+                                                annonce+='><i class="fa fa-star"></i></button></td>';
+                                            }//notée
+                                            else if(data.Annonces[i].etatReponse == 5 || data.Annonces[i].etatReponse == 6  ){
+                                                annonce+='<tr class="table-active"><td>Prêt noté</td>';
                                             }
+                                                        
 
                                             annonce+='<td>'+data.Annonces[i].dateReponse+' '+data.Annonces[i].timeReponse+'</td>\n\
                                                         <td>'+data.Annonces[i].dureeReponse+' '+data.Annonces[i].uniteDureeReponse+'</td>\n\

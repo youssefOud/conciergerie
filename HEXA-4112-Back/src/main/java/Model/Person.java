@@ -194,5 +194,4 @@ public class Person{
     public void addSSupposedlyInterestingDemands(List<Service> supposedlyInterestingDemands) {
         this.supposedlyInterestingDemands.addAll(supposedlyInterestingDemands);
     }
-    
 }

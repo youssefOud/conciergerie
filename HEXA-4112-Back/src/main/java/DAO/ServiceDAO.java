@@ -40,9 +40,6 @@ public class ServiceDAO {
             request = "select s from Service s where s.availabilityDate <= :startingDate and s.endOfAvailabilityDate >= :endingDate and s.serviceState = :validState ";
         }
 
-        //if (!object.isEmpty()) {
-        //    request += "and lower(s.nameObject) like concat('%',:object,'%') ";
-        //}
 
         if (!category.isEmpty()) {
             request += "and ";
@@ -70,11 +67,8 @@ public class ServiceDAO {
         }
         query.setParameter("endingDate", endingDate, TemporalType.TIMESTAMP);
         query.setParameter("validState", 0);
-        
-
-        //if (!object.isEmpty()) {
-        //    query.setParameter("object", object.toLowerCase());
-        //}
+       
+      
         if (!category.isEmpty()) {
             query.setParameter("category", category);
         }
@@ -90,6 +84,7 @@ public class ServiceDAO {
             }
         }
         List<Service> filteredServices = (List<Service>) query.getResultList();
+
         System.out.println("filtered: " + filteredServices.size());
         
         //Analyse sémantique sur le nom de l'objet
@@ -126,7 +121,7 @@ public class ServiceDAO {
         }
         
         //Tri sur le nombre de points
-        
+
 
         if (!nbPts.isEmpty()) {
             int nbPtsPerDay;

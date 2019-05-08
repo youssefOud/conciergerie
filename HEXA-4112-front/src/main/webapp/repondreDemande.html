@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="UTF-8">
+        <!--  CSS Files -->
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous" />
+        <link rel="stylesheet" href="css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="css/datepicker.css"></link>
+        <link rel="stylesheet" href="css/clockpicker.css"></link>
+        <link rel="stylesheet" href="css/style.css"></link>
+        <!-- JS Files -->
+        <script src="//code.jquery.com/jquery-1.12.0.min.js">
+        <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+              crossorigin="anonymous"></script>
+
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/clockpicker.js"></script>
+
+
+        <link rel="shortcut icon" type="images/png" href="img/favicon.png"/>
+
+        <title>Répondez à une annonce</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="filActu.html">
+                <img src="img/logo.png" alt="Campus Exchange">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarColor02" aria-controls="navbarColor02"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="deposerAnnonce.html">D&eacute;poser
+                            une annonce
+                        </a></li>
+                    <li class="nav-item"><a class="nav-link" href="offres.html">Offres</a></li>
+                    <li class="nav-item"><a class="nav-link" href="demandes.html">Demandes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesAnnonces.html">Mes annonces</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mesReponses.html">Mes réponses</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item dropdown"><a
+                            class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="true" aria-expanded="true" id="bonjour"></a>
+                        <div class="dropdown-menu" x-placement="bottom-start"
+                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
+                            <a class="dropdown-item" href="profile.html">Paramètres</a> <a
+                                class="dropdown-item" href="contact.html">Contact support</a> <a
+                                class="dropdown-item" href="#" id="deco">Déconnexion</a>
+                        </div></li>
+                </ul>
+            </div>
+        </nav>
+
+
+        <div class='container'>
+            <form>
+                
+                <fieldset>
+                    <legend id="titre"></legend>
+                </fieldset>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="objet">Description</label> <input type="text"
+                                                                  class="form-control" id="description"
+                                                                  placeholder="Renseignez le description de l'objet">
+                </div>
+
+                <!-- Date de dispo -->
+                <div class="form-group">
+                    <label class="control-label" for="date">Date de
+                        disponibilité</label> <input class="form-control" id="date" 
+                                                 placeholder="le DD/MM/AAAA" type="text" /><br> <input type="text"
+                                                 class="form-control" id="time" placeholder="à HH:mm"><div class="invalid-feedback">Veuillez renseigner une date ultérieure.</div>
+                </div>
+
+
+                <!-- Durée de dispo-->
+                <div class="form-group">
+                    <label for="objet">Dur&eacute;e de disponibilit&eacute;</label> <input
+                        type="number" min="1" class="form-control" id="duree"
+                        placeholder="Renseignez la dur&eacute;e de disponibilit&eacute; de l'objet">
+                </div>
+
+                <!-- En minutes, en heures ou en jours-->
+                <div class="form-group ">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input"
+                               id="minutes" name="unite" checked="">
+                        <label class="custom-control-label" for="minutes">Minutes</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input"
+                               id="heures" name="unite">
+                        <label class="custom-control-label" for="heures">Heures</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input"
+                               id="jours" name="unite"> <label
+                               class="custom-control-label" for="jours">Jours</label>
+                    </div>
+                </div>
+
+                <!-- Localisations-->
+                <div class="form-group">
+                    <label for="localisations">Localisation</label> <select
+                        class="form-control select" id="localisations">
+                        <option>R&eacute;sidence A</option>
+                        <option>R&eacute;sidence B</option>
+                        <option>R&eacute;sidence C</option>
+                        <option>R&eacute;sidence D</option>
+                        <option>R&eacute;sidence E</option>
+                        <option>R&eacute;sidence F</option>
+                        <option>R&eacute;sidence G</option>
+                        <option>R&eacute;sidence H</option>
+                        <option>R&eacute;sidence I</option>
+                        <option>R&eacute;sidence J</option>
+                        <option>R&eacute;sidence M</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+
+                <br>
+                <!-- Import de photos -->
+                <label for="nbPts">Photos (limité à 5 images)</label>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-2 imgUp">
+                            <div class="imagePreview"></div>
+                            <label class="btn btn-primary btn-image">
+                                Charger<input type="file" class="uploadFile img" value="Upload Photo" 
+                                              style="width: 0px;height: 0px;overflow: hidden;">
+                            </label>
+                        </div>
+                        <i class="fa fa-plus imgAdd" id="ajouterBox"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group form-inline">
+                    <button type="button" class="btn btn-secondary" id="calculerPrix" >Calculer le prix  </button>&nbsp;&nbsp;&nbsp;
+
+                    <div class="form-group">
+                        <fieldset>
+                          <input class="form-control" id="prixCalcule" type="text" placeholder="Prix calculé" readonly="">
+                        </fieldset>
+                    </div>
+                </div>
+
+                <!-- Validation -->
+                <div class="center">
+                    <button type="button" class="btn btn-primary" id="valider">Valider</button>
+                </div>
+
+                <!-- Pop Up de validation -->
+                <div class="modal" id="validation">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Validation</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                Êtes-vous sûr de vouloir déposer cette réponse ?
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="deposer" class="btn btn-primary" data-dismiss="modal">Déposer</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pop Up d'erreur -->
+                <div class="modal" id="erreurSpecifique">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Erreur</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body" id="messageErreur">
+                                
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="deposer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pop Up d'erreur réseau -->
+                <div class="modal" id="erreur">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Erreur</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body" >La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.
+                                
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="deposer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+<script>
+            
+        $(document).ready(function () {
+            var session = new Object();
+            session.todo = "recupererInfoPersonne";
+            $.ajax({
+                type: 'POST',
+                url: './ActionServlet',
+                data: session,
+                timeout: 3000,
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    if (!data.session) {
+                        window.location.replace(
+                            "./index.html");
+                    } else {
+                        document.getElementById("bonjour").innerHTML = "Bonjour, " + data.prenom;
+                        document.getElementById("deco").addEventListener("click", function() {
+                            var deco = new Object();
+                            deco.todo = "seDeconnecter";
+                            $.ajax({
+                                type: 'POST',
+                                url: './ActionServlet',
+                                data: deco,
+                                dataType: 'json',
+                                success: function(data) {
+                                    console.log(data);
+                                    if (data.deconnexion) {
+                                        window.location.replace(
+                                            "./index.html");
+                                    } else {
+
+                                        $("#erreur").modal();
+                                    }
+                                },
+                                error: function(data) {
+                                    console.log(data);
+                                    $("#erreur").modal();
+                                }
+                            });
+                        });
+                        $('#date').datepicker({
+                            format: "dd/mm/yyyy",
+                            locale: "fr",
+                            autoclose: true,
+                            todayHighlight: true,
+                            pick12HourFormat: true
+                        });
+                        $('#time').clockpicker({
+                            autoclose: true,
+                            donetext: 'Done'
+                        });
+                        var details = new Object();
+                        details.todo = "detailsAnnonce";
+                        var url = new URL(window.location);
+                        details.idAnnonce = url.searchParams.get("idAnnonce");
+                        $.ajax({
+                            type: 'POST',
+                            url: './ActionServlet',
+                            data: details,
+                            timeout: 3000,
+                            dataType: 'json',
+                            success: function(data) {
+                                console.log(data);
+                                if (data.annonce) {
+                                    var titre = "Réponse à une ";
+                                    if (data.typeAnnonce == "offre") {
+                                        titre += '<span style="color:#007bff" >OFFRE</span>';
+                                    } else if (data.typeAnnonce == "demande") {
+                                        titre += '<span style="color:#f47d42" >DEMANDE</span>';
+                                    }
+                                    titre += "<br/> Prêt - " + data.objet;
+                                    document.getElementById("titre").innerHTML = titre;
+
+                                    document.getElementById("date").value = data.date;    
+                                        $('#date').datepicker('setDate', data.date.replace('/','-'));
+   
+                                    
+                                    document.getElementById("duree").value = data.duree;
+                                    document.getElementById("time").value = data.time;
+                                    if (data.uniteDuree = "heures") {
+                                        document.getElementById("heures").checked = "";
+                                    } else if (data.uniteDuree = "jours") {
+                                        document.getElementById("jours").checked = "";
+                                    } else if (data.uniteDuree = "minutes") {
+                                        document.getElementById("minutes").checked = "";
+                                    }
+
+                                } else {
+
+                                    $("#erreur").modal();
+                                }
+                            },
+                            error: function(data) {
+                                console.log(data);
+                                $("#erreur").modal();
+                            }
+                        });
+                        document.getElementById("calculerPrix").addEventListener("click", function() {
+                            var send = true;
+                            var calculPrix = new Object();
+                            calculPrix.todo = "calculPrix";
+                            var url = new URL(window.location);
+                            calculPrix.idAnnonce = url.searchParams.get("idAnnonce");
+                            if (document.getElementById("duree").value != "") {
+                                calculPrix.duree = document.getElementById("duree").value;
+                                document.getElementById("duree").classList.remove("is-invalid");
+                            } else {
+                                send = false;
+                                document.getElementById("duree").classList.add("is-invalid");
+                            }
+
+                            //Unité durée
+                            calculPrix.uniteDuree = "heures";
+                            if ($('#jours').is(':checked')) {
+                                calculPrix.uniteDuree = "jours";
+                            } else if ($('#minutes').is(':checked')) {
+                                calculPrix.uniteDuree = "minutes";
+                            }
+                            if (send) {
+                            
+                                $.ajax({
+                                    type: 'POST',
+                                    url: './ActionServlet',
+                                    data: calculPrix,
+                                    timeout: 3000,
+                                    dataType: 'json',
+                                    success: function(data) {
+                                        console.log(data);
+                                        if (data.calcule) {
+                                            document.getElementById("prixCalcule").value = data.prix;
+                                        } else {
+
+                                            $("#erreur").modal();
+                                        }
+                                    },
+                                    error: function(data) {
+                                        console.log(data);
+                                        $("#erreur").modal();
+                                    }
+                                });
+                            }
+                        });
+                        
+                        var nbPictures = 1;
+                
+                document.getElementById("ajouterBox").addEventListener("click", function () {
+                                    if (nbPictures < 4) {
+                            $(this).closest(".row").find('.imgAdd').before('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary btn-image">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                            nbPictures++;
+                            } else if (nbPictures == 4) {
+                                    $(this).closest(".row").find('.imgAdd').replaceWith('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary btn-image">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                            nbPictures++;
+                }
+                console.log(nbPictures);
+                
+                });
+                    $(document).on("click", "i.del", function () {
+                                    if (nbPictures == 5) {
+                            $(this).parent().siblings().last().after('<i class="fa fa-plus imgAdd" id="ajouterBox"></i>');
+                            document.getElementById("ajouterBox").addEventListener("click", function () {
+                            if (nbPictures < 4) {
+                            $(this).closest(".row").find('.imgAdd').before('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary btn-image">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                            nbPictures++;
+                    } else if (nbPictures == 4) {
+                                    $(this).closest(".row").find('.imgAdd').replaceWith('<div class="col-sm-2 imgUp"><div class="imagePreview"></div><label class="btn btn-primary btn-image">Charger<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+                            nbPictures++;
+                        }
+                        });
+                        }
+                        $(this).parent().remove();
+                        nbPictures--;
+                        });
+                        $(function () {
+                                    $(document).on("change", ".uploadFile", function () {
+                            var uploadFile = $(this);
+                            var files = !!this.files ? this.files : [];
+                            if (!files.length || !window.FileReader)
+                                    return; // no file selected, or no FileReader support
+
+                            if (/^image/.test(files[0].type)) { // only image file
+                            var reader = new FileReader(); // instance of the FileReader
+                            reader.readAsDataURL(files[0]); // read the local file
+
+                            reader.onloadend = function () { // set image data as background of div
+                            //alert(uploadFile.closest(".upimage").find('.imagePreview').length);
+                            uploadFile.closest(".imgUp").find('.imagePreview').css("background-image", "url(" + this.result + ")");
+                        }
+                        }
+                        
+                        });
+                        });
+                        
+                        document.getElementById("valider").addEventListener("click", function() {
+                            var send = true;
+                            var answers = new Object();
+                            var url = new URL(window.location);
+                            answers.idAnnonce = url.searchParams.get("idAnnonce");
+                            answers.todo = "repondreAnnonce";
+                            //Date
+                            if (document.getElementById("date").value != "" && document.getElementById("time").value != "") {
+                                answers.date = document.getElementById("date").value;
+                                answers.time = document.getElementById("time").value;
+                            } else if (document.getElementById("date").value == "") {
+                                send = false;
+                                document.getElementById("date").classList.add("is-invalid");
+                            }
+                            if (document.getElementById("time").value == "") {
+                                send = false;
+                                document.getElementById("time").classList.add("is-invalid");
+                            }
+                            //Durée
+                            if (document.getElementById("duree").value != "") {
+                                answers.duree = document.getElementById("duree").value;
+                                document.getElementById("duree").classList.remove("is-invalid");
+                            } else {
+                                send = false;
+                                document.getElementById("duree").classList.add("is-invalid");
+                            }
+                            //Unité durée
+                            answers.uniteDuree = "heures";
+                            if ($('#jours').is(':checked')) {
+                                answers.uniteDuree = "jours";
+                            } else if ($('#minutes').is(':checked')) {
+                                answers.uniteDuree = "minutes";
+                            }
+                            //Description
+                            if (document.getElementById("description").value != "") {
+                                answers.description = document.getElementById("description").value;
+                            }else{
+                                answers.description="";
+                            }
+                            //Localisation
+                            answers.localisation = document.getElementById('localisations').value;
+                            //Images
+                            myArrayFile = $('.uploadFile');
+                    answers.pictures="";
+                
+                for (i = 0; i < myArrayFile.length; i++) {
+                                    var uploadFile = myArrayFile[i];
+                            var files = !!myArrayFile[i].files ? myArrayFile[i].files : [];
+                            if (!files.length || !window.FileReader) {
+                            console.log(myArrayFile.length);
+                            if (myArrayFile.length > 1){
+                            send = false;
+                            }
+                            break; // no file selected, or no FileReader support
+                                }
+                            if (/^image/.test(files[0].type)) { // only image file
+                                    var reader = new FileReader(); // instance of the FileReader
+                            reader.onload = function (event) {
+                            // I usually remove the prefix to only keep data, but it depends on your server
+                            var data = event.target.result.replace("data:" + files[0].type + ";base64,", "data:" + files[0].type + ";base64, ");
+                            answers.pictures += data + "-";
+                                };
+                                reader.readAsDataURL(files[0]);
+                                }
+                                }
+                            
+                            
+                            if (send) {
+                                //Validation
+                                $("#validation").modal();
+                                document.getElementById("deposer").addEventListener("click", function() {
+                                    var send = true;
+                                    var answers = new Object();
+                                    var url = new URL(window.location);
+                                    answers.idAnnonce = url.searchParams.get("idAnnonce");
+                                    answers.todo = "repondreAnnonce";
+                                    answers.date = document.getElementById("date").value;
+                                    answers.time = document.getElementById("time").value.substring(0,5);
+                                    answers.duree = document.getElementById("duree").value;
+                                    answers.uniteDuree = "heures";
+                                    if ($('#jours').is(':checked')) {
+                                        answers.uniteDuree = "jours";
+                                    } else if ($('#minutes').is(':checked')) {
+                                        answers.uniteDuree = "minutes";
+                                    }
+                                    console.log(answers);
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: './ActionServlet',
+                                        data: answers,
+                                        dataType: 'json',
+                                        success: function(data) {
+                                            console.log(data);
+                                            if (data.creationReponse) {
+                                                window.location.replace(
+                                                    "./filActu.html?reponse");
+                                            } else {
+                                                document.getElementById("messageErreur").innerHTML= data.messageErreur;
+                                                $("#erreurSpecifique").modal();
+                                            }
+                                        },
+                                        error: function(data) {
+                                            console.log(data)
+                                            document.getElementById("messageErreur").innerHTML= data.messageErreur;
+                                                $("#erreurSpecifique").modal();
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    }
+                },
+                error(data){
+                    console.log(data);
+                    $("#erreur").modal();
+                }
+            });
+    
+        });
+    
+</script>
+
+
+    </body>
+</html>
