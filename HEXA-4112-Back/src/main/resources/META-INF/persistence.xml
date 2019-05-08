@@ -12,9 +12,9 @@
     <class>Model.DeletedAccounts</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/hexa-4112"/>
-      <property name="javax.persistence.jdbc.user" value="agathe"/>
-      <property name="javax.persistence.jdbc.password" value="agathe"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/HEXA-4112"/>
+      <property name="javax.persistence.jdbc.user" value="test"/>
+      <property name="javax.persistence.jdbc.password" value="test"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
