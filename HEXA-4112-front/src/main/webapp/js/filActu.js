@@ -423,7 +423,26 @@ $(document).ready(function () {
                             }
                     });
                     
+                   var athleteURL = [];
+                    var athleteList = [];
                     
+                    function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+                    
+                    var labelList = [];
+        
+                    getAllMedalistAndEvents(document, labelList);
+                    
+                    function getAllMedalistAndEvents(document, labelList){
+                        var query = 'select distinct ?label where {?furniture rdf:type dbo:Device. ?furniture rdfs:label ?label FILTER (lang(?label)="fr")}';
+                        var url = 'https://dbpedia.org/sparql/?default-graph-uri=http%3A%2F%2Fdbpedia.org&query='+ encodeURIComponent(query) +'&format=json';
+                        $.getJSON(url+"&callback=?", function(resultats) {
+                          resultats.results.bindings.forEach(function(element) {
+                            labelList.push(element.label.value);
+                          });
+                          autocomplete(document.getElementById('objet'), document.getElementById("autocomplete"), labelList);
+                        });
+
+                    }
                     
                     
                     });
