@@ -243,7 +243,7 @@ public class Services {
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
         }
-        //this.matchMakingForOffer(offer.getId());
+        this.matchMakingForOffer(offer.getId());
         
         JpaUtil.closeEntityManager();
         return true;
@@ -612,17 +612,42 @@ public class Services {
     public boolean deleteService(Long serviceId){
         JpaUtil.createEntityManager();
         try {
-            JpaUtil.openTransaction();
-            ///////////////////////////////////////  Supprimer aussi toutes les réservations qui sont en lien avec le service
+            
             
             List<Reservation> reservations = reservationDAO.findAllReservationsByService(serviceDAO.findById(serviceId));
             
             for(Reservation r: reservations){
+                JpaUtil.openTransaction();
                 reservationDAO.remove(r);
+                JpaUtil.validateTransaction();
             }
             
+            
+            
             Service serviceToRemove = serviceDAO.findById(serviceId);
+            List<Person> persons;
+            if(serviceToRemove instanceof Demand){
+                persons = personDAO.findBySupposedlyInterestingDemand((Demand)serviceToRemove);
+                for(Person p : persons){
+                    p.deleteSupposedlyInterestingDemands(serviceToRemove);
+                    JpaUtil.openTransaction();
+                    personDAO.merge(p);
+                    JpaUtil.validateTransaction();
+                }
+            }
+            else{
+                persons = personDAO.findBySupposedlyInterestingOffer((Offer)serviceToRemove);
+                for(Person p : persons){
+                    p.deleteSupposedlyInterestingOffers(serviceToRemove);
+                    JpaUtil.openTransaction();
+                    personDAO.merge(p);
+                    JpaUtil.validateTransaction();
+                }
+            }
+            
+            JpaUtil.openTransaction();
             serviceDAO.remove(serviceToRemove);
+            
             JpaUtil.validateTransaction();
         }
         catch(Exception e){

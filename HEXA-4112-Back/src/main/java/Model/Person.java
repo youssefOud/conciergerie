@@ -194,4 +194,12 @@ public class Person{
     public void addSSupposedlyInterestingDemands(List<Service> supposedlyInterestingDemands) {
         this.supposedlyInterestingDemands.addAll(supposedlyInterestingDemands);
     }
+    
+     public void deleteSupposedlyInterestingOffers(Service supposedlyInterestingOffer) {
+        this.supposedlyInterestingOffers.remove(supposedlyInterestingOffer);
+    }
+     
+    public void deleteSupposedlyInterestingDemands(Service supposedlyInterestingDemand) {
+        this.supposedlyInterestingDemands.remove(supposedlyInterestingDemand);
+    }
 }

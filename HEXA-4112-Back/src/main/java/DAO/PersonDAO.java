@@ -1,5 +1,7 @@
 package DAO;
 
+import Model.Demand;
+import Model.Offer;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -53,6 +55,26 @@ public class PersonDAO {
             return null;
         }
         return ((List<Person>) query.getResultList()).get(0); 
+    }
+    
+    public List<Person> findBySupposedlyInterestingDemand(Demand d){
+        EntityManager em = JpaUtil.getEntityManager();
+        Query query = em.createQuery("select u from Person u where :demand MEMBER OF u.supposedlyInterestingDemands");
+        
+        //SELECT d FROM Document AS d WHERE :user MEMBER OF d.accessors
+        query.setParameter("demand", d);
+        
+        return (List<Person>) query.getResultList();
+    }
+    
+    public List<Person> findBySupposedlyInterestingOffer(Offer o){
+        EntityManager em = JpaUtil.getEntityManager();
+        Query query = em.createQuery("select u from Person u where :offer MEMBER OF u.supposedlyInterestingOffers");
+        
+        //SELECT d FROM Document AS d WHERE :user MEMBER OF d.accessors
+        query.setParameter("offer", o);
+        
+        return (List<Person>) query.getResultList();
     }
     
 }
