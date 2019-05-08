@@ -45,14 +45,12 @@ public class Person{
     private String privilegedContact; // Value : "email" or "cellphone"
     
 
-    @ManyToMany(cascade={CascadeType.ALL} )
-    @CascadeOnDelete 
+    @ManyToMany(cascade={CascadeType.ALL} ) 
     @JoinTable(name="PERSON_OFFER", joinColumns=@JoinColumn(name="PERSON_ID"),
     inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))//@JoinTable is used to map Join table in database
     private List<Service> supposedlyInterestingOffers;
 
     @ManyToMany(cascade={CascadeType.ALL})
-    @CascadeOnDelete 
     @JoinTable(name="PERSON_DEMAND", joinColumns=@JoinColumn(name="PERSON_ID"),
     inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))//@JoinTable is used to map Join table in database
     private List<Service> supposedlyInterestingDemands;
