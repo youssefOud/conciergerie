@@ -25,7 +25,7 @@ public class Moderation {
         String nameObject = service.getNameObject().toLowerCase();
         boolean findWordObscene = false;
         int i = 0;
-        while (!findWordObscene || i!=tabWordsObscenes.length)
+        while (!findWordObscene && i!=tabWordsObscenes.length)
         {
                 findWordObscene = nameObject.contains(tabWordsObscenes[i].toLowerCase()) || description.contains(tabWordsObscenes[i].toLowerCase());
                 i++;
