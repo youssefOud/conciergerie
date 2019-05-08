@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package actions;
 
 import Model.Service;
@@ -14,15 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author X
+ * Class linking the front and back to get the details of an ad
+ * 
+ * @author HEXA-4112
  */
 public class ActionGetAdDetails extends Action {
 
     @Override
     public void executeAction(HttpServletRequest request) throws ServletException, IOException, ParseException {
-        HttpSession session = request.getSession();
-        Long idPerson = (Long) session.getAttribute("idPerson");
         
         String idAds = request.getParameter("idAnnonce");
         Long idAdsLong = Long.valueOf(idAds);

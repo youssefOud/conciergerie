@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author X
+ * Class linking the front and back for unsubscribing a person
+ * 
+ * @author HEXA-4112
  */
 public class ActionDeletePerson extends Action {
 
