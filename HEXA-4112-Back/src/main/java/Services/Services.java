@@ -897,7 +897,6 @@ public class Services {
     }
     
     public List<Service> matchMakingForOffer(Long idService){
-        JpaUtil.createEntityManager();
         
         Service service = serviceDAO.findById(idService);
         List<Service> services = serviceDAO.matchMaking(service, 0);
@@ -911,23 +910,22 @@ public class Services {
         JpaUtil.validateTransaction();
         
         
-        JpaUtil.closeEntityManager();
         return services;
     }
     
     public List<Service> matchMakingForDemand(Long idService){
-        JpaUtil.createEntityManager();
         
         Service service = serviceDAO.findById(idService);
         List<Service> services = serviceDAO.matchMaking(service, 1);
         
         Person person = service.getPerson();
-        List<Service> supposedlyInterestingOffers = person.getSupposedlyInterestingOffers();
-        supposedlyInterestingOffers.addAll(services);
-        person.setSupposedlyInterestingOffers(supposedlyInterestingOffers);
-        personDAO.merge(person);
+        person.addSSupposedlyInterestingDemands(services);
         
-        JpaUtil.closeEntityManager();
+       
+        JpaUtil.openTransaction();
+        personDAO.merge(person);
+        JpaUtil.validateTransaction();
+        
         return services;
     }
     
