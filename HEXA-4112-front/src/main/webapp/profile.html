@@ -181,13 +181,6 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p id="desinscription">
-                                                Vous souhaitez supprimer votre compte Campus Exchange. Conformement à la 
-                                                législation européenne, vous pouvez faire valoir votre droit à l'oubli. 
-                                                Sachez néanmoins qu'une fois le processus de suppression démarré, 
-                                                vous ne pourrez plus réactiver votre compte ou récupérer du contenu ou 
-                                                des informations que vous y aviez ajoutés.
-                                            </p>
                                         </div>
                                     </div>
                                     <button id="btnUnsubscribe" type="button" 
@@ -200,6 +193,48 @@
                     </div>
                 </div>
             </form>
+            <!-- Pop Up de validation -->
+            <div class="modal" id="validation">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title">Validation</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            Changements pris en compte
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" id="deposer" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+                        <!-- Pop Up de validation -->
+            <div class="modal" id="unsubscribe">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title">Désinscription</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            Etes-vous sûr de vouloir supprimer votre compte ?
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" id="validerdes" class="btn btn-primary" data-dismiss="modal">Valider</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div class="modal" id="erreur">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -211,7 +246,7 @@
                             La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="deposer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                            <button type="button" id="fermer" class="btn btn-danger" data-dismiss="modal">Fermer</button>
                         </div>
                     </div>
                 </div>

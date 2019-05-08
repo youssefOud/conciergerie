@@ -18,11 +18,12 @@ import Utils.Moderation;
 import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import javafx.util.Pair;
+import java.util.Map;
 
 public class Services {
     
@@ -283,7 +284,7 @@ public class Services {
     // TODO : A completer : permet de retourner toutes les demandes
     // en cours avec les filtres mis
     
-    public Pair<List<Service>,Integer> findAllServicesWithFilter(Long idPerson, String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
+    public Map.Entry findAllServicesWithFilter(Long idPerson, String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
         
         Date today = new Date();
@@ -405,7 +406,7 @@ public class Services {
         } 
         
         JpaUtil.closeEntityManager();
-        return new Pair(filteredServices,nbPropositions);
+        return new AbstractMap.SimpleEntry(filteredServices,nbPropositions);
     }
     
     public Person getPersonById(Long idPerson) {
@@ -441,17 +442,16 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-  
-     public Pair<Boolean, String> createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit, 
-                                                    String pictures, String description, String location){
-       JpaUtil.createEntityManager();
+    
+    public Map.Entry createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
+        JpaUtil.createEntityManager();
         Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
         Person reservationOwner = personDAO.findById(idReservationOwner);
         Service service = serviceDAO.findById(idService);
         if (service != null) serviceOwner = service.getPerson();
         if (serviceOwner.getId() == idReservationOwner) {
             JpaUtil.closeEntityManager();
-            return new Pair<>(false, "Vous ne pouvez pas répondre à votre propre annonce.");
+            return new AbstractMap.SimpleEntry(false, "Vous ne pouvez pas répondre à votre propre annonce.");
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date reservationStartingDate;
@@ -460,7 +460,7 @@ public class Services {
         }
         catch (Exception e){
             JpaUtil.closeEntityManager();
-            return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
+            return new AbstractMap.SimpleEntry(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
         }
         Date reservationRequestDate = new Date();
         
@@ -472,7 +472,7 @@ public class Services {
                 if(reservation.getReservationStartingDate().getTime() < service.getAvailabilityDate().getTime() || reservation.getReservationEndingDate().getTime() > service.getEndOfAvailabilityDate().getTime()){
                     JpaUtil.validateTransaction();
                     JpaUtil.closeEntityManager();
-                    return new Pair<>(false, "Les dates saisies ne sont pas valides. Veuillez réessayer.");
+                    return new AbstractMap.SimpleEntry(false, "Les dates saisies ne sont pas valides. Veuillez réessayer.");
                 }
                 
                 //Point balance checking
@@ -485,15 +485,12 @@ public class Services {
                 else {
                     offerOwner = reservation.getReservationOwner();
                     demandOwner = reservation.getService().getPerson();
-                    if (pictures != null) reservation.setPictures(pictures);
-                    if (description != null) reservation.setPictures(description);
-                    if (location != null) reservation.setLocation(location);
                 }
 
                 if(demandOwner.getPointBalance() < reservation.getReservationPrice()){
                     JpaUtil.cancelTransaction();
                     JpaUtil.closeEntityManager();
-                    return new Pair<> (false,"Votre solde est insuffisant pour réaliser cette opération.");
+                    return new AbstractMap.SimpleEntry (false,"Votre solde est insuffisant pour réaliser cette opération.");
                 }
                 
                 String demandOwnerContact = ((demandOwner.getPrivilegedContact().equals("email")) ? demandOwner.getMail() : demandOwner.getCellNumber());
@@ -508,16 +505,15 @@ public class Services {
             catch(Exception e){
                 JpaUtil.cancelTransaction();
                 JpaUtil.closeEntityManager();
-                return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
+                return new AbstractMap.SimpleEntry(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
             }
         }
         else{
             JpaUtil.closeEntityManager();
-            return new Pair<>(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
+            return new AbstractMap.SimpleEntry(false, "La requête n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
         }
         JpaUtil.closeEntityManager();
-        return new Pair<>(true, "Votre demande a bien été prise en compte");
-    
+        return new AbstractMap.SimpleEntry(true, "Votre demande a bien été prise en compte");
     }
     
     public boolean updateServiceState(Service service) {
@@ -667,7 +663,7 @@ public class Services {
         return (int)Math.ceil(durationInMinutes * nbPtsInMinutes);
     }
     
-    public Pair<Boolean, String> confirmReservation(Long idReservation){ //On retourne le message d'erreur ou de confirmation
+    public Map.Entry confirmReservation(Long idReservation){ //On retourne le message d'erreur ou de confirmation
         JpaUtil.createEntityManager();
         Reservation reservation = reservationDAO.findById(idReservation);
         try{
@@ -693,7 +689,7 @@ public class Services {
             else{
                 JpaUtil.cancelTransaction();
                 JpaUtil.closeEntityManager();
-                return new Pair<> (true,"Erreur : Solde insuffisant pour réaliser cette demande");
+                return new AbstractMap.SimpleEntry (true,"Erreur : Solde insuffisant pour réaliser cette demande");
             }
             
             reservation.getService().setServiceState(2);
@@ -712,10 +708,10 @@ public class Services {
             System.out.println(e.getMessage());
             JpaUtil.cancelTransaction();
             JpaUtil.closeEntityManager();
-            return new Pair<> (false,"Erreur : Une erreure s'est produite");
+            return new AbstractMap.SimpleEntry (false,"Erreur : Une erreure s'est produite");
         }
         JpaUtil.closeEntityManager();
-        return new Pair<> (true,"Demande validée !");
+        return new AbstractMap.SimpleEntry (true,"Demande validée !");
     }
     
     public boolean declineReservation(Long idReservation){
@@ -1002,6 +998,5 @@ public class Services {
         JpaUtil.closeEntityManager();
         return true;
     }
-    
 }
 
