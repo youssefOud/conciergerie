@@ -3,7 +3,7 @@ package actions;
 import Services.Services;
 import java.io.IOException;
 import java.text.ParseException;
-import javafx.util.Pair;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,7 +33,7 @@ public class ActionAnswerAnAd extends Action {
         
         Services services = new Services();
 
-        Pair<Boolean,String> created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit,pictures,description,location);
+        Map.Entry created = services.createReservation(idPerson, idAdsLong, date, time, duration, durationUnit);
         
         request.setAttribute("created", created.getKey());
         request.setAttribute("message", created.getValue());
