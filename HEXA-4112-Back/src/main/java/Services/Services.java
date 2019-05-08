@@ -200,6 +200,8 @@ public class Services {
             return false;
         }
         
+        this.matchMakingForDemand(demand.getId());
+        
         JpaUtil.closeEntityManager();
         return true;
     }
@@ -240,6 +242,7 @@ public class Services {
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
         }
+        this.matchMakingForOffer(offer.getId());
         
         JpaUtil.closeEntityManager();
         return true;
