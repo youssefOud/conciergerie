@@ -9,28 +9,59 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
+/**
+ * Class linking the data access layer to the service business layer
+ * 
+ * @author HEXA-4112
+ */
 public class ServiceDAO {
 
+    /**
+     * Gets the service thanks to the id
+     * 
+     * @param id
+     * @return the Service corresponding to the id
+     */
     public Service findById(Long id) {
         EntityManager em = JpaUtil.getEntityManager();
         return em.find(Service.class, id);
     }
 
+    /**
+     * Persists the parameter service in the database
+     * 
+     * @param service 
+     */
     public void persist(Service service) {
         EntityManager em = JpaUtil.getEntityManager();
         em.persist(service);
     }
 
+    /**
+     * Merges the parameter service in the database
+     * 
+     * @param service 
+     */
     public void merge(Service service) {
         EntityManager em = JpaUtil.getEntityManager();
         em.merge(service);
     }
 
+    /**
+     * Removes the parameter service in the database
+     * 
+     * @param service 
+     */
     public void remove(Service service) {
         EntityManager em = JpaUtil.getEntityManager();
         em.remove(service);
     }
 
+    /**
+     * Gets all services that match the filters
+     * 
+     * @param service 
+     */
     public List<Service> findAllServicesWithFilter(String object, String category, String location, Date startingDate, Date endingDate, String nbPts, String paymentUnit, String type) {
         EntityManager em = JpaUtil.getEntityManager();
         String request;
@@ -122,7 +153,6 @@ public class ServiceDAO {
         
         //Tri sur le nombre de points
 
-
         if (!nbPts.isEmpty()) {
             int nbPtsPerDay;
             if (paymentUnit.equals("minutes")) {
@@ -151,6 +181,12 @@ public class ServiceDAO {
         return filteredServices;
     }
     
+    /**
+     * Gets all the services that the person has published
+     * 
+     * @param person
+     * @return a List of Service
+     */
      public List<Service> findAllServicesByPerson(Person person) {
         EntityManager em = JpaUtil.getEntityManager();
         String request = "select s from Service s where s.personOffering = :person or s.personDemanding = :person order by s.serviceState asc";          
@@ -159,6 +195,12 @@ public class ServiceDAO {
         return services; 
     } 
      
+    /**
+    * Gets all the interests that the person has made
+    * 
+    * @param person
+    * @return a List of Service
+    */
     public List<Object[]> findInterestsByPerson(Person person){
         EntityManager em = JpaUtil.getEntityManager();
         String request = "select r,r.service from Reservation r where r.reservationOwner = :person order by r.reservationRequestDate desc";      
@@ -169,19 +211,21 @@ public class ServiceDAO {
         return services; 
     }
      
-    public List<Service> matchMaking(Service service, int serviceClass){ //serviceClass: 0 for offer, 1 for demand
+    /**
+     * Gets all services that match the user's request
+     * 
+     * @param service
+     * @param serviceClass 0 for offer, 1 for demand
+     * @return a List of Service
+     */
+    public List<Service> matchMaking(Service service, int serviceClass){
         EntityManager em = JpaUtil.getEntityManager();
         String request = "select s from Service s where "
                 + "type(s) = :class "
                 + "and s.serviceState = :validState "
                 + "and s.availabilityDate <= :startingDate "
                 + "and s.category = :category ";
-                //+ "and lower(s.nameObject) like concat('%',:object,'%') ";
-        //if(!service.getLocation().equals("Autre")){
-        //    request += "and s.location = :location ";
-        //}
         request += " order by s.publicationDate desc";
-        
         
         Query query = em.createQuery(request);
         if(serviceClass == 0){
@@ -193,13 +237,6 @@ public class ServiceDAO {
         query.setParameter("validState", 0);
         query.setParameter("startingDate", new Date(service.getAvailabilityDate().getTime() + 2*24*60*60*1000), TemporalType.TIMESTAMP);
         query.setParameter("category", service.getCategory());
-        //query.setParameter("object", service.getNameObject().toLowerCase());
-         //if(!service.getLocation().equals("Autre")){
-         //   query.setParameter("location", service.getLocation());
-        //}
-        
-        
-
  
         List<Service> servicesWithoutNameFilter = (List<Service>) query.getResultList();
         
@@ -222,7 +259,6 @@ public class ServiceDAO {
             synonyms += sf.SendRequest(word, "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json") + "|" + word + "|";
         }
         
-        
         for(Service s : servicesWithoutNameFilter){
             String[] words = s.getNameObject().split(" ");
             for(String word : words){
@@ -232,7 +268,6 @@ public class ServiceDAO {
             }
         }
         
- 
         return res;
     }
 }

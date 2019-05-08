@@ -649,15 +649,41 @@ public class Services {
     public boolean deleteService(Long serviceId){
         JpaUtil.createEntityManager();
         try {
-            JpaUtil.openTransaction();            
+
             List<Reservation> reservations = reservationDAO.findAllReservationsByService(serviceDAO.findById(serviceId));
             
             for(Reservation r: reservations){
+                JpaUtil.openTransaction();
                 reservationDAO.remove(r);
+                JpaUtil.validateTransaction();
             }
             
+            
+            
             Service serviceToRemove = serviceDAO.findById(serviceId);
+            List<Person> persons;
+            if(serviceToRemove instanceof Demand){
+                persons = personDAO.findBySupposedlyInterestingDemand((Demand)serviceToRemove);
+                for(Person p : persons){
+                    p.deleteSupposedlyInterestingDemands(serviceToRemove);
+                    JpaUtil.openTransaction();
+                    personDAO.merge(p);
+                    JpaUtil.validateTransaction();
+                }
+            }
+            else{
+                persons = personDAO.findBySupposedlyInterestingOffer((Offer)serviceToRemove);
+                for(Person p : persons){
+                    p.deleteSupposedlyInterestingOffers(serviceToRemove);
+                    JpaUtil.openTransaction();
+                    personDAO.merge(p);
+                    JpaUtil.validateTransaction();
+                }
+            }
+            
+            JpaUtil.openTransaction();
             serviceDAO.remove(serviceToRemove);
+            
             JpaUtil.validateTransaction();
         }
         catch(Exception e){
@@ -711,9 +737,9 @@ public class Services {
      */
     public Map.Entry confirmReservation(Long idReservation){ 
         JpaUtil.createEntityManager();
-        Reservation reservation = reservationDAO.findById(idReservation);
+        Reservation reservation = reservationDAO.findById(idReservation); //Reservation à valider
         try{
-            JpaUtil.openTransaction();
+            
             
             //Check point balance
             Person offerOwner;
@@ -733,22 +759,37 @@ public class Services {
                 demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
             }
             else{
-                JpaUtil.cancelTransaction();
                 JpaUtil.closeEntityManager();
                 return new AbstractMap.SimpleEntry (true,"Erreur : Solde insuffisant pour réaliser cette demande");
             }
             
+            //On change les états de la réservation et du service
             reservation.getService().setServiceState(2);
             reservation.setReservationState(1);
+            JpaUtil.openTransaction();
             serviceDAO.merge(reservation.getService());
+            JpaUtil.validateTransaction();
+            
+            JpaUtil.openTransaction();
             reservationDAO.merge(reservation);
+            JpaUtil.validateTransaction();
+            
+            List<Reservation> reservationsAssociatedToService = reservationDAO.findAllReservationsByService(reservation.getService());
+            for(Reservation r : reservationsAssociatedToService){
+                if(!r.getId().equals(reservation.getId())){
+                    JpaUtil.openTransaction();
+                    r.setReservationState(2);
+                    reservationDAO.merge(r);
+                    JpaUtil.validateTransaction();
+                }
+            }
             
             //Email sending
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             EmailSenderService.sendDemandConfirmationEmail(demandOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()));
             
             EmailSenderService.sendOfferConfirmationEmail(offerOwner.getMail(), reservation.getService().getNameObject(), dateFormat.format(reservation.getReservationStartingDate()), dateFormat.format(reservation.getReservationEndingDate()), demandOwner.getFirstName(), demandOwner.getPrivilegedContact());
-            JpaUtil.validateTransaction();
+          
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -1039,6 +1080,9 @@ public class Services {
                 }
             }
             updateReservationState(r);
+        } else {
+            JpaUtil.closeEntityManager();
+            return false;
         }
         
         JpaUtil.closeEntityManager();
@@ -1084,6 +1128,9 @@ public class Services {
                 }
             }
             updateReservationState(r);
+        } else {
+            JpaUtil.closeEntityManager();
+            return false;
         }
         
         JpaUtil.closeEntityManager();
