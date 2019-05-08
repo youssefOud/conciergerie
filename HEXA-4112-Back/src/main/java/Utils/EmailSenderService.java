@@ -95,7 +95,6 @@ public class EmailSenderService {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
             message.setSubject("Confirmation de demande : "+ object);
-            code = generateCode();
             message.setText("Bonjour,\r\n"
                     +       "Votre réponse pour :\r\n"
                     +       object + " du " + startingDate + " au " + endingDate + "\r\n"
@@ -130,7 +129,6 @@ public class EmailSenderService {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
             message.setSubject("Confirmation de prêt de : "+ object);
-            code = generateCode();
             message.setText("Bonjour,\r\n"
                     +       "Votre prêt de :\r\n"
                     +       object + " du " + startingDate + " au " + endingDate + " à " + firstName + " ( " + privilegedContact + ")" + "\r\n"
@@ -165,7 +163,6 @@ public class EmailSenderService {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
             message.setSubject("Résumé de votre réponse à l'annonce pour : "+ object);
-            code = generateCode();
             message.setText("Bonjour,\r\n"
                     +       "Vous avez proposé l'offre suivante pour l'annonce de : " + firstName + " ( " + privilegedContact + ") :" + "\r\n"
                     +       object + " du " + startingDate + " au " + endingDate + " pour " + reservationPrice +" points \r\n");
@@ -199,7 +196,6 @@ public class EmailSenderService {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
             message.setSubject("Nouvelle proposition pour votre offre de : "+ object);
-            code = generateCode();
             message.setText("Bonjour,\r\n"
                     +       "Votre offre  de : " + object + " a reçu une nouvelle demande de " + firstName + " ( " + privilegedContact + ") :" + "\r\n"
                     +       object + " du " + startingDate + " au " + endingDate + " pour " + reservationPrice +" points \r\n");
