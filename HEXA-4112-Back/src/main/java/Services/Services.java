@@ -15,7 +15,6 @@ import Model.Service;
 import Model.VerificationToken;
 import Utils.EmailSenderService;
 import Utils.Moderation;
-import com.sun.media.sound.EmergencySoundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
@@ -39,8 +38,6 @@ public class Services {
         @Override
         public int compare(Service s1, Service s2) {
             return s1.getServiceState().compareTo(s2.getServiceState());
-//            if (s1.getServiceState()>s2.getServiceState()) return s2.getServiceState();
-//            return s1.getServiceState();
         }
     };
     
@@ -54,17 +51,13 @@ public class Services {
         this.deletedAccountsDAO = new DeletedAccountsDAO();
     }
     
-    public Person inscription(String name, String firstName, String password, String mail, String cellNumber) {
-        // TODO : to implement : persist la personne en base de données
-        return new Person();
-    }
-    
-    public boolean verifyEmailAdress(String mail) {
-        // TODO : to implement : envoyer un mail et attendre la validation de celui-ci
-        // Voir comment faire cela
-        return false;
-    }
-    
+    /**
+     * Sets privileged contact(email or phone, that will be lately used to contact the user) according to user's preferences
+     * @param idPerson
+     * @param privilegedContact
+     * @param cellNumber
+     * @return true if operation is successful, false if not
+     */
     public boolean savePrivilegedContact(Long idPerson, String privilegedContact, String cellNumber) {
         JpaUtil.createEntityManager();
         
@@ -95,15 +88,19 @@ public class Services {
         return true;
     }
     
-    // TODO : compléter
+    
     public Person connectPerson (String mail, String mdp) {
         JpaUtil.createEntityManager();
         Person person = personDAO.verifyPersonAccount(mail, mdp);
-        JpaUtil.closeEntityManager();
-        
+        JpaUtil.closeEntityManager();        
         return person;
     }
     
+    /**
+     * Sends an email with a verification code during inscription procedure
+     * @param mail
+     * @return true if operation is successful, false if not
+     */
     public boolean sendVerificationEmail (String mail){
         JpaUtil.createEntityManager();
         
@@ -159,31 +156,32 @@ public class Services {
         return true;
     }
     
-    //FOR TEST PURPOSES
+    /**
+     * Inserts the person passed in parameter in the database.
+     * @return true if operation is successful, false if not
+     */
     public boolean createPerson(Person p) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
-        
         personDAO.persist(p);
-        
         try {
             JpaUtil.validateTransaction();
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
             return false;
         }
-        
         JpaUtil.closeEntityManager();
         return true;
     }
     
-    // TODO : A completer : Dans l'ActionServlet, le bouton radio
-    // permet de savoir si c'est une demande ou une offre
+    /**
+     * Inserts the demand passed in parameter in the database. If the demand contains obscene words, it will not be inserted.
+     * @return true if operation is successful, false if not
+     */
     public boolean createDemand (Demand demand) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
-        
-        // TODO : checker mot obscene
+
         String word = Moderation.checkObsceneWords(demand);
         if (word.equals("")) {
             demandDAO.persist(demand);
@@ -207,28 +205,14 @@ public class Services {
         return true;
     }
     
-    public boolean createToken (VerificationToken vt) {
-        JpaUtil.createEntityManager();
-        JpaUtil.openTransaction();
-        
-        verificationTokenDAO.persist(vt);
-        
-        try {
-            JpaUtil.validateTransaction();
-        } catch (RollbackException e) {
-            JpaUtil.cancelTransaction();
-            return false;
-        }
-        
-        JpaUtil.closeEntityManager();
-        return true;
-    }
-    
+    /**
+     * Inserts the offer passed in parameter in the database. If the offer contains obscene words, it will not be inserted.
+     * @return true if operation is successful, false if not
+     */
     public boolean createOffer (Offer offer) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
         
-        // Traitement sur offer ? Date de début ?
         String word = Moderation.checkObsceneWords(offer);
         if (word.equals("")) {
             offerDAO.persist(offer);
@@ -243,12 +227,37 @@ public class Services {
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
         }
-        //this.matchMakingForOffer(offer.getId());
+        this.matchMakingForOffer(offer.getId());
         
         JpaUtil.closeEntityManager();
         return true;
     }
     
+     /**
+     * Inserts the demand passed in parameter in the database.
+     * @return true if operation is successful, false if not
+     */
+   
+    public boolean createToken (VerificationToken vt) {
+        JpaUtil.createEntityManager();
+        JpaUtil.openTransaction();
+        verificationTokenDAO.persist(vt);
+        
+        try {
+            JpaUtil.validateTransaction();
+        } catch (RollbackException e) {
+            JpaUtil.cancelTransaction();
+            return false;
+        }
+        
+        JpaUtil.closeEntityManager();
+        return true;
+    }
+    
+    /**
+     * Registers a new user. Checks if the email does not already exist in the database.
+     * @return the user if the operation is successful, null if operation fails
+     */    
     public Person registerPerson (String lastName, String firstName, String password, String mail, String cellNumber, String verificationCode) {
         JpaUtil.createEntityManager();
         
@@ -279,25 +288,25 @@ public class Services {
         }
     }
     
-    // Ajouter en parametre tous les critères des filtres afin de faire nos
-    // comparaison
-    // TODO : A completer : permet de retourner toutes les demandes
-    // en cours avec les filtres mis
+   
+    /**
+     * Searches the list of services corresponding to the criteria passed in parameters. The first elements of the list represent services that could interest the user.
+     * @return a pair : the key is the list of services; the value is the number of services that could interest the user
+     */
     
     public Map.Entry findAllServicesWithFilter(Long idPerson, String object, String category, String location, String date, String time, String duration, String timeUnit, String nbPts, String paymentUnit, String serviceType) throws ParseException {
         JpaUtil.createEntityManager();
         
+        //checks if starting date and time are not empty and parse the strings to a date
         Date today = new Date();
         SimpleDateFormat formatNormal = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
         Date startingDate;
-        
         if (!date.isEmpty()) {
             if (time.isEmpty()) {
                 if (date.equals(formatDate.format(today))) time = formatTime.format(today);
                 else  time="00:00";
-                
                 startingDate = formatNormal.parse(date + " " + time);
             }
             else{
@@ -308,8 +317,8 @@ public class Services {
         } else{
             startingDate = null;
         }
-        
-        
+
+        // conversion of the service's duration in millis
         Long durationInMillis = 0L;
         if (!duration.isEmpty()) {
             durationInMillis = Long.valueOf(duration);
@@ -325,6 +334,7 @@ public class Services {
             durationInMillis = new Long(0);
         }
         
+        //checks if ending date and time are not empty and parse the strings to a date
         Date endingDate;
         if(startingDate != null){
             endingDate = formatNormal.parse( formatNormal.format(startingDate.getTime() + durationInMillis) );
@@ -332,13 +342,13 @@ public class Services {
         else{
             endingDate = formatNormal.parse( formatNormal.format(today.getTime() + durationInMillis) );
         }
-        
+
         List<Service> filteredServices = serviceDAO.findAllServicesWithFilter(object, category, location, startingDate, endingDate, nbPts, paymentUnit, serviceType);
         
         Person user = personDAO.findById(idPerson);
         
         int nbPropositions = 0;
-        //On retrouve les éléments susceptibles d'intéresser l'utilisateur et on les met en début de liste
+        //Find the services that could interest the user from the previous list (filteredServices) and put them on top of the list.
         if(!serviceType.equals("demande")){
             List<Service> supposedlyInterestingOffers = user.getSupposedlyInterestingOffers();
             List<Service> offersToRemove = new ArrayList<>();
@@ -420,15 +430,17 @@ public class Services {
     public Service getServiceById(Long idService) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
-        
         Service service = serviceDAO.findById(idService);
-        updateServiceState(service);
-        
+        updateServiceState(service); 
         JpaUtil.closeEntityManager();
         return service;
     }
     
-    
+    /**
+     * Delete verification tokens from database after a certain period.
+     * @param delay : specifies the period 
+     * @return true if operation is successful, false if not
+     */
     public boolean deleteOldTokens(Long delay) {
         JpaUtil.createEntityManager();
         JpaUtil.openTransaction();
@@ -443,9 +455,14 @@ public class Services {
         return true;
     }
     
+    /**
+     * Creates a reservation with the information provided by the user responding to a service.
+     * Checks if dates are available and if the point balance is sufficient to make the transaction. Sends emails to the offer and the demand makers.
+     * @return a pair with a boolean as a key, indicating if operation was successful and a string containing an informative message as a value
+     */
     public Map.Entry createReservation(Long idReservationOwner, Long idService, String date, String time, int reservationDuration, String durationUnit){
         JpaUtil.createEntityManager();
-        Person serviceOwner = null; // = personDAO.findById(idServiceOwner); 
+        Person serviceOwner = null; 
         Person reservationOwner = personDAO.findById(idReservationOwner);
         Service service = serviceDAO.findById(idService);
         if (service != null) serviceOwner = service.getPerson();
@@ -516,6 +533,11 @@ public class Services {
         return new AbstractMap.SimpleEntry(true, "Votre demande a bien été prise en compte");
     }
     
+    /**
+     * Updates service state. 
+     * Available states : 0 if valid; 1 if expired; 2 if closed
+     * @return true if operation is successful, false if not
+     */
     public boolean updateServiceState(Service service) {
         JpaUtil.createEntityManager();
         if (service == null) return false;
@@ -536,6 +558,12 @@ public class Services {
         return true;
     }
     
+    /**
+     * Updates reservation state. 
+     * Available states : 0 for pending; 1 for accepted; 2 for refused; 3 for expired; 4 for rated by service owner; 
+     * 5 for rated by reservation owner; 6 for rated by both
+     * @return true if operation is successful, false if not
+     */
     public boolean updateReservationState(Reservation res) {
         JpaUtil.createEntityManager();
         if (res == null) return false;
@@ -585,7 +613,12 @@ public class Services {
         return true;
     }
     
-    
+    /**
+     * Gets a list of services proposed by the user. For each service, gets a list of associated reservations, sorted by date.
+     * The list of services is sorted: valid services come before expired ones.
+     * @param person 
+     * @return a hashmap containing all services for the specified user
+     */
     public HashMap<Service, List<Reservation>> getAdsByPerson(Person person) {
         if (person == null) return null;
         
@@ -609,12 +642,14 @@ public class Services {
         return hm;
     }
     
+    /**
+     * Deletes a service and the associated reservations
+     * @param serviceId : id of the service to delete
+     */
     public boolean deleteService(Long serviceId){
         JpaUtil.createEntityManager();
         try {
-            JpaUtil.openTransaction();
-            ///////////////////////////////////////  Supprimer aussi toutes les réservations qui sont en lien avec le service
-            
+            JpaUtil.openTransaction();            
             List<Reservation> reservations = reservationDAO.findAllReservationsByService(serviceDAO.findById(serviceId));
             
             for(Reservation r: reservations){
@@ -634,6 +669,13 @@ public class Services {
         return true;
     }
     
+    /**
+     * Calculates reservation price using the duration and durationUnit
+     * @param idService
+     * @param reservationDuration : number of duration units
+     * @param durationUnit : jours, heures ou minutes
+     * @return 
+     */
     public int calculateReservationPrice(Long idService, int reservationDuration, String durationUnit){
         Long durationInMinutes = Long.valueOf(reservationDuration);
         if (durationUnit.equals("jours")) {
@@ -648,7 +690,7 @@ public class Services {
         
         double nbPts = service.getNbPoint();
         double nbPtsInMinutes;
-        
+        // units conversion to minutes
         if(priceUnit.equals("jours")){
             nbPtsInMinutes = nbPts/(60*24);
         }
@@ -663,7 +705,11 @@ public class Services {
         return (int)Math.ceil(durationInMinutes * nbPtsInMinutes);
     }
     
-    public Map.Entry confirmReservation(Long idReservation){ //On retourne le message d'erreur ou de confirmation
+    /**
+     * Checks if a reservation can be confirmed. If so, updates reservation state to accepted and service state to closed. Makes the points transaction between the offer and demand makers.
+     * @return a pair with a boolean as a key, indicating if operation was successful and a string containing an informative message as a value
+     */
+    public Map.Entry confirmReservation(Long idReservation){ 
         JpaUtil.createEntityManager();
         Reservation reservation = reservationDAO.findById(idReservation);
         try{
@@ -714,6 +760,11 @@ public class Services {
         return new AbstractMap.SimpleEntry (true,"Demande validée !");
     }
     
+    /**
+     * Updates reservation state to 2(declined)
+     * @param idReservation
+     * @return 
+     */
     public boolean declineReservation(Long idReservation){
         JpaUtil.createEntityManager();
         Reservation reservation = reservationDAO.findById(idReservation);
@@ -732,6 +783,11 @@ public class Services {
         return true;
     }
     
+    /**
+     * Deletes a reservation done by the connected user
+     * @param idReservation
+     * @return 
+     */
     public boolean deleteInterest(Long idReservation) {
         JpaUtil.createEntityManager();
         Reservation reservation = reservationDAO.findById(idReservation);
@@ -750,11 +806,14 @@ public class Services {
         return true;
     }
     
+    /**
+     * Gets a list of services and, for each service, the associated reservation done by the connected user
+     * @param person : connected user
+     * @return a hashmap with service as key and reservation as value
+     */
     public HashMap<Service,Reservation> getInterests(Person person) {
         if (person == null) return null;
         JpaUtil.createEntityManager();
-        // JpaUtil.openTransaction();
-        
         List<Object[]> interests = serviceDAO.findInterestsByPerson(person);
         HashMap<Service,Reservation> hm= new HashMap<Service, Reservation>();
         for (Object[] i :interests) {
@@ -770,6 +829,12 @@ public class Services {
         
     }
     
+    /**
+     * Creates a new user with unknown identity that will replace all deleted users. Replaces the user to delete with the user with unknown identity.
+     * Updates all services and reservations created by the deleted user.
+     * @param idPerson
+     * @return 
+     */
     public boolean deletePerson(Long idPerson){
         JpaUtil.createEntityManager();
         try{
@@ -845,6 +910,11 @@ public class Services {
         return true;
     }
     
+    /**
+     * Adds the mail, the point balance and the rating of the person that should be deleted to a table in the database, containing all deleted accounts.
+     * @param person : user to be deleted
+     * @return 
+     */
     public boolean addToDeletedAccounts(Person person) {
         if (person != null) {
             DeletedAccounts da = new DeletedAccounts(person.getMail(), person.getPointBalance(), person.getRating());
@@ -862,8 +932,13 @@ public class Services {
         return true;
     }
     
+    /**
+     * Sends an email to the moderator to report an ad (containing obscene words, pictures, etc.)
+     * @param person : user reporting the ad
+     * @param idAd
+     * @return 
+     */
     public boolean reportAd(Person person, Long idAd) {
-        
         Service ad = getServiceById(idAd);
         Long idPerson;
         if (ad instanceof Demand) {
@@ -888,6 +963,11 @@ public class Services {
         return false;
     }
     
+    /**
+     * Creates a list of services matching to an offer 
+     * @param idService: id of the offer
+     * @return list of services matching to the offer
+     */
     public List<Service> matchMakingForOffer(Long idService){
       
         Service service = serviceDAO.findById(idService);
@@ -895,8 +975,7 @@ public class Services {
         
         Person person = service.getPerson();
         person.addSSupposedlyInterestingDemands(services);
-        
-       
+
         JpaUtil.openTransaction();
         personDAO.merge(person);
         JpaUtil.validateTransaction();
@@ -904,6 +983,11 @@ public class Services {
         return services;
     }
     
+    /**
+     * Creates a list of services matching to a demand 
+     * @param idService: id of the demand
+     * @return list of services matching to the demand
+     */
     public List<Service> matchMakingForDemand(Long idService){
         
         Service service = serviceDAO.findById(idService);
@@ -911,8 +995,7 @@ public class Services {
         
         Person person = service.getPerson();
         person.addSSupposedlyInterestingOffers(services);
-        
-       
+
         JpaUtil.openTransaction();
         personDAO.merge(person);
         JpaUtil.validateTransaction();
@@ -920,6 +1003,12 @@ public class Services {
         return services;
     }
     
+    /**
+     * Updates reservation by taking into account the rating given by the service owner. Updates reservation owner's rating.
+     * @param reservationId
+     * @param rating
+     * @return 
+     */
     public boolean rateReservationByServiceOwner(Long reservationId, int rating) {
         JpaUtil.createEntityManager();
         
@@ -939,7 +1028,6 @@ public class Services {
                 reservationOwner.setNbRatings(nbRatings + 1);
                 try {
                     JpaUtil.openTransaction();
-                    System.out.println("avg" + avg);
                     reservationDAO.merge(r);
                     personDAO.merge(reservationOwner);
                     JpaUtil.validateTransaction();
@@ -958,12 +1046,16 @@ public class Services {
     }
     
     public Reservation getReservationById(Long id) {
-        //JpaUtil.createEntityManager();
         Reservation res = reservationDAO.findById(id);
-        //JpaUtil.closeEntityManager();
         return res;
     }
     
+    /**
+     * Updates reservation by taking into account the rating given by reservation owner. Updates service owner's rating.
+     * @param reservationId
+     * @param rating
+     * @return 
+     */
     public boolean rateReservationByReservationOwner(Long reservationId, int rating) {
         JpaUtil.createEntityManager();
         Reservation r = getReservationById(reservationId);
@@ -981,7 +1073,6 @@ public class Services {
                 serviceOwner.setNbRatings(nbRatings + 1);
                 try {
                     JpaUtil.openTransaction();
-                    System.out.println("avg : " + avg);
                     reservationDAO.merge(r);
                     personDAO.merge(serviceOwner);
                     JpaUtil.validateTransaction();

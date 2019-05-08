@@ -7,13 +7,15 @@
     <class>Model.Offer</class>
     <class>Model.Person</class>
     <class>Model.Service</class>
-    <class>Model.VerificationToken</class>
-    <class>Model.Reservation</class>
     <class>Model.DeletedAccounts</class>
+    <class>Model.Reservation</class>
+    <class>Model.VerificationToken</class>
     <properties>
-      <property name="eclipselink.logging.level" value="INFO"/>
-      <property name="eclipselink.ddl-generation" value="create-tables"/>
-      <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/HEXA-4112"/>
+      <property name="javax.persistence.jdbc.user" value="test"/>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+      <property name="javax.persistence.jdbc.password" value="test"/>
+      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
   </persistence-unit>
 </persistence>
