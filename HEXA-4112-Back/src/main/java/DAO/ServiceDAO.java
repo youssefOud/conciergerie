@@ -105,14 +105,14 @@ public class ServiceDAO {
 
             String synonyms = "";
             for(String word : objectNameWordsWithoutPronouns){
-                synonyms += sf.SendRequest(word, "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json") + "|";
+                synonyms += sf.SendRequest(word, "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json") + "|"+ word + "|";
             }
 
 
             for(Service s : filteredServices){
                 String[] words = s.getNameObject().split(" ");
                 for(String word : words){
-                    if ( !pronouns.contains(word) && synonyms.contains(word)){
+                    if ( !pronouns.contains(word.toLowerCase()) && synonyms.contains(word.toLowerCase()) ){
                         filteredServicesWithName.add(s);
                     }
                 }
@@ -219,14 +219,14 @@ public class ServiceDAO {
         
         String synonyms = "";
         for(String word : objectNameWordsWithoutPronouns){
-            synonyms += sf.SendRequest(word, "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json") + "|";
+            synonyms += sf.SendRequest(word, "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json") + "|" + word + "|";
         }
         
         
         for(Service s : servicesWithoutNameFilter){
             String[] words = s.getNameObject().split(" ");
             for(String word : words){
-                if ( !pronouns.contains(word) && synonyms.contains(word)){
+                if ( !pronouns.contains(word.toLowerCase()) && synonyms.contains(word.toLowerCase())){
                     res.add(s);
                 }
             }

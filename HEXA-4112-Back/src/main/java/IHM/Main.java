@@ -9,6 +9,7 @@ import DAO.JpaUtil;
 import Model.*;
 import Services.Services;
 import Utils.EmailSenderService;
+import Utils.SynonymsFinder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,7 +23,7 @@ public class Main {
     public static void main (String[] args) throws ParseException{
         //Test de création de demande
         //On initialise
-        JpaUtil.init();
+        /*JpaUtil.init();
         Services s = new Services();
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
        
@@ -69,6 +70,10 @@ public class Main {
         s.rateReservationByReservationOwner(6L, 2);
         
 
+        System.out.println();
+*/
+        SynonymsFinder sf = new SynonymsFinder();
+        System.out.println(sf.SendRequest("sac", "fr_FR", "H8H9E1QqrjX7noHE7aJq", "json"));
         System.out.println();
 
        // boolean emailSent = s.sendVerificationEmail("oliviacaraiman@gmail.com");

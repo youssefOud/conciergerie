@@ -243,7 +243,7 @@
                             else{
                                 annonce += '<img class="d-block w-100 center" style="max-width:50%;max-height:20%" src="http://cliquecities.com/assets/no-image-e3699ae23f866f6cbdf8ba2443ee5c4e.jpg" >';
                             }
-                            annonce += '<div><div class="card"><div class="card-header">\n\
+                            annonce += '</div><div><div class="card"><div class="card-header">\n\
                 <h5 class="mb-0">\n\
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapse' + i + '" aria-expanded="true" aria-controls="collapse' + i + '" id="accordion' + i + '">\n\
                 Détails\n\
@@ -284,7 +284,7 @@
                                     });"  > Signaler</a></div>';
                                 }
                                 
-                            annonce +='</div></div></div>';                                    $('#fil').append(annonce);
+                            annonce +='</div></div>';                                    $('#fil').append(annonce);
                     }
                     },
                     error: function (data) {
