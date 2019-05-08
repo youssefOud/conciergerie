@@ -242,7 +242,7 @@ public class Services {
         } catch (RollbackException e) {
             JpaUtil.cancelTransaction();
         }
-        this.matchMakingForOffer(offer.getId());
+        //this.matchMakingForOffer(offer.getId());
         
         JpaUtil.closeEntityManager();
         return true;
@@ -490,11 +490,7 @@ public class Services {
                     if (location != null) reservation.setLocation(location);
                 }
 
-                if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
-                    offerOwner.setPointBalance(offerOwner.getPointBalance() +  reservation.getReservationPrice());
-                    demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
-                }
-                else{
+                if(demandOwner.getPointBalance() < reservation.getReservationPrice()){
                     JpaUtil.cancelTransaction();
                     JpaUtil.closeEntityManager();
                     return new Pair<> (false,"Votre solde est insuffisant pour réaliser cette opération.");
@@ -897,7 +893,7 @@ public class Services {
     }
     
     public List<Service> matchMakingForOffer(Long idService){
-        
+      
         Service service = serviceDAO.findById(idService);
         List<Service> services = serviceDAO.matchMaking(service, 0);
         
@@ -908,7 +904,6 @@ public class Services {
         JpaUtil.openTransaction();
         personDAO.merge(person);
         JpaUtil.validateTransaction();
-        
         
         return services;
     }
