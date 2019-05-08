@@ -951,6 +951,9 @@ public class Services {
                 }
             }
             updateReservationState(r);
+        } else {
+            JpaUtil.closeEntityManager();
+            return false;
         }
         
         JpaUtil.closeEntityManager();
@@ -993,6 +996,9 @@ public class Services {
                 }
             }
             updateReservationState(r);
+        } else {
+            JpaUtil.closeEntityManager();
+            return false;
         }
         
         JpaUtil.closeEntityManager();

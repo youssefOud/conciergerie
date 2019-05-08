@@ -10,6 +10,7 @@ import DAO.PersonDAO;
 import Model.Demand;
 import Model.Offer;
 import Model.Person;
+import Model.Reservation;
 import Model.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,6 +60,7 @@ public class ServicesTest {
         s.createOffer(offer);
         s.createOffer(offer2);
         s.createOffer(offer3);
+        s.createReservation(2L, 4L, "07/05/2019", "00:00", 1, "jours");
     }
     
     @AfterClass
@@ -177,26 +179,28 @@ public class ServicesTest {
     }
     
     /**
-     * Test of createReservation method, of class Services.
+     * Test of createDemand method, of class Services.
      */
     @org.junit.Test
-    public void testCreateReservationFail() {
-        System.out.println("createReservation : dates invalides");
+    public void testCreateDemandFailObsceneWord() throws ParseException {
         Services instance = new Services();
-        boolean result  = (boolean)(instance.createReservation(2L, 4L, "01/05/2019", "00:00", 1, "jours")).getKey();
+        Person person  = instance.getPersonById(1L);        
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Demand demand = new Demand(person, "Bricolage",null, "matelas FDP", formatDate.parse("09/05/2019 20:00")
+                ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
+        boolean result = (boolean)instance.createDemand(demand);
         assertEquals(false, result);
     }
-   
-    /**
-     * Test of confirmReservation method, of class Services.
-     */
+    
     @org.junit.Test
-    public void testConfirmReservation() {
+    public void testCreateOfferFailObsceneWord() throws ParseException {
         Services instance = new Services();
-        boolean result = (boolean)instance.confirmReservation(10L).getKey();
-        assertEquals(true, result);
+        Person person  = instance.getPersonById(1L);        
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Offer offer = new Offer(person, "Bricolage", null, "matelas FDP", formatDate.parse("09/05/2019 20:00")
+                ,"Résidence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
+        boolean result = (boolean)instance.createOffer(offer);
+        assertEquals(false, result);
     }
-    
-    
     
 }
