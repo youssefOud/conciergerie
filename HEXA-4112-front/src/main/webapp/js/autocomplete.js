@@ -1,6 +1,6 @@
 //Source : https://www.w3schools.com/howto/howto_js_autocomplete.asp
 
-function autocomplete(inp, div, arr) {
+function autocomplete(inp, div, arr, rech) {
 	  /*the autocomplete function takes two arguments,
 	  the text field element and an array of possible autocompleted values:*/
 	  var currentFocus;
@@ -33,9 +33,6 @@ function autocomplete(inp, div, arr) {
 	          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
 	          /*execute a function when someone clicks on the item value (DIV element):*/
 	              b.addEventListener("click", function(e) {
-	              /*insert the value for the autocomplete text field and go to the right page:*/
-	              inp.value = this.getElementsByTagName("input")[0].value;
-	              
 	              /*close the list of autocompleted values,
 	              (or any other open lists of autocompleted values:*/
 	              closeAllLists();

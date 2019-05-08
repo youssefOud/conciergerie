@@ -31,6 +31,9 @@ public class ActionAnswerAnAd extends Action {
         String durationUnit = request.getParameter("uniteDuree");
         String date = request.getParameter("date");
         String time = request.getParameter("time");
+        String pictures = request.getParameter("pictures");
+        String description = request.getParameter("description");
+        String location = request.getParameter("localisation");
         
         Services services = new Services();
 
