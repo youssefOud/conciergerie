@@ -30,11 +30,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author X
+ * Class that serializes the information to be sent in JSON format
+ * 
+ * @author HEXA-4112
  */
 public class SerialisationJSON {
 
+    /**
+     * Serializes information in JSON format to respond to the creation of an ad
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeDeposerAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -50,6 +57,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to respond to the timeline request
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeShowTimeline(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -157,6 +171,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to respond to the request to generate a code
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeGenerationCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -171,6 +192,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to respond to a user's registration request
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeInscription(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -185,6 +213,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to respond to a user's connexion request
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeConnexion(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -199,6 +234,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to warn that the user is not logged in
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeErrorNotConnected(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -213,6 +255,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to return a person's ads
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeGetAnnoncesPersonne(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -335,6 +384,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm logout
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeSeDeconnecter(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -349,6 +405,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to return a person's information
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeRecupererInfoPersonne(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -374,6 +437,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the registration of the privileged contact
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeEnregistreContactPrivilegie(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -388,6 +458,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the answer of an ad
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeRepondreAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -403,6 +480,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to give details of an ad
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeDetailsAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -473,14 +557,19 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to give the price of the user's request
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeCalculPrix(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jo = new JsonObject();
-
-        // TODO : changer la valeur du boolean quand Youssef aura pris
-        // en compte le cas où il n'est pas calculé
+        
         jo.addProperty("calcule", true);
         jo.addProperty("prix", (int) request.getAttribute("price"));
 
@@ -490,6 +579,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to give the user's interests
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeGetInteretsPersonne(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -607,6 +703,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the deletion of an interest
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeSupprimerInteret(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -621,6 +724,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the deletion of a person
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeSupprimerPersonne(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         
@@ -635,6 +745,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the validation of the response to an ad
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeValiderReponseAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -650,6 +767,14 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the declination of a 
+     * response to the user's announcement
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeDeclinerReponseAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -664,6 +789,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the deletion of an ad
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeSupprimerAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -678,6 +810,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the beneficiary's rating
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeNoterBeneficiaire(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -692,6 +831,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm the bidder's rating
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeNoterOffrant(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -706,6 +852,13 @@ public class SerialisationJSON {
         out.close();
     }
 
+    /**
+     * Serializes information in JSON format to confirm notification of an ad alert
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     public void executeSignalerAnnonce(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
@@ -720,6 +873,12 @@ public class SerialisationJSON {
         out.close();
     }
     
+    /**
+     * Method for rounding the user's note to one digit after the decimal point
+     * 
+     * @param numberToRound
+     * @return 
+     */
     private double roundRating (double numberToRound) {
         DecimalFormat decimalFormat = new DecimalFormat("#,#");
         decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
