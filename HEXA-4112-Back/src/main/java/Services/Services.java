@@ -420,6 +420,7 @@ public class Services {
                 if(demandOwner.getPointBalance() >= reservation.getReservationPrice()){
                     offerOwner.setPointBalance(offerOwner.getPointBalance() +  reservation.getReservationPrice());
                     demandOwner.setPointBalance(demandOwner.getPointBalance() -  reservation.getReservationPrice());
+                    System.out.println("");
                 }
                 else{
                     JpaUtil.cancelTransaction();

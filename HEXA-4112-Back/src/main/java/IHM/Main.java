@@ -33,7 +33,7 @@ public class Main {
 
 
         Offer offer = new Offer(person1, "Bricolage", null, "marteau",  formatDate.parse("07/05/2019 00:00")
-                ,"Residence M", "prêt", 12, "Propose un marteau classique", "heures", "heures", 12);
+                ,"Residence M", "prêt", 3, "Propose un marteau classique", "jours", "jours", 2);
         Demand demand = new Demand(person2, "Bricolage",null, "marteau FDP", formatDate.parse("03/05/2019 19:00")
                 ,"Residence M", "prêt", 2, "Recherche marteau classique", "heures", "heures", 2);
         Offer offer2 = new Offer(person1, "Bricolage", null, "four",  formatDate.parse("06/05/2019 00:00")
@@ -49,10 +49,11 @@ public class Main {
         System.out.println("offer2 : " + s.createOffer(offer2));
         System.out.println(s.createOffer(offer));
         
-        s.deletePerson(person1.getId());
-        s.deletePerson(person1.getId());
+      // s.deletePerson(person1.getId());
+      //  s.deletePerson(person1.getId());
 
-        s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 5, "minutes",null, null, null);
+        s.createReservation(person2.getId(), offer.getId(), "07/05/2019", "00:00", 1, "jours",null, null, null);
+        System.out.println();
         //s.createReservation(person2.getId(), offer2.getId(), "06/05/2019", "00:00", 5, "minutes");
             
         //List<Service> listS = s.findAllServicesWithFilter("Bricolage", "Residence M", "10/05/2019", "19:30", "1", "heures", "3", "Offer");
