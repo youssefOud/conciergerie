@@ -123,13 +123,13 @@ public class ServiceDAO {
             List<Service> filteredServicesWithName = new ArrayList<>();
             SynonymsFinder sf = new SynonymsFinder();
 
-            String pronouns = "un une le la ce cette ma ta les des mon ton mes tes ses sa son notre votre leur";
+            String uselessWords = "un une le la ce cette ma ta les des mon ton mes tes ses sa son notre votre leur à électrique machine appareil automatique";
 
             String [] objectNameWords = object.toLowerCase().split(" ");
             List<String> objectNameWordsWithoutPronouns = new ArrayList<>();
 
             for(String word : objectNameWords){
-                if(!pronouns.contains(word)){
+                if(!uselessWords.contains(word)){
                     objectNameWordsWithoutPronouns.add(word);
                 }
             }
@@ -143,7 +143,7 @@ public class ServiceDAO {
             for(Service s : filteredServices){
                 String[] words = s.getNameObject().split(" ");
                 for(String word : words){
-                    if ( !pronouns.contains(word.toLowerCase()) && synonyms.contains(word.toLowerCase()) ){
+                    if ( !uselessWords.contains(word.toLowerCase()) && synonyms.contains(word.toLowerCase()) ){
                         filteredServicesWithName.add(s);
                     }
                 }
@@ -243,13 +243,13 @@ public class ServiceDAO {
         List<Service> res = new ArrayList<>();
         SynonymsFinder sf = new SynonymsFinder();
         
-        String pronouns = "un une le la ce cette ma ta les des mon ton mes tes ses sa son notre votre leur";
+        String uselessWords = "un une le la ce cette ma ta les des mon ton mes tes ses sa son notre votre leur à électrique machine appareil automatique";
         
         String [] objectNameWords = service.getNameObject().toLowerCase().split(" ");
         List<String> objectNameWordsWithoutPronouns = new ArrayList<>();
         
         for(String word : objectNameWords){
-            if(!pronouns.contains(word)){
+            if(!uselessWords.contains(word)){
                 objectNameWordsWithoutPronouns.add(word);
             }
         }
@@ -262,7 +262,7 @@ public class ServiceDAO {
         for(Service s : servicesWithoutNameFilter){
             String[] words = s.getNameObject().split(" ");
             for(String word : words){
-                if ( !pronouns.contains(word.toLowerCase()) && synonyms.contains(word.toLowerCase())){
+                if ( !uselessWords.contains(word.toLowerCase()) && synonyms.contains(word.toLowerCase())){
                     res.add(s);
                 }
             }
