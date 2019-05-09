@@ -3,6 +3,12 @@ package Model;
 import java.util.Date;
 import javax.persistence.Entity;
 
+/**
+ * Entity representing information about user offer.
+ * Inheriting Class of Service.
+ * 
+ * @author HEXA-4112
+ */
 @Entity
 public class Offer extends Service{
     
@@ -19,6 +25,7 @@ public class Offer extends Service{
         this.nbPointMin = nbPointMin;
     }
     
+    @Override
     public int getNbPoint(){
         return nbPointMin;
     }
@@ -27,6 +34,7 @@ public class Offer extends Service{
         this.nbPointMin = nbPointMin;
     }
     
+    @Override
     public int getNbPointPerDay() {
         if(this.getPriceUnit().equals("minutes")){
             return nbPointMin*60*24;

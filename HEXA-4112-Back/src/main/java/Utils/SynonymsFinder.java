@@ -23,7 +23,7 @@ public class SynonymsFinder {
     }
     
     /**
-     * Send an email to the API with the required settings to find synonyms of 
+     * Sends an email to the API with the required settings to find synonyms of 
      * the parameter word
      * 
      * @param word

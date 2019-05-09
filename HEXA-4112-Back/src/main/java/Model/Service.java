@@ -12,6 +12,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * Entity representing the ads.
+ * Superclass of Offer and Demand
+ * 
+ * @author HEXA-4112
+ */
 @Entity
 @Inheritance (strategy = InheritanceType.JOINED)
 public abstract class Service implements Serializable{
@@ -218,7 +224,6 @@ public abstract class Service implements Serializable{
         this.serviceState = serviceState;
     }
     
-    
     public Person getPerson(){
         if(personOffering != null){
             return personOffering;
@@ -242,5 +247,6 @@ public abstract class Service implements Serializable{
     }
 
     public abstract int getNbPoint();
+    
     public abstract int getNbPointPerDay();
 }

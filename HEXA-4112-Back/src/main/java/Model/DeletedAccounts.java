@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import javax.persistence.Entity;
@@ -10,13 +5,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Entity representing the information of unsubscribed users
+ * 
+ * @author HEXA-4112
+ */
 @Entity
 public class DeletedAccounts {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
     private String mail;
+    
     private Integer pointBalance;
+    
     private Double rating;
     
     public DeletedAccounts() {}
