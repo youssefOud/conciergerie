@@ -24,6 +24,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 
+ * 
+ * @author HEXA-4112
+ */
 public class Services {
     
     final private DemandDAO demandDAO;
