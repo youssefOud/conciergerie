@@ -433,7 +433,7 @@ $(document).ready(function () {
                     getAllMedalistAndEvents(document, labelList);
                     
                     function getAllMedalistAndEvents(document, labelList){
-                        var query = 'select distinct ?label where {?furniture rdf:type dbo:Device. ?furniture rdfs:label ?label FILTER (lang(?label)="fr")}';
+                        var query = 'select distinct ?label where { {?furniture ?p dbc:Home_appliances.} UNION {?furniture ?p dbc:Tools.} UNION {?furniture ?p dbc:Cooking_appliances.} UNION {?furniture ?p dbc:Food_preparation_appliances.} ?furniture rdfs:label ?label FILTER (lang(?label)="fr")} ';
                         var url = 'https://dbpedia.org/sparql/?default-graph-uri=http%3A%2F%2Fdbpedia.org&query='+ encodeURIComponent(query) +'&format=json';
                         $.getJSON(url+"&callback=?", function(resultats) {
                           resultats.results.bindings.forEach(function(element) {

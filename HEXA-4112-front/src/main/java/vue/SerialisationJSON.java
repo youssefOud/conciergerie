@@ -135,8 +135,17 @@ public class SerialisationJSON {
                 int duration = s.getDuration();
                 String theDuration = Integer.toString(duration);
                 jo.addProperty("duree", theDuration);
-
-                jo.addProperty("unitePrix", s.getPriceUnit());
+                String unitePrix = s.getPriceUnit();
+                if(unitePrix.equals("heures")){
+                    jo.addProperty("unitePrix", "heure");
+                }
+                else if(unitePrix.equals("minutes")){
+                    jo.addProperty("unitePrix", "minute");
+                }
+                else if(unitePrix.equals("jours")){
+                    jo.addProperty("unitePrix", "jour");
+                }
+                
                 jo.addProperty("uniteDuree", s.getDurationUnit());
                 jo.addProperty("idAnnonce", s.getId());
                 // TODO : A changer quand l'attribut preferences de contact sera mis en place
