@@ -1,4 +1,6 @@
-$(document).ready(function () {var session = new Object();
+var answers = new Object();
+$(document).ready(function () {
+    var session = new Object();
         session.todo = "recupererInfoPersonne";
         $.ajax({
         type: 'POST',
@@ -97,11 +99,10 @@ $(document).ready(function () {var session = new Object();
 
                         });
                         });
-                        var answers = new Object();
+                        
                         document.getElementById("valider").addEventListener("click", function () {
 
                 var send = true;
-                        var answers = new Object();
                         answers.todo = "deposerAnnonce";
                         //Type
                         answers.type = "demande";
@@ -184,110 +185,7 @@ $(document).ready(function () {var session = new Object();
                 answers.unitePrix = "minutes";
                 }
 
-                
-                        
-                //                    console.log("p "+picturesArray);
-//                                    answers.pictures = picturesArray;
-                console.log(answers);
-                        if (send) {
-                //Validation
-                $("#validation").modal();
-                
-                };
-                });
-                }
-                },
-                error: function () {
-                $("#erreur").modal();
-                }
-        });
-        document.getElementById("deposer").addEventListener("click", function () {
-
-var send = true;
-        var answers = new Object();
-        answers.todo = "deposerAnnonce";
-        //Type
-        answers.type = "demande";
-        if ($('#offre').is(':checked')) {
-answers.type = "offre";
-}
-
-//Catégorie
-answers.categorie = document.getElementById('categories').value;
-        //Nom objet
-        if (document.getElementById("objet").value != "") {
-answers.objet = document.getElementById("objet").value;
-        document.getElementById("objet").classList.remove("is-invalid");
-} else {
-send = false;
-        document.getElementById("objet").classList.add("is-invalid");
-}
-
-//Description
-answers.description = document.getElementById("description").value;
-        //Date
-        if (document.getElementById("date").value != "" && document.getElementById("time").value != "") {
-answers.date = document.getElementById("date").value;
-        answers.time = document.getElementById("time").value;
-//                        var current=new Date(Date.now());
-        var wanted = new Date(answers.date.split('/')[2], answers.date.split('/')[1] - 1, answers.date.split('/')[0], answers.time.split(':')[0], answers.time.split(':')[1]);
-        console.log(wanted);
-        if (Date.now() <= wanted.getTime()){
-document.getElementById("date").classList.remove("is-invalid");
-        document.getElementById("time").classList.remove("is-invalid");
-}
-else{
-send = false;
-        document.getElementById("date").classList.add("is-invalid");
-        document.getElementById("time").classList.add("is-invalid");
-}
-
-
-} else if (document.getElementById("date").value == ""){
-send = false;
-        document.getElementById("date").classList.add("is-invalid");
-}
-if (document.getElementById("time").value == ""){
-send = false;
-        document.getElementById("time").classList.add("is-invalid");
-}
-
-
-//Durée
-if (document.getElementById("duree").value != "") {
-answers.duree = document.getElementById("duree").value;
-        document.getElementById("duree").classList.remove("is-invalid");
-} else {
-send = false;
-        document.getElementById("duree").classList.add("is-invalid");
-}
-//Unité durée
-answers.uniteDuree = "heures";
-        if ($('#jours').is(':checked')) {
-answers.uniteDuree = "jours";
-} else if ($('#minutes').is(':checked')) {
-answers.uniteDuree = "minutes";
-}
-
-//Localisation
-answers.localisation = document.getElementById('localisations').value;
-        //NbPts
-        if (document.getElementById("nbPts").value != "") {
-answers.nbPts = document.getElementById("nbPts").value;
-        document.getElementById("nbPts").classList.remove("is-invalid");
-} else {
-send = false;
-        document.getElementById("nbPts").classList.add("is-invalid");
-}
-//Unité prix
-answers.unitePrix = "heures";
-        if ($('#joursPrix').is(':checked')) {
-answers.unitePrix = "jours";
-} else if ($('#minutesPrix').is(':checked')) {
-answers.unitePrix = "minutes";
-}
-
-myArrayFile = $('.uploadFile');
+                myArrayFile = $('.uploadFile');
         answers.pictures = "";
         for (i = 0; i < myArrayFile.length; i++) {
 var uploadFile = myArrayFile[i];
@@ -309,6 +207,25 @@ var reader = new FileReader(); // instance of the FileReader
         reader.readAsDataURL(files[0]);
 }
 }
+                        
+                //                    console.log("p "+picturesArray);
+//                                    answers.pictures = picturesArray;
+                console.log(answers);
+                        if (send) {
+                //Validation
+                $("#validation").modal();
+                
+                };
+                });
+                }
+                },
+                error: function () {
+                $("#erreur").modal();
+                }
+        });
+        document.getElementById("deposer").addEventListener("click", function () {
+
+
 $.ajax({
 type: 'POST',
         url: './ActionServlet',
