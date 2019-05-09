@@ -12,6 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+/**
+ * Entity representing user information
+ * 
+ * @author HEXA-4112
+ */
 @Entity
 public class Person{
     
@@ -40,19 +45,26 @@ public class Person{
     
     private String location;
     
-    private String privilegedContact; // Value : "email" or "cellphone"
+    /**
+     * Choosed by the user. Value : "email" or "cellphone"
+     */
+    private String privilegedContact;  
     
-
+    /**
+     * Used for matchmaking
+     */
     @ManyToMany(cascade={CascadeType.ALL} ) 
     @JoinTable(name="PERSON_OFFER", joinColumns=@JoinColumn(name="PERSON_ID"),
-    inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))//@JoinTable is used to map Join table in database
+    inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))
     private List<Service> supposedlyInterestingOffers;
 
+    /**
+     * Used for matchmaking
+     */
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="PERSON_DEMAND", joinColumns=@JoinColumn(name="PERSON_ID"),
     inverseJoinColumns=@JoinColumn(name="SERVICE_ID"))//@JoinTable is used to map Join table in database
     private List<Service> supposedlyInterestingDemands;
-    
     
     public Person() {
         
@@ -95,8 +107,6 @@ public class Person{
     public void setNbRatings(int nbRatings) {
         this.nbRatings = nbRatings;
     }
-    
-    
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

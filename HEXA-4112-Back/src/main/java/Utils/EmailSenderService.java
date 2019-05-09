@@ -17,15 +17,21 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- *
- * @author olivi
+ * Class allowing to send an email to users or the moderator
+ * 
+ * @author HEXA-4112
  */
 public class EmailSenderService {
     
     private static final String email = "hexa4112@gmail.com";
     private static final String password = "test_Conciergerie";
     private static final String msg = "Bonjour,\nPour finaliser votre inscription veuillez saisir le code ci-dessous : \n";
-    //sendMail("oliviacaraiman@gmail.com","RegistTest", "TEST SUCCESSFUL");
+    
+    /**
+     * Generates a code to be sent to the user in the verification email 
+     * 
+     * @return 
+     */
     private static String generateCode() {
         int leftLimit = '0';
         int rightLimit = '9';
@@ -40,6 +46,12 @@ public class EmailSenderService {
         return generatedString;
     }
     
+    /**
+     * Sends verification email to the parameter sendTo
+     * 
+     * @param sendTo
+     * @return the code generated in the mail
+     */
     public static String sendVerificationEmail(String sendTo){
         //Get properties object
         Properties props = new Properties();
@@ -72,6 +84,15 @@ public class EmailSenderService {
         return code;
     }
     
+    /**
+     * Sends an email to confirm the user's demand
+     * 
+     * @param sendTo
+     * @param object
+     * @param startingDate
+     * @param endingDate
+     * @return an empty String (not used)
+     */
     public static String sendDemandConfirmationEmail(String sendTo, String object, String startingDate, String endingDate){
         //Get properties object
         Properties props = new Properties();
@@ -89,8 +110,6 @@ public class EmailSenderService {
                     }
                 });
         
-        String code = "";
-        
         try {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
@@ -103,9 +122,20 @@ public class EmailSenderService {
             Transport.send(message);
         } catch (MessagingException e) {throw new RuntimeException(e); }
         
-        return code;
+        return "";
     }
     
+    /**
+     * Sends an email to confirm the user's offer
+     * 
+     * @param sendTo
+     * @param object
+     * @param startingDate
+     * @param endingDate
+     * @param firstName
+     * @param privilegedContact
+     * @return an empty String (not used)
+     */
     public static String sendOfferConfirmationEmail(String sendTo, String object, String startingDate, String endingDate, String firstName, String privilegedContact){
         //Get properties object
         Properties props = new Properties();
@@ -123,8 +153,6 @@ public class EmailSenderService {
                     }
                 });
         
-        String code = "";
-        
         try {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
@@ -137,9 +165,21 @@ public class EmailSenderService {
             Transport.send(message);
         } catch (MessagingException e) {throw new RuntimeException(e); }
         
-        return code;
+        return "";
     }
     
+    /**
+     * Sends an email to confirm the response to a demand from the user
+     * 
+     * @param sendTo
+     * @param object
+     * @param startingDate
+     * @param endingDate
+     * @param firstName
+     * @param privilegedContact
+     * @param reservationPrice
+     * @return an empty String (not used)
+     */
     public static String sendDemandReservationEmail(String sendTo, String object, String startingDate, String endingDate, String firstName, String privilegedContact, int reservationPrice){
         //Get properties object
         Properties props = new Properties();
@@ -157,8 +197,6 @@ public class EmailSenderService {
                     }
                 });
         
-        String code = "";
-        
         try {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
@@ -170,9 +208,22 @@ public class EmailSenderService {
             Transport.send(message);
         } catch (MessagingException e) {throw new RuntimeException(e); }
         
-        return code;
+        return "";
     }
     
+    /**
+     * Sends an email to notify the user of a new response to his 
+     * or her ad
+     * 
+     * @param sendTo
+     * @param object
+     * @param startingDate
+     * @param endingDate
+     * @param firstName
+     * @param privilegedContact
+     * @param reservationPrice
+     * @return 
+     */
     public static String sendOfferReservationEmail(String sendTo, String object, String startingDate, String endingDate, String firstName, String privilegedContact, int reservationPrice){
         //Get properties object
         Properties props = new Properties();
@@ -190,8 +241,6 @@ public class EmailSenderService {
                     }
                 });
         
-        String code = "";
-        
         try {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(sendTo));
@@ -203,9 +252,16 @@ public class EmailSenderService {
             Transport.send(message);
         } catch (MessagingException e) {throw new RuntimeException(e); }
         
-        return code;
+        return "";
     }
     
+    /**
+     * Sends an email to notify the moderator of the alert of an ad
+     * 
+     * @param idAd the ad that was reported
+     * @param person who reports the ad
+     * @return true when the mail has been sent
+     */
     public static boolean sendEmailModeratorReportAd(Long idAd, Person person){
         //Get properties object
         Properties props = new Properties();

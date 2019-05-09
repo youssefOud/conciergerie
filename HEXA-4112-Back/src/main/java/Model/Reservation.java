@@ -12,9 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * Entity representing user responses
+ * 
+ * @author HEXA-4112
+ */
 @Entity
-@Inheritance (strategy = InheritanceType.JOINED)
 public class Reservation implements Serializable{  
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -49,7 +54,10 @@ public class Reservation implements Serializable{
     
     protected int reservationPrice;
   
-    protected int reservationState; //0 for pending / 1 for accepted / 2 for refused 
+    /**
+     * 0 for pending / 1 for accepted / 2 for refused 
+     */
+    protected int reservationState;
    
     
     public Reservation() {

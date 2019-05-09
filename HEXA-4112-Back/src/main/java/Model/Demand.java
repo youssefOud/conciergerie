@@ -3,10 +3,15 @@ package Model;
 import java.util.Date;
 import javax.persistence.Entity;
 
+/**
+ * Entity representing information about user demand.
+ * Inheriting Class of Service.
+ * 
+ * @author HEXA-4112
+ */
 @Entity
 public class Demand extends Service {
     
-    // TODO : Verifier float ou pas
     private int nbPointMax;
     
     public Demand() {
@@ -15,11 +20,11 @@ public class Demand extends Service {
     
     public Demand(Person personDemanding, String category, String pictures, String nameObject, Date availabilityDate,
             String localisation, String type, int nbPointMax, String description, String priceUnit, String durationUnit, int duration) {
-        // TODO A implementer
         super(null, personDemanding, category, pictures, nameObject, availabilityDate, localisation, type, description, priceUnit, durationUnit, duration);
         this.nbPointMax = nbPointMax;
     }
     
+    @Override
     public int getNbPoint() {
         return nbPointMax;
     }
@@ -28,6 +33,7 @@ public class Demand extends Service {
         this.nbPointMax = nbPointMax;
     }
     
+    @Override
     public int getNbPointPerDay() {
         if(this.getPriceUnit().equals("minutes")){
             return nbPointMax*60*24;
